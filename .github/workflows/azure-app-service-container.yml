@@ -1,133 +1,108 @@
 name: Build And Deploy Azure App Service Container
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+push:
+branches:
+- main
+workflow_dispatch:
 
 permissions:
-  id-token: write
-  contents: read
+id-token: write
+contents: read
 
 env:
-  IMAGE_NAME: india-market-intel
-  WEBSITES_PORT: "8000"
-  SCRAPER_WORKSPACE_DIR: /home/site/dashboard-workspace
-  SCRAPER_RUNTIME_DIR: /home/site/scraper-runtime
-  CHROME_BIN: /usr/bin/chromium
+IMAGE_NAME: india-market-intel
+WEBSITES_PORT: "8000"
+SCRAPER_WORKSPACE_DIR: /home/site/dashboard-workspace
+SCRAPER_RUNTIME_DIR: /home/site/scraper-runtime
+CHROME_BIN: /usr/bin/chromium
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+build-and-deploy:
+runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          lfs: true
+```
+steps:
+  - name: Checkout
+    uses: actions/checkout@v4
+    with:
+      lfs: true
 
-      - name: Azure login
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  - name: Azure login
+    uses: azure/login@v2
+    with:
+      client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Resolve image name
-        shell: bash
-        run: |
-          set -euo pipefail
+  - name: Resolve image name
+    shell: bash
+    run: |
+      set -euo pipefail
 
-          ACR_LOGIN_SERVER="$(az acr show --name "${{ secrets.AZURE_ACR_NAME }}" --query loginServer -o tsv)"
-          IMAGE_TAG="${GITHUB_SHA::12}"
+      ACR_LOGIN_SERVER="$(az acr show --name "${{ secrets.AZURE_ACR_NAME }}" --query loginServer -o tsv)"
+      IMAGE_TAG="${GITHUB_SHA::12}"
 
-          echo "ACR_LOGIN_SERVER=$ACR_LOGIN_SERVER" >> "$GITHUB_ENV"
-          echo "IMAGE_TAG=$IMAGE_TAG" >> "$GITHUB_ENV"
-          echo "IMAGE_URI=$ACR_LOGIN_SERVER/${IMAGE_NAME}:$IMAGE_TAG" >> "$GITHUB_ENV"
-          echo "LATEST_IMAGE_URI=$ACR_LOGIN_SERVER/${IMAGE_NAME}:latest" >> "$GITHUB_ENV"
+      echo "ACR_LOGIN_SERVER=$ACR_LOGIN_SERVER" >> "$GITHUB_ENV"
+      echo "IMAGE_TAG=$IMAGE_TAG" >> "$GITHUB_ENV"
+      echo "IMAGE_URI=$ACR_LOGIN_SERVER/${IMAGE_NAME}:$IMAGE_TAG" >> "$GITHUB_ENV"
+      echo "LATEST_IMAGE_URI=$ACR_LOGIN_SERVER/${IMAGE_NAME}:latest" >> "$GITHUB_ENV"
 
-      - name: Build and push image
-        shell: bash
-        run: |
-          set -euo pipefail
+  - name: Build and push image
+    shell: bash
+    run: |
+      set -euo pipefail
 
-          az acr login --name "${{ secrets.AZURE_ACR_NAME }}"
+      az acr login --name "${{ secrets.AZURE_ACR_NAME }}"
 
-          docker build \
-            -t "$IMAGE_URI" \
-            -t "$LATEST_IMAGE_URI" \
-            .
+      docker build \
+        -t "$IMAGE_URI" \
+        -t "$LATEST_IMAGE_URI" \
+        .
 
-          docker push "$IMAGE_URI"
-          docker push "$LATEST_IMAGE_URI"
+      docker push "$IMAGE_URI"
+      docker push "$LATEST_IMAGE_URI"
 
-      - name: Configure App Service container
-        shell: bash
-        run: |
-          set -euo pipefail
+  - name: Configure App Service settings
+    shell: bash
+    run: |
+      set -euo pipefail
 
-          ACR_USER="$(az acr credential show --name "${{ secrets.AZURE_ACR_NAME }}" --query username -o tsv)"
-          ACR_PASS="$(az acr credential show --name "${{ secrets.AZURE_ACR_NAME }}" --query 'passwords[0].value' -o tsv)"
+      az webapp config appsettings set \
+        --name "${{ secrets.AZURE_APP_NAME }}" \
+        --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+        --settings \
+          WEBSITES_ENABLE_APP_SERVICE_STORAGE=true \
+          WEBSITES_PORT="$WEBSITES_PORT" \
+          SCRAPER_ADMIN_TOKEN="${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
+          SCRAPER_WORKSPACE_DIR="$SCRAPER_WORKSPACE_DIR" \
+          SCRAPER_RUNTIME_DIR="$SCRAPER_RUNTIME_DIR" \
+          CHROME_BIN="$CHROME_BIN" \
+          WEB_CONCURRENCY=1 \
+          GUNICORN_THREADS=4 \
+          GUNICORN_TIMEOUT=900 \
+          VAHAN_DELAY=0.4 \
+          VAHAN_ATTEMPTS=4 \
+          VAHAN_WAIT_SECONDS=120 \
+          VAHAN_PAGE_TIMEOUT=120 \
+          VAHAN_RETRY_SLEEP=8
 
-          az webapp sitecontainers update \
-            --name "${{ secrets.AZURE_APP_NAME }}" \
-            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
-            --container-name main \
-            --image "$IMAGE_URI" \
-            --target-port 8000 \
-            --is-main true \
-            --registry-username "$ACR_USER" \
-            --registry-password "$ACR_PASS" \
-          || az webapp sitecontainers create \
-            --name "${{ secrets.AZURE_APP_NAME }}" \
-            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
-            --container-name main \
-            --image "$IMAGE_URI" \
-            --target-port 8000 \
-            --is-main true \
-            --registry-username "$ACR_USER" \
-            --registry-password "$ACR_PASS"
+      az webapp config set \
+        --name "${{ secrets.AZURE_APP_NAME }}" \
+        --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+        --always-on true
 
-      - name: Configure App Service settings
-        shell: bash
-        run: |
-          set -euo pipefail
+  - name: Restart App Service
+    shell: bash
+    run: |
+      set -euo pipefail
 
-          az webapp config appsettings set \
-            --name "${{ secrets.AZURE_APP_NAME }}" \
-            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
-            --settings \
-              WEBSITES_ENABLE_APP_SERVICE_STORAGE=true \
-              WEBSITES_PORT="$WEBSITES_PORT" \
-              SCRAPER_ADMIN_TOKEN="${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
-              SCRAPER_WORKSPACE_DIR="$SCRAPER_WORKSPACE_DIR" \
-              SCRAPER_RUNTIME_DIR="$SCRAPER_RUNTIME_DIR" \
-              CHROME_BIN="$CHROME_BIN" \
-              WEB_CONCURRENCY=1 \
-              GUNICORN_THREADS=4 \
-              GUNICORN_TIMEOUT=900 \
-              VAHAN_DELAY=0.4 \
-              VAHAN_ATTEMPTS=4 \
-              VAHAN_WAIT_SECONDS=120 \
-              VAHAN_PAGE_TIMEOUT=120 \
-              VAHAN_RETRY_SLEEP=8
+      az webapp restart \
+        --name "${{ secrets.AZURE_APP_NAME }}" \
+        --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}"
 
-          az webapp config set \
-            --name "${{ secrets.AZURE_APP_NAME }}" \
-            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
-            --always-on true
-
-      - name: Restart App Service
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          az webapp restart \
-            --name "${{ secrets.AZURE_APP_NAME }}" \
-            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}"
-
-      - name: Show site URL
-        shell: bash
-        run: |
-          echo "Deployed: https://${{ secrets.AZURE_APP_NAME }}.azurewebsites.net/"
+  - name: Show site URL
+    shell: bash
+    run: |
+      echo "Deployed: https://${{ secrets.AZURE_APP_NAME }}.azurewebsites.net/"
+```
