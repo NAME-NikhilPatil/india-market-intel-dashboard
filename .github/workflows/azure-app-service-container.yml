@@ -38,8 +38,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
           ACR_LOGIN_SERVER="$(az acr show --name "${{ secrets.AZURE_ACR_NAME }}" --query loginServer -o tsv)"
           IMAGE_TAG="${GITHUB_SHA::12}"
+
           echo "ACR_LOGIN_SERVER=$ACR_LOGIN_SERVER" >> "$GITHUB_ENV"
           echo "IMAGE_TAG=$IMAGE_TAG" >> "$GITHUB_ENV"
           echo "IMAGE_URI=$ACR_LOGIN_SERVER/${IMAGE_NAME}:$IMAGE_TAG" >> "$GITHUB_ENV"
@@ -49,11 +51,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
           az acr login --name "${{ secrets.AZURE_ACR_NAME }}"
+
           docker build \
             -t "$IMAGE_URI" \
             -t "$LATEST_IMAGE_URI" \
             .
+
           docker push "$IMAGE_URI"
           docker push "$LATEST_IMAGE_URI"
 
@@ -61,21 +66,34 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
           ACR_USER="$(az acr credential show --name "${{ secrets.AZURE_ACR_NAME }}" --query username -o tsv)"
           ACR_PASS="$(az acr credential show --name "${{ secrets.AZURE_ACR_NAME }}" --query 'passwords[0].value' -o tsv)"
 
-          az webapp config container set \
+          az webapp sitecontainers update \
             --name "${{ secrets.AZURE_APP_NAME }}" \
             --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
-            --docker-custom-image-name "$IMAGE_URI" \
-            --docker-registry-server-url "https://$ACR_LOGIN_SERVER" \
-            --docker-registry-server-user "$ACR_USER" \
-            --docker-registry-server-password "$ACR_PASS"
+            --container-name main \
+            --image "$IMAGE_URI" \
+            --target-port 8000 \
+            --is-main true \
+            --registry-username "$ACR_USER" \
+            --registry-password "$ACR_PASS" \
+          || az webapp sitecontainers create \
+            --name "${{ secrets.AZURE_APP_NAME }}" \
+            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+            --container-name main \
+            --image "$IMAGE_URI" \
+            --target-port 8000 \
+            --is-main true \
+            --registry-username "$ACR_USER" \
+            --registry-password "$ACR_PASS"
 
       - name: Configure App Service settings
         shell: bash
         run: |
           set -euo pipefail
+
           az webapp config appsettings set \
             --name "${{ secrets.AZURE_APP_NAME }}" \
             --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
@@ -104,6 +122,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
           az webapp restart \
             --name "${{ secrets.AZURE_APP_NAME }}" \
             --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}"
