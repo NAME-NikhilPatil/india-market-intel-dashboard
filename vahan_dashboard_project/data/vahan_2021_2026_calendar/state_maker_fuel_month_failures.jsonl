@@ -1,0 +1,38 @@
+{"failed_at": "2026-05-15T13:34:52", "state_code": "AP", "state": "Andhra Pradesh", "calendar_year": "2023", "error_type": "RuntimeError", "error": "AP 2023 failed after 5 attempts"}
+{"failed_at": "2026-05-15T13:47:14", "state_code": "AP", "state": "Andhra Pradesh", "calendar_year": "2023", "error_type": "RuntimeError", "error": "AP 2023 failed after 3 attempts"}
+{"failed_at": "2026-05-23T20:43:51", "state_code": "HR", "state": "Haryana", "calendar_year": "2026", "error_type": "RuntimeError", "error": "HR 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:43:51", "state_code": "NL", "state": "Nagaland", "calendar_year": "2026", "error_type": "RuntimeError", "error": "NL 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:43:51", "state_code": "AN", "state": "Andaman & Nicobar Island", "calendar_year": "2026", "error_type": "RuntimeError", "error": "AN 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:45:11", "state_code": "OR", "state": "Odisha", "calendar_year": "2026", "error_type": "RuntimeError", "error": "OR 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:45:11", "state_code": "AP", "state": "Andhra Pradesh", "calendar_year": "2026", "error_type": "RuntimeError", "error": "AP 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:45:11", "state_code": "JH", "state": "Jharkhand", "calendar_year": "2026", "error_type": "RuntimeError", "error": "JH 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:46:31", "state_code": "PB", "state": "Punjab", "calendar_year": "2026", "error_type": "RuntimeError", "error": "PB 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:46:31", "state_code": "AR", "state": "Arunachal Pradesh", "calendar_year": "2026", "error_type": "RuntimeError", "error": "AR 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:46:31", "state_code": "JK", "state": "Jammu and Kashmir", "calendar_year": "2026", "error_type": "RuntimeError", "error": "JK 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:47:51", "state_code": "KA", "state": "Karnataka", "calendar_year": "2026", "error_type": "RuntimeError", "error": "KA 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:47:51", "state_code": "AS", "state": "Assam", "calendar_year": "2026", "error_type": "RuntimeError", "error": "AS 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:47:51", "state_code": "PY", "state": "Puducherry", "calendar_year": "2026", "error_type": "RuntimeError", "error": "PY 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:49:11", "state_code": "RJ", "state": "Rajasthan", "calendar_year": "2026", "error_type": "RuntimeError", "error": "RJ 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:49:11", "state_code": "BR", "state": "Bihar", "calendar_year": "2026", "error_type": "RuntimeError", "error": "BR 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:49:11", "state_code": "KL", "state": "Kerala", "calendar_year": "2026", "error_type": "RuntimeError", "error": "KL 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:50:31", "state_code": "CG", "state": "Chhattisgarh", "calendar_year": "2026", "error_type": "RuntimeError", "error": "CG 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:50:31", "state_code": "LA", "state": "Ladakh", "calendar_year": "2026", "error_type": "RuntimeError", "error": "LA 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:50:31", "state_code": "SK", "state": "Sikkim", "calendar_year": "2026", "error_type": "RuntimeError", "error": "SK 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:51:51", "state_code": "CH", "state": "Chandigarh", "calendar_year": "2026", "error_type": "RuntimeError", "error": "CH 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:51:51", "state_code": "TG", "state": "Telangana", "calendar_year": "2026", "error_type": "RuntimeError", "error": "TG 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:51:51", "state_code": "LD", "state": "Lakshadweep", "calendar_year": "2026", "error_type": "RuntimeError", "error": "LD 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:53:11", "state_code": "TN", "state": "Tamil Nadu", "calendar_year": "2026", "error_type": "RuntimeError", "error": "TN 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:53:11", "state_code": "MH", "state": "Maharashtra", "calendar_year": "2026", "error_type": "RuntimeError", "error": "MH 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:53:11", "state_code": "DD", "state": "UT of DNH and DD", "calendar_year": "2026", "error_type": "RuntimeError", "error": "DD 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:54:31", "state_code": "TR", "state": "Tripura", "calendar_year": "2026", "error_type": "RuntimeError", "error": "TR 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:54:31", "state_code": "DL", "state": "Delhi", "calendar_year": "2026", "error_type": "RuntimeError", "error": "DL 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:54:31", "state_code": "ML", "state": "Meghalaya", "calendar_year": "2026", "error_type": "RuntimeError", "error": "ML 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:55:51", "state_code": "GA", "state": "Goa", "calendar_year": "2026", "error_type": "RuntimeError", "error": "GA 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:55:51", "state_code": "MN", "state": "Manipur", "calendar_year": "2026", "error_type": "RuntimeError", "error": "MN 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:55:51", "state_code": "UK", "state": "Uttarakhand", "calendar_year": "2026", "error_type": "RuntimeError", "error": "UK 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:57:11", "state_code": "UP", "state": "Uttar Pradesh", "calendar_year": "2026", "error_type": "RuntimeError", "error": "UP 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:57:11", "state_code": "MP", "state": "Madhya Pradesh", "calendar_year": "2026", "error_type": "RuntimeError", "error": "MP 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:57:11", "state_code": "GJ", "state": "Gujarat", "calendar_year": "2026", "error_type": "RuntimeError", "error": "GJ 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:58:31", "state_code": "WB", "state": "West Bengal", "calendar_year": "2026", "error_type": "RuntimeError", "error": "WB 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:58:31", "state_code": "HP", "state": "Himachal Pradesh", "calendar_year": "2026", "error_type": "RuntimeError", "error": "HP 2026 failed after 4 attempts"}
+{"failed_at": "2026-05-23T20:58:31", "state_code": "MZ", "state": "Mizoram", "calendar_year": "2026", "error_type": "RuntimeError", "error": "MZ 2026 failed after 4 attempts"}

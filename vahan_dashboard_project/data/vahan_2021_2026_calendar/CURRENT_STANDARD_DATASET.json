@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-05-30T09:34:36+05:30",
+  "canonical_consolidated_csv": "standard_consolidated/vahan_standard_consolidated_long.csv",
+  "canonical_consolidated_csv_absolute": "/Users/rajagrawal/Library/CloudStorage/OneDrive-CHEMNINELLP/Temp9/vahan_dashboard_project/data/vahan_2021_2026_calendar/standard_consolidated/vahan_standard_consolidated_long.csv",
+  "consolidated_row_count": 888256,
+  "dataset_row_counts": {
+    "national_maker_month": 6592,
+    "state_maker_fuel": 398856,
+    "state_maker_category": 400540,
+    "state_category_fuel": 82268
+  },
+  "standard_source_files": {
+    "national_maker_month": {
+      "file": "all_state_maker_month_long.csv",
+      "row_count": 6592
+    },
+    "state_maker_fuel": {
+      "file": "state_maker_fuel_month_long.csv",
+      "row_count": 398856
+    },
+    "state_maker_category": {
+      "file": "state_maker_category_month_long.csv",
+      "row_count": 400540
+    },
+    "state_category_fuel": {
+      "file": "state_category_fuel_month_long.csv",
+      "row_count": 82268
+    }
+  },
+  "pipeline_rule": "After any scrape or repair, run scripts/finalize_vahan_standard_data.py. Dashboards and analysis should read canonical_consolidated_csv, not raw JSON or legacy CSVs.",
+  "raw_data_role": "Raw JSON partitions are audit/rebuild inputs only.",
+  "do_not_use_for_dashboard": [
+    "2w_*.csv/json",
+    "4w_*.csv/json",
+    "monthly_*.csv",
+    "fuel_maker_vehicle_category_long.csv",
+    "all_state_maker_fuel_month_long.csv",
+    "all_state_maker_category_month_long.csv",
+    "state_*_month_raw/*.json"
+  ],
+  "qa_files": [
+    "CANONICAL_DATA.md",
+    "STANDARD_DATASET_MANIFEST.csv",
+    "vahan_data_quality_report.md",
+    "data_source_validation_report.md"
+  ]
+}

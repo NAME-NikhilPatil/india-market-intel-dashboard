@@ -1,0 +1,5 @@
+metric,label,value,scraped_at,source_url
+solar_cell_manufacturers,Solar Cell Manufacturer,18,2026-05-16T00:42:22,https://solardcrportal.nise.res.in/Summary/index
+solar_module_manufacturers,Solar Module Manufacturer,140,2026-05-16T00:42:22,https://solardcrportal.nise.res.in/Summary/index
+solar_cell_module_stock,Solar Cell & Solar Module Stock,39678,2026-05-16T00:42:22,https://solardcrportal.nise.res.in/Summary/index
+dcr_generated,DCR Generated,4198618,2026-05-16T00:42:22,https://solardcrportal.nise.res.in/Summary/index

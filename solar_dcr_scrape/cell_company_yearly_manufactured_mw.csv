@@ -1,0 +1,53 @@
+year,rank,agency_id,company_name,cell_manufactured_mw,series,is_almm,scraped_at
+2022,01,9d98d3e6-0379-4589-ba0e-d704fdcdb57f,Jupiter International Limited,22.72,DCR,False,2026-05-16T00:32:03
+2022,02,6465a0b9-60b7-4edf-97f1-3cb3840b9a73,Mundra Solar Energy Limited,7.38,DCR,False,2026-05-16T00:32:03
+2023,01,9d98d3e6-0379-4589-ba0e-d704fdcdb57f,Jupiter International Limited,426.26,DCR,False,2026-05-16T00:32:03
+2023,02,91b24c33-c4b4-492e-91fe-abb42080a27d,Tata Power Renewable Energy Limited,166.08,DCR,False,2026-05-16T00:32:03
+2023,03,6465a0b9-60b7-4edf-97f1-3cb3840b9a73,Mundra Solar Energy Limited,137.78,DCR,False,2026-05-16T00:32:03
+2023,04,ae181577-a115-475f-a06c-730423feba86,Premier Energies Photovoltaic Private Limited,111.12,DCR,False,2026-05-16T00:32:03
+2023,05,e624e730-20a1-4a69-a03f-cc31ce053323,Mundra Solar PV Limited,35.42,DCR,False,2026-05-16T00:32:03
+2023,06,24cb65eb-f553-4fe4-853e-dfee1df94d49,Renewsys India Private Limited,0.82,DCR,False,2026-05-16T00:32:03
+2023,07,a3a30153-8923-4936-a88b-0b22460e71a8,Premier Energies International Private Limited,0.6,DCR,False,2026-05-16T00:32:03
+2024,01,9506d465-8696-4dd1-9546-9641849c6135,FS India Solar Ventures Private Limited,1894.1,DCR,False,2026-05-16T00:32:03
+2024,02,6465a0b9-60b7-4edf-97f1-3cb3840b9a73,Mundra Solar Energy Limited,1303.49,DCR,False,2026-05-16T00:32:03
+2024,03,ae181577-a115-475f-a06c-730423feba86,Premier Energies Photovoltaic Private Limited,1111.03,DCR,False,2026-05-16T00:32:03
+2024,04,e624e730-20a1-4a69-a03f-cc31ce053323,Mundra Solar PV Limited,991.45,DCR,False,2026-05-16T00:32:03
+2024,05,a3a30153-8923-4936-a88b-0b22460e71a8,Premier Energies International Private Limited,765.8,DCR,False,2026-05-16T00:32:03
+2024,06,9d98d3e6-0379-4589-ba0e-d704fdcdb57f,Jupiter International Limited,491.53,DCR,False,2026-05-16T00:32:03
+2024,07,febe12df-4860-41e4-ba61-6a9615bd17a7,Websol Energy System Limited,376.12,DCR,False,2026-05-16T00:32:03
+2024,08,fbdaf772-c6e6-4c5d-81ce-e57be7b79d5c,Emmvee Energy Private Limited,292.22,DCR,False,2026-05-16T00:32:03
+2024,09,91b24c33-c4b4-492e-91fe-abb42080a27d,Tata Power Renewable Energy Limited,274.54,DCR,False,2026-05-16T00:32:03
+2024,10,efd3cf8b-55f6-4365-a2f4-1af1c4c18cce,TP Solar Limited,274.1,DCR,False,2026-05-16T00:32:03
+2024,11,75ae04be-db90-4f15-aca8-257f59d835be,Renew Photovoltaics Private Limited,145.12,DCR,False,2026-05-16T00:32:03
+2024,12,24cb65eb-f553-4fe4-853e-dfee1df94d49,Renewsys India Private Limited,8.02,DCR,False,2026-05-16T00:32:03
+2024,13,4c494d96-d12f-4bd8-b9fd-6006841083a4,Waaree Energies Limited,7.13,DCR,False,2026-05-16T00:32:03
+2025,01,efd3cf8b-55f6-4365-a2f4-1af1c4c18cce,TP Solar Limited,3438.19,DCR,False,2026-05-16T00:32:03
+2025,02,9506d465-8696-4dd1-9546-9641849c6135,FS India Solar Ventures Private Limited,2769.85,DCR,False,2026-05-16T00:32:03
+2025,03,6465a0b9-60b7-4edf-97f1-3cb3840b9a73,Mundra Solar Energy Limited,1704.58,DCR,False,2026-05-16T00:32:03
+2025,04,75ae04be-db90-4f15-aca8-257f59d835be,Renew Photovoltaics Private Limited,1700.72,DCR,False,2026-05-16T00:32:03
+2025,05,4c494d96-d12f-4bd8-b9fd-6006841083a4,Waaree Energies Limited,1693.85,DCR,False,2026-05-16T00:32:03
+2025,06,fbdaf772-c6e6-4c5d-81ce-e57be7b79d5c,Emmvee Energy Private Limited,1414.75,DCR,False,2026-05-16T00:32:03
+2025,07,e624e730-20a1-4a69-a03f-cc31ce053323,Mundra Solar PV Limited,1181.09,DCR,False,2026-05-16T00:32:03
+2025,08,ae181577-a115-475f-a06c-730423feba86,Premier Energies Photovoltaic Private Limited,971.93,DCR,False,2026-05-16T00:32:03
+2025,09,a3a30153-8923-4936-a88b-0b22460e71a8,Premier Energies International Private Limited,960.48,DCR,False,2026-05-16T00:32:03
+2025,10,9d98d3e6-0379-4589-ba0e-d704fdcdb57f,Jupiter International Limited,617.68,DCR,False,2026-05-16T00:32:03
+2025,11,febe12df-4860-41e4-ba61-6a9615bd17a7,Websol Energy System Limited,565.45,DCR,False,2026-05-16T00:32:03
+2025,12,ef691f5a-e049-46f5-8d79-6b8547dc632b,Evervolt Solar Technology India Private Limited,289.42,DCR,False,2026-05-16T00:32:03
+2025,13,91b24c33-c4b4-492e-91fe-abb42080a27d,Tata Power Renewable Energy Limited,254.69,DCR,False,2026-05-16T00:32:03
+2025,14,8a29c14f-41fe-40db-b1d3-1769fb4dc2d9,Fujiyama Power Systems Limited,1.29,DCR,False,2026-05-16T00:32:03
+2026,01,efd3cf8b-55f6-4365-a2f4-1af1c4c18cce,TP Solar Limited,1325.93,DCR,False,2026-05-16T00:32:03
+2026,02,4c494d96-d12f-4bd8-b9fd-6006841083a4,Waaree Energies Limited,986.44,DCR,False,2026-05-16T00:32:03
+2026,03,9506d465-8696-4dd1-9546-9641849c6135,FS India Solar Ventures Private Limited,916.09,DCR,False,2026-05-16T00:32:03
+2026,04,75ae04be-db90-4f15-aca8-257f59d835be,Renew Photovoltaics Private Limited,667.98,DCR,False,2026-05-16T00:32:03
+2026,05,ae181577-a115-475f-a06c-730423feba86,Premier Energies Photovoltaic Private Limited,658.38,DCR,False,2026-05-16T00:32:03
+2026,06,fbdaf772-c6e6-4c5d-81ce-e57be7b79d5c,Emmvee Energy Private Limited,574.99,DCR,False,2026-05-16T00:32:03
+2026,07,e624e730-20a1-4a69-a03f-cc31ce053323,Mundra Solar PV Limited,564.59,DCR,False,2026-05-16T00:32:03
+2026,08,6465a0b9-60b7-4edf-97f1-3cb3840b9a73,Mundra Solar Energy Limited,474.34,DCR,False,2026-05-16T00:32:03
+2026,09,a3a30153-8923-4936-a88b-0b22460e71a8,Premier Energies International Private Limited,392.1,DCR,False,2026-05-16T00:32:03
+2026,10,febe12df-4860-41e4-ba61-6a9615bd17a7,Websol Energy System Limited,390.09,DCR,False,2026-05-16T00:32:03
+2026,11,9d98d3e6-0379-4589-ba0e-d704fdcdb57f,Jupiter International Limited,352.08,DCR,False,2026-05-16T00:32:03
+2026,12,8a29c14f-41fe-40db-b1d3-1769fb4dc2d9,Fujiyama Power Systems Limited,188.08,DCR,False,2026-05-16T00:32:03
+2026,13,ef691f5a-e049-46f5-8d79-6b8547dc632b,Evervolt Solar Technology India Private Limited,160.8,DCR,False,2026-05-16T00:32:03
+2026,14,91b24c33-c4b4-492e-91fe-abb42080a27d,Tata Power Renewable Energy Limited,75.72,DCR,False,2026-05-16T00:32:03
+2026,15,e729d3d9-ea77-4cc1-9958-698ed8e79587,Jupiter Solartech Private Limited,44.55,DCR,False,2026-05-16T00:32:03
+2026,16,24cb65eb-f553-4fe4-853e-dfee1df94d49,Renewsys India Private Limited,11.3,DCR,False,2026-05-16T00:32:03

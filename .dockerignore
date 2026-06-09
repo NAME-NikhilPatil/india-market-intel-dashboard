@@ -1,0 +1,10 @@
+.git
+.runtime
+dist
+__MACOSX
+**/__pycache__
+__pycache__
+**/*.pyc
+**/.DS_Store
+vahan_dashboard_project/logs
+vahan_dashboard_project/archive

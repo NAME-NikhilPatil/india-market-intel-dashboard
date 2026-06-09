@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>India Solar DCR · The Annual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+<style>
+/* ───────────────────────────────────────────────
+   FT-inspired palette
+   ─────────────────────────────────────────────── */
+:root {
+  --paper: #FFF1E5;       /* FT iconic salmon */
+  --paper-2: #F7E1CE;     /* slightly darker for subtle blocks */
+  --paper-3: #FBE9D6;
+  --ink: #262A33;         /* primary text */
+  --ink-mid: #66605C;     /* secondary text */
+  --ink-faint: #9F938A;   /* faint text */
+  --rule: #CCC1B7;        /* thin rules */
+  --rule-strong: #6E5E50;
+  --claret: #990F3D;      /* FT primary accent */
+  --claret-light: #C5294D;
+  --navy: #0D2A4C;
+  --teal: #0F5499;        /* FT blue */
+  --teal-light: #4F8FCC;
+  --green: #00867D;
+  --olive: #806F47;
+  --gold: #B68900;
+  --red: #CC3333;
+  --neutral-1: #B3A9A0;
+  --neutral-2: #807268;
+  --grid: rgba(38,42,51,0.07);
+  --grid-strong: rgba(38,42,51,0.18);
+
+  /* sectoral */
+  --cell: #0F5499;        /* teal-blue = cells */
+  --module: #990F3D;      /* claret = modules */
+  --mfg: #00867D;
+  --sold: #B68900;
+  --unclaimed: #CC3333;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; font-size: 13px; line-height: 1.5; }
+.serif { font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif; }
+
+/* ── Layout shell ─────────────────────────────────── */
+.shell { max-width: 1320px; margin: 0 auto; padding: 0 28px 56px 28px; }
+
+/* ── Masthead ─────────────────────────────────────── */
+.masthead { padding: 24px 0 0 0; }
+.edition { display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--ink); padding: 8px 0; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); font-weight: 600; }
+.edition .edition-l { display: flex; gap: 18px; align-items: center; }
+.edition .edition-r { color: var(--ink-mid); font-weight: 500; }
+.edition .dot { width: 5px; height: 5px; background: var(--claret); border-radius: 50%; }
+.masthead h1 { font-family: 'Source Serif 4', Georgia, serif; font-weight: 700; font-size: 44px; line-height: 1.05; letter-spacing: -0.02em; margin: 18px 0 0 0; color: var(--ink); }
+.masthead h1 em { font-style: italic; font-weight: 400; color: var(--claret); }
+.standfirst { font-family: 'Source Serif 4', Georgia, serif; font-size: 17px; line-height: 1.5; color: var(--ink); margin: 14px 0 4px 0; max-width: 920px; font-weight: 400; }
+.standfirst strong { font-weight: 700; color: var(--ink); white-space: nowrap; }
+.standfirst .num { font-variant-numeric: tabular-nums; color: var(--claret); font-weight: 700; }
+.byline { font-size: 11px; color: var(--ink-mid); text-transform: uppercase; letter-spacing: 0.06em; padding: 14px 0 0 0; border-bottom: 1px solid var(--rule); padding-bottom: 14px; }
+.byline span + span::before { content: " · "; color: var(--rule-strong); margin: 0 4px; }
+
+/* ── Sticky filter bar ────────────────────────────── */
+.filter-bar { position: sticky; top: 0; z-index: 50; background: var(--paper); border-bottom: 1px solid var(--rule); padding: 10px 4px; margin: 0 -4px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; font-size: 12px; transition: box-shadow 0.2s, background 0.2s; }
+.filter-bar.scrolled { box-shadow: 0 4px 12px rgba(38,42,51,0.07); background: var(--paper); border-bottom-color: var(--rule-strong); }
+.filter-bar .f-label { color: var(--ink-mid); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 10.5px; }
+.seg-toggle { display: inline-flex; border: 1px solid var(--ink); border-radius: 0; }
+.seg-toggle button { background: transparent; border: none; color: var(--ink); padding: 5px 11px; font-size: 11.5px; font-weight: 600; cursor: pointer; border-right: 1px solid var(--ink); font-family: inherit; }
+.seg-toggle button:last-child { border-right: none; }
+.seg-toggle button.active { background: var(--ink); color: var(--paper); }
+.seg-toggle button.active.cell-on { background: var(--cell); color: #fff; }
+.seg-toggle button.active.module-on { background: var(--module); color: #fff; }
+.year-sel { background: transparent; border: 1px solid var(--ink); color: var(--ink); padding: 4px 8px; font-size: 11.5px; font-family: inherit; border-radius: 0; }
+.search-in { background: transparent; border: 1px solid var(--ink); padding: 5px 10px; font-size: 11.5px; min-width: 200px; color: var(--ink); font-family: inherit; border-radius: 0; }
+.search-in::placeholder { color: var(--ink-faint); }
+.reset-btn { background: transparent; border: 1px solid var(--ink); color: var(--ink); padding: 5px 11px; font-size: 11px; cursor: pointer; font-weight: 600; font-family: inherit; }
+.reset-btn:hover { background: var(--ink); color: var(--paper); }
+
+/* ── Sections ─────────────────────────────────────── */
+.section { margin: 44px 0 0 0; }
+.section-head { display: flex; align-items: baseline; gap: 12px; border-top: 1px solid var(--rule); padding-top: 14px; margin-bottom: 18px; }
+.section-eyebrow { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--claret); font-weight: 700; font-family: 'Inter', sans-serif; }
+.section-num { color: var(--claret); font-weight: 700; }
+.section-title { font-family: 'Source Serif 4', Georgia, serif; font-size: 26px; font-weight: 700; line-height: 1.1; color: var(--ink); margin: 0; flex: 1; }
+.section-deck { font-family: 'Source Serif 4', Georgia, serif; color: var(--ink-mid); font-size: 14px; line-height: 1.4; margin-top: 4px; max-width: 720px; font-weight: 400; }
+
+/* Grid utilities */
+.grid { display: grid; gap: 28px; }
+.g-2 { grid-template-columns: 1fr 1fr; }
+.g-3 { grid-template-columns: 1fr 1fr 1fr; }
+.g-4 { grid-template-columns: repeat(4, 1fr); }
+.g-2-1 { grid-template-columns: 2fr 1fr; }
+.g-3-2 { grid-template-columns: 3fr 2fr; }
+@media (max-width: 960px) { .g-2, .g-3, .g-4, .g-2-1, .g-3-2 { grid-template-columns: 1fr; } }
+
+/* ── Chart blocks (no card boxes) ─────────────────── */
+.block { padding: 8px 0; }
+.block-head { margin-bottom: 10px; }
+.block-title { font-family: 'Source Serif 4', Georgia, serif; font-weight: 700; font-size: 16px; line-height: 1.2; color: var(--ink); margin: 0 0 3px 0; }
+.block-deck { font-family: 'Source Serif 4', Georgia, serif; font-size: 12.5px; color: var(--ink-mid); line-height: 1.4; font-weight: 400; }
+.block-foot { font-size: 10.5px; color: var(--ink-mid); margin-top: 8px; font-style: italic; }
+.block-actions { display: flex; gap: 6px; margin-top: 6px; }
+.tab { background: transparent; border: none; padding: 3px 0; margin-right: 16px; font-size: 11px; color: var(--ink-mid); cursor: pointer; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-family: 'Inter', sans-serif; border-bottom: 2px solid transparent; }
+.tab.active { color: var(--claret); border-bottom-color: var(--claret); }
+.tab:hover:not(.active) { color: var(--ink); }
+
+.chart-box { width: 100%; position: relative; }
+.h-200 { height: 200px; }
+.h-240 { height: 240px; }
+.h-280 { height: 280px; }
+.h-320 { height: 320px; }
+.h-380 { height: 380px; }
+.h-440 { height: 440px; }
+.h-500 { height: 500px; }
+
+/* ── KPI strip ────────────────────────────────────── */
+.kpi-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 0; margin-top: 24px; }
+.kpi-cell { padding: 14px 18px; border-right: 1px solid var(--rule); min-width: 0; }
+.kpi-cell:last-child { border-right: none; }
+.kpi-cell .kpi-figure, .kpi-cell .kpi-delta { overflow: hidden; text-overflow: ellipsis; }
+.kpi-eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-mid); font-weight: 600; }
+.kpi-figure { font-family: 'Source Serif 4', Georgia, serif; font-weight: 700; font-size: 30px; line-height: 1.1; color: var(--ink); margin: 6px 0 2px 0; font-variant-numeric: tabular-nums; }
+.kpi-figure .unit { font-size: 13px; color: var(--ink-mid); font-weight: 500; margin-left: 4px; font-family: 'Inter', sans-serif; }
+.kpi-delta { font-size: 11px; color: var(--ink-mid); font-weight: 500; margin-top: 2px; }
+.kpi-delta .up { color: var(--green); font-weight: 700; }
+.kpi-delta .down { color: var(--claret); font-weight: 700; }
+.kpi-spark { height: 22px; margin-top: 6px; }
+@media (max-width: 1000px) { .kpi-strip { grid-template-columns: repeat(3, 1fr); } .kpi-cell { border-bottom: 1px solid var(--rule); } }
+
+/* ── Tables ──────────────────────────────────────── */
+.ft-table { width: 100%; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.ft-table th { font-family: 'Inter', sans-serif; text-align: left; padding: 8px 10px 8px 0; border-top: 1.5px solid var(--ink); border-bottom: 1px solid var(--rule); color: var(--ink-mid); font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; user-select: none; white-space: nowrap; }
+.ft-table th:hover { color: var(--ink); }
+.ft-table th .sort-ind { color: var(--claret); margin-left: 3px; font-size: 10px; }
+.ft-table td { padding: 8px 10px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+.ft-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.ft-table tr:hover td { background: var(--paper-3); cursor: pointer; }
+.ft-table tr.selected td { background: var(--paper-2); border-left: 2px solid var(--claret); }
+.ft-table .co-name { font-weight: 600; color: var(--ink); }
+.ft-table .rank-cell { color: var(--ink-mid); font-weight: 700; width: 22px; }
+.tbl-scroll { max-height: 540px; overflow-y: auto; }
+.tbl-scroll::-webkit-scrollbar { width: 6px; }
+.tbl-scroll::-webkit-scrollbar-track { background: transparent; }
+.tbl-scroll::-webkit-scrollbar-thumb { background: var(--rule); }
+
+/* Inline horizontal bar (intra-table) */
+.iv-bar { display: inline-block; height: 8px; vertical-align: middle; }
+.iv-bar.cell { background: var(--cell); }
+.iv-bar.module { background: var(--module); }
+
+/* Badges (FT-style: minimal, no rounding) */
+.tag { display: inline-block; padding: 1px 6px; font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.tag.cell { background: var(--cell); color: #fff; }
+.tag.module { background: var(--module); color: #fff; }
+.tag.almm { background: var(--green); color: #fff; }
+.tag.no-almm { background: transparent; color: var(--ink-mid); border: 1px solid var(--rule); }
+.tag.dual { background: var(--olive); color: #fff; }
+
+/* ── Direct-labeled chart helpers ─────────────────── */
+.legend-row { display: flex; gap: 18px; font-size: 11px; color: var(--ink-mid); margin-top: 6px; flex-wrap: wrap; }
+.legend-row span.dot { display: inline-block; width: 10px; height: 10px; vertical-align: middle; margin-right: 5px; }
+
+/* ── Below-chart legend grid (3 columns) ─────────── */
+.legend-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 18px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 11.5px; color: var(--ink); }
+.legend-grid .lg-item { display: flex; align-items: center; gap: 8px; line-height: 1.3; }
+.legend-grid .lg-swatch { display: inline-block; width: 10px; height: 10px; flex-shrink: 0; }
+.legend-grid .lg-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.legend-grid .lg-pct { color: var(--ink-mid); font-variant-numeric: tabular-nums; font-weight: 600; }
+@media (max-width: 700px) { .legend-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* ── Small multiples grid ─────────────────────────── */
+.sm-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px 24px; }
+@media (max-width: 1200px) { .sm-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 800px) { .sm-grid { grid-template-columns: repeat(2, 1fr); } }
+.sm-tile { padding: 0; cursor: pointer; }
+.sm-tile-head { display: flex; flex-direction: column; gap: 1px; min-height: 50px; border-bottom: 1px solid var(--rule); padding-bottom: 4px; }
+.sm-tile-name { font-family: 'Source Serif 4', serif; font-weight: 700; font-size: 12.5px; line-height: 1.15; color: var(--ink); overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.sm-tile-meta { font-size: 10.5px; color: var(--ink-mid); display: flex; gap: 8px; align-items: center; margin-top: 2px; }
+.sm-tile-meta .mw { font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; font-family: 'Source Serif 4', serif; font-size: 13px; }
+.sm-tile-meta .delta.up { color: var(--green); font-weight: 600; }
+.sm-tile-meta .delta.down { color: var(--claret); font-weight: 600; }
+.sm-tile-chart { margin-top: 6px; height: 56px; }
+.sm-tile-foot { font-size: 10px; color: var(--ink-faint); margin-top: 2px; display: flex; justify-content: space-between; }
+
+/* ── Tile cartogram ─────────────────────────────── */
+.tile-map { display: grid; gap: 3px; padding: 4px 0; }
+.state-tile { aspect-ratio: 1.05/1; min-height: 36px; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 9.5px; font-weight: 600; text-align: center; padding: 3px; cursor: default; transition: outline 0.15s; outline: 1px solid transparent; background: var(--paper-2); color: var(--ink-faint); }
+.state-tile.has-data:hover { outline-color: var(--ink); }
+.state-tile .tile-code { font-size: 10px; line-height: 1; }
+.state-tile .tile-val { font-size: 9.5px; opacity: 0.9; font-variant-numeric: tabular-nums; margin-top: 1px; }
+
+/* ── Insights ─────────────────────────────────────── */
+.insight-row { display: grid; grid-template-columns: 100px 1fr; gap: 16px; padding: 14px 0; border-top: 1px solid var(--rule); }
+.insight-row:first-child { border-top: 1px solid var(--ink); }
+.insight-thumb { height: 60px; width: 100px; }
+.insight-body h4 { font-family: 'Source Serif 4', serif; font-size: 15px; margin: 0 0 4px 0; font-weight: 700; color: var(--ink); line-height: 1.2; }
+.insight-body p { font-family: 'Source Serif 4', serif; font-size: 13px; line-height: 1.5; color: var(--ink); margin: 0; }
+.insight-body p strong { font-weight: 700; }
+.insight-body p .num { font-variant-numeric: tabular-nums; color: var(--claret); font-weight: 700; }
+.insight-body .insight-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--claret); font-weight: 700; margin-bottom: 2px; }
+
+/* ── Tooltip ──────────────────────────────────────── */
+.tt { position: fixed; pointer-events: none; background: var(--paper); border: 1px solid var(--ink); padding: 10px 12px; font-size: 12px; line-height: 1.45; min-width: 200px; z-index: 9999; box-shadow: 4px 4px 0 rgba(38,42,51,0.08); color: var(--ink); display: none; font-family: 'Inter', sans-serif; }
+.tt .tt-title { font-family: 'Source Serif 4', serif; font-weight: 700; font-size: 13px; margin-bottom: 5px; padding-bottom: 4px; border-bottom: 1px solid var(--rule); }
+.tt .tt-row { display: flex; justify-content: space-between; gap: 16px; padding: 1px 0; }
+.tt .tt-key { color: var(--ink-mid); }
+.tt .tt-val { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+/* ── Drill-down panel ─────────────────────────────── */
+.drill-panel { background: var(--paper-2); border-top: 2px solid var(--claret); padding: 20px 22px 22px; margin-top: 16px; }
+.drill-head { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 12px; border-bottom: 1px solid var(--rule); margin-bottom: 16px; gap: 16px; flex-wrap: wrap; }
+.drill-head > div:last-child { display: flex; align-items: center; gap: 8px; }
+.drill-head h3 { font-family: 'Source Serif 4', serif; margin: 0; font-size: 22px; font-weight: 700; color: var(--ink); }
+.drill-head .sub { font-size: 11.5px; color: var(--ink-mid); margin-top: 3px; }
+.drill-close { background: transparent; border: 1px solid var(--ink); color: var(--ink); padding: 4px 10px; font-size: 11px; cursor: pointer; font-weight: 600; font-family: inherit; }
+.drill-close:hover { background: var(--ink); color: var(--paper); }
+.drill-body { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; }
+@media (max-width: 900px) { .drill-body { grid-template-columns: 1fr; } }
+.drill-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 14px; }
+.drill-stat { padding: 8px 10px; background: var(--paper); border: 1px solid var(--rule); }
+.drill-stat .l { font-size: 10px; text-transform: uppercase; color: var(--ink-mid); letter-spacing: 0.06em; font-weight: 600; }
+.drill-stat .v { font-family: 'Source Serif 4', serif; font-weight: 700; font-size: 18px; font-variant-numeric: tabular-nums; }
+
+/* ── Compare pills ─────────────────────────────── */
+.compare-pills { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 8px 0 14px 0; max-height: 110px; overflow-y: auto; }
+.pill { padding: 4px 10px; font-size: 11px; background: transparent; border: 1px solid var(--rule); cursor: pointer; font-family: inherit; color: var(--ink-mid); font-weight: 500; }
+.pill:hover { border-color: var(--ink); color: var(--ink); }
+.pill.on { background: var(--claret); color: #fff; border-color: var(--claret); font-weight: 600; }
+
+/* ── Sankey labels ─────────────────────────────── */
+#sankeyWrap text { fill: var(--ink); font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; }
+
+/* ── Heatmap (smaller, FT colors) ───────────────── */
+.heat-wrap { overflow-x: auto; padding-bottom: 6px; }
+.heat-wrap table { border-collapse: separate; border-spacing: 1px; font-family: 'Inter', sans-serif; }
+.heat-wrap th { font-size: 9px; color: var(--ink-mid); padding: 1px; vertical-align: bottom; font-weight: 600; }
+.heat-wrap td { width: 11px; height: 18px; cursor: pointer; }
+.heat-wrap .heat-co { position: sticky; left: 0; background: var(--paper); padding: 2px 8px 2px 0; font-size: 11px; color: var(--ink); white-space: nowrap; font-weight: 500; max-width: 200px; overflow: hidden; text-overflow: ellipsis; }
+.heat-wrap .heat-tot { position: sticky; right: 0; background: var(--paper); padding: 2px 0 2px 6px; text-align: right; font-size: 10.5px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink); }
+
+/* ── Helpers ─────────────────────────────────────── */
+.row-between { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.dot-cell { display: inline-block; width: 8px; height: 8px; background: var(--cell); margin-right: 4px; vertical-align: middle; }
+.dot-module { display: inline-block; width: 8px; height: 8px; background: var(--module); margin-right: 4px; vertical-align: middle; }
+.muted { color: var(--ink-mid); font-size: 11.5px; }
+.smallcap { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--ink-mid); }
+hr.rule { border: none; border-top: 1px solid var(--rule); margin: 16px 0; }
+.bar-h { height: 6px; background: var(--paper-2); position: relative; }
+.bar-h > i { display: block; height: 100%; background: var(--cell); }
+.bar-h > i.module { background: var(--module); }
+.bar-h > i.unc { background: var(--unclaimed); }
+
+/* Footer */
+.colophon { margin-top: 56px; padding-top: 14px; border-top: 2px solid var(--ink); font-size: 11px; color: var(--ink-mid); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.colophon a { color: var(--ink); }
+
+/* Annotations on charts */
+.chart-anno { position: absolute; font-size: 10.5px; font-family: 'Source Serif 4', serif; font-style: italic; color: var(--ink); background: var(--paper); padding: 1px 6px; border-left: 2px solid var(--claret); pointer-events: none; max-width: 140px; line-height: 1.25; }
+
+/* ── Dense data tables (monthly + annual numerical) ── */
+.data-tbl-wrap { overflow-x: auto; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.data-tbl-wrap::-webkit-scrollbar { height: 8px; }
+.data-tbl-wrap::-webkit-scrollbar-thumb { background: var(--rule-strong); }
+.data-tbl { border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; font-family: 'Inter', sans-serif; font-size: 11px; min-width: 100%; }
+.data-tbl th, .data-tbl td { padding: 4px 5px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.data-tbl th { font-size: 9.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-mid); font-weight: 700; text-align: right; background: var(--paper); }
+.data-tbl th.year-hd { font-family: 'Source Serif 4', serif; font-size: 12.5px; font-weight: 700; color: var(--ink); text-transform: none; letter-spacing: 0; text-align: left; padding: 4px 5px 2px 6px; }
+.data-tbl th.year-hd-ytd { color: var(--claret); }
+.data-tbl th.left { text-align: left; }
+.data-tbl td.num { text-align: right; }
+.data-tbl td.zero { color: var(--ink-faint); }
+.data-tbl td.year-sep, .data-tbl th.year-sep { border-left: 1px solid var(--rule-strong); }
+.data-tbl td.annual { font-weight: 700; background: var(--paper-3); border-left: 1px solid var(--rule-strong); }
+.data-tbl tr:hover td { background: var(--paper-3); }
+.data-tbl tr.tot-row td { font-weight: 700; background: var(--paper-2); border-top: 1.5px solid var(--ink); }
+.data-tbl td.sticky-l, .data-tbl th.sticky-l { position: sticky; left: 0; background: var(--paper); z-index: 1; text-align: left; min-width: 220px; max-width: 240px; font-weight: 500; }
+.data-tbl tr.tot-row td.sticky-l { background: var(--paper-2); }
+.data-tbl tr:hover td.sticky-l { background: var(--paper-3); }
+.data-tbl td.sticky-r, .data-tbl th.sticky-r { position: sticky; right: 0; background: var(--paper-3); border-left: 1.5px solid var(--ink); font-weight: 700; }
+.data-tbl tr:hover td.sticky-r { background: var(--paper-2); }
+.data-tbl .cell-tag { font-size: 8.5px; color: var(--ink-faint); margin-left: 4px; }
+.csv-btn { background: transparent; border: 1px solid var(--ink); color: var(--ink); padding: 4px 10px; font-size: 11px; cursor: pointer; font-family: inherit; font-weight: 600; }
+.csv-btn:hover { background: var(--ink); color: var(--paper); }
+
+/* drill panel monthly table */
+.drill-monthly { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.drill-monthly h5 { font-family: 'Source Serif 4', serif; font-size: 13px; font-weight: 700; margin: 0 0 6px 0; color: var(--ink); }
+.drill-monthly .data-tbl { font-size: 11px; }
+.drill-monthly .data-tbl th, .drill-monthly .data-tbl td { padding: 4px 6px; }
+
+/* Tier-distribution histogram-as-table */
+.tier-bar { display: inline-block; height: 8px; background: var(--olive); vertical-align: middle; margin-right: 6px; }
+
+/* Key events strip below annual chart */
+.key-events { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 10px; border-top: 1px solid var(--rule); }
+.key-events .ke { padding: 8px 10px 4px 10px; border-right: 1px solid var(--rule); }
+.key-events .ke:last-child { border-right: none; }
+.key-events .ke-year { font-family: 'Source Serif 4', serif; font-weight: 700; font-size: 13px; color: var(--ink); }
+.key-events .ke-tag { font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--claret); font-weight: 700; margin-bottom: 2px; }
+.key-events .ke-text { font-family: 'Source Serif 4', serif; font-size: 11px; color: var(--ink); line-height: 1.3; margin-top: 3px; }
+.key-events .ke-text strong { color: var(--ink); font-weight: 700; }
+.key-events .ke-text .num { color: var(--claret); font-variant-numeric: tabular-nums; font-weight: 700; }
+@media (max-width: 900px) { .key-events { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ─── Masthead ─── -->
+  <header class="masthead">
+    <div class="edition">
+      <div class="edition-l">
+        <span class="dot"></span>
+        <span>India Solar DCR · The Annual</span>
+        <span style="color: var(--ink-mid);">Vol I · No 1</span>
+      </div>
+      <div class="edition-r" id="editionDate">May 2026</div>
+    </div>
+    <h1>India Solar <em>Domestic Content Requirement</em><br>Manufacturing Intelligence</h1>
+    <p class="standfirst" id="standfirst"></p>
+    <div class="byline">
+      <span>Data source: National Institute of Solar Energy · DCR Portal</span>
+      <span id="genTime"></span>
+      <span>All values in MW unless stated</span>
+    </div>
+  </header>
+
+  <!-- ─── Sticky filter bar ─── -->
+  <div class="filter-bar">
+    <span class="f-label">Segment</span>
+    <div class="seg-toggle" id="segToggle">
+      <button data-seg="both" class="active">Both</button>
+      <button data-seg="cell">Cell</button>
+      <button data-seg="module">Module</button>
+    </div>
+    <span class="f-label">Year</span>
+    <select id="yearFromSel" class="year-sel"></select>
+    <span style="color: var(--ink-faint);">to</span>
+    <select id="yearToSel" class="year-sel"></select>
+    <span class="f-label" style="margin-left: 10px;">Find</span>
+    <input id="searchBox" class="search-in" placeholder="Search 89 companies…">
+    <button class="reset-btn" onclick="resetFilters()">Reset</button>
+    <span class="muted" style="margin-left: auto;" id="filterEcho"></span>
+  </div>
+
+  <!-- ─── KPI snapshot ─── -->
+  <div class="kpi-strip" id="kpiStrip"></div>
+
+  <!-- ─── §1 The Market ─── -->
+  <section class="section" id="sec-market">
+    <div class="section-head">
+      <div class="section-eyebrow"><span class="section-num">01 ·</span> THE MARKET</div>
+      <h2 class="section-title">A nascent 30 MW market scaled <em style="color: var(--claret); font-style: normal;">585×</em> in four years</h2>
+    </div>
+    <p class="section-deck">Cell and module manufacturing both surged from a low base in 2022 to a fragmented field of dozens of producers by 2025, with the cell sector still gating overall throughput.</p>
+
+    <div class="block" style="margin-top: 22px;">
+      <div class="block-head">
+        <div class="block-title">Monthly manufacturing output, MW · all manufacturers</div>
+        <div class="block-deck">12 calendar columns × 5 year rows. Toggle segment below. Annual subtotal at right. The size of the leap from 2022 to 2025 sits in plain numbers — no chart abstraction.</div>
+        <div class="block-actions">
+          <button class="tab active" data-market-seg="cell">Cell</button>
+          <button class="tab" data-market-seg="module">Module</button>
+          <span style="margin: 0 6px; color: var(--rule);">|</span>
+          <button class="csv-btn" onclick="downloadCSV('marketTable', 'market_monthly_volumes.csv')">Download CSV</button>
+        </div>
+      </div>
+      <div class="data-tbl-wrap" id="marketTableWrap"></div>
+      <div id="keyEvents" class="key-events"></div>
+      <div class="block-foot">Source: NISE DCR Portal · all-manufacturer monthly totals. Granularity follows the Monthly / Quarterly toggle in §5.</div>
+    </div>
+
+    <div class="grid g-4" style="margin-top: 22px;">
+      <div class="block" id="mini1"></div>
+      <div class="block" id="mini2"></div>
+      <div class="block" id="mini3"></div>
+      <div class="block" id="mini4"></div>
+    </div>
+
+    <div class="block" style="margin-top: 28px;">
+      <div class="block-head">
+        <div class="block-title">Company size distribution, by year</div>
+        <div class="block-deck">How many companies produced MW in each tier each year. Combined cell + module: a company appears in both columns if it makes both. Shows the field broadening from a handful of giants to a long tail of mid-sized players.</div>
+      </div>
+      <div class="data-tbl-wrap" id="tierWrap"></div>
+      <div class="block-foot">Source: NISE DCR Portal · distinct companies counted per segment per year.</div>
+    </div>
+  </section>
+
+  <!-- ─── §2 The Leaderboard ─── -->
+  <section class="section" id="sec-leader">
+    <div class="section-head">
+      <div class="section-eyebrow"><span class="section-num">02 ·</span> THE LEADERBOARD</div>
+      <h2 class="section-title">Eighty-nine manufacturers, four years of share-of-business</h2>
+    </div>
+    <p class="section-deck">Combined cell and module sectors. Click any row to drill into a company's full trajectory. Sort by any column. Sparklines show monthly production over 24 months.</p>
+
+    <div class="block" style="margin-top: 18px;">
+      <div class="block-head row-between">
+        <div>
+          <div class="block-actions">
+            <button class="tab active" data-lb-yr="all">All-time</button>
+            <button class="tab" data-lb-yr="2025">2025</button>
+            <button class="tab" data-lb-yr="2024">2024</button>
+            <button class="tab" data-lb-yr="2026">2026 YTD</button>
+          </div>
+        </div>
+        <div class="muted" id="lbCount"></div>
+      </div>
+      <div class="tbl-scroll"><table class="ft-table" id="leaderboard"></table></div>
+      <div class="block-foot">Share % computed against total segment output; share-of-DCR against total cell + module output.</div>
+    </div>
+
+    <div id="drillPanel"></div>
+
+    <div class="block" style="margin-top: 28px;">
+      <div class="block-head">
+        <div class="block-title">Top 15 manufacturers · annual MW &amp; share, year by year</div>
+        <div class="block-deck">Combined cell + module ranking. Each year shows the MW figure with its share-of-DCR % beneath. Footer rows show concentration ratios: CR-3, CR-5, CR-10 — the combined share of the top 3, 5, 10 producers respectively. A falling CR means the market is broadening.</div>
+        <div class="block-actions">
+          <button class="csv-btn" onclick="downloadCSV('topAnnualTable','top15_annual_share.csv')">Download CSV</button>
+        </div>
+      </div>
+      <div class="data-tbl-wrap" id="topAnnualWrap"></div>
+      <div class="block-foot">Source: NISE DCR Portal · CR-N values from yearly company shares of total cell + module MW.</div>
+    </div>
+  </section>
+
+  <!-- ─── §3 Share of Business ─── -->
+  <section class="section" id="sec-share">
+    <div class="section-head">
+      <div class="section-eyebrow"><span class="section-num">03 ·</span> SHARE OF BUSINESS</div>
+      <h2 class="section-title">Four windows onto who holds what slice</h2>
+    </div>
+    <p class="section-deck">Annual share of segment, share of total DCR output, the cell-vs-module mix for vertically integrated players, and how share oscillates month-to-month.</p>
+
+    <div class="grid g-2" style="margin-top: 18px;">
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title">3a · Share of segment, year by year</div>
+          <div class="block-deck">Top 10 companies plus 'Others'. Stacked to 100% — see how the same company's stripe widens or narrows.</div>
+          <div class="block-actions">
+            <button class="tab active" data-share-seg="cell">Cell</button>
+            <button class="tab" data-share-seg="module">Module</button>
+          </div>
+        </div>
+        <div class="chart-box h-380"><canvas id="chartShareSeg"></canvas></div>
+        <div class="legend-grid" id="shareSegLegend"></div>
+        <div class="block-foot">Source: NISE DCR Portal · share of total segment MW. Legend shows 2025 share.</div>
+      </div>
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title">3b · Share of total DCR output (cell + module)</div>
+          <div class="block-deck">Top 10 by combined MW. Reveals dominance across both segments.</div>
+        </div>
+        <div class="chart-box h-380"><canvas id="chartShareDCR"></canvas></div>
+        <div class="legend-grid" id="shareDCRLegend"></div>
+        <div class="block-foot">Source: NISE DCR Portal · share of total cell + module manufactured MW. Legend shows 2025 share.</div>
+      </div>
+    </div>
+
+    <div class="grid g-3-2" style="margin-top: 28px;">
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title">3c · Vertically integrated players · cell vs module mix</div>
+          <div class="block-deck">Companies that manufacture both cells and modules. Bars show their cell MW (left) and module MW (right) for the selected year.</div>
+          <div class="block-actions">
+            <button class="tab" data-dual-yr="2024">2024</button>
+            <button class="tab active" data-dual-yr="2025">2025</button>
+            <button class="tab" data-dual-yr="2026">2026 YTD</button>
+          </div>
+        </div>
+        <div class="chart-box h-440"><canvas id="chartDual"></canvas></div>
+        <div class="block-foot">Source: NISE DCR Portal · dual-segment manufacturers only.</div>
+      </div>
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title">3d · Monthly share oscillation</div>
+          <div class="block-deck">Top-5 companies in selected segment · monthly share-of-segment % across 24 months.</div>
+          <div class="block-actions">
+            <button class="tab active" data-osc-seg="cell">Cell</button>
+            <button class="tab" data-osc-seg="module">Module</button>
+          </div>
+        </div>
+        <div class="chart-box h-440"><canvas id="chartOscillation"></canvas></div>
+        <div class="block-foot">Source: NISE DCR Portal · monthly company MW ÷ monthly segment total.</div>
+      </div>
+    </div>
+
+    <div class="block" style="margin-top: 28px;">
+      <div class="block-head">
+        <div class="block-title">3e · Vertically integrated players · exact figures, year by year</div>
+        <div class="block-deck">Companies that manufacture both cells and modules. Each year shows Cell MW · Module MW · ratio (C:M). Ratio above 1 means cell-heavy; below 1 means module-heavy.</div>
+        <div class="block-actions">
+          <button class="csv-btn" onclick="downloadCSV('dualTable','dual_segment_ratio.csv')">Download CSV</button>
+        </div>
+      </div>
+      <div class="data-tbl-wrap" id="dualTableWrap"></div>
+      <div class="block-foot">Source: NISE DCR Portal · dual-segment manufacturers, exact MW values.</div>
+    </div>
+  </section>
+
+  <!-- ─── §4 Per-company small multiples ─── -->
+  <section class="section" id="sec-sm">
+    <div class="section-head">
+      <div class="section-eyebrow"><span class="section-num">04 ·</span> THE FIELD</div>
+      <h2 class="section-title">Each of the top 24, by month</h2>
+    </div>
+    <p class="section-deck">A wall of monthly trajectories. Tile header carries the company name, 2025 MW, share-of-segment and year-on-year delta. Sorted by 2025 size descending.</p>
+    <div class="block" style="margin-top: 18px;">
+      <div class="block-actions">
+        <button class="tab active" data-sm-seg="both">All</button>
+        <button class="tab" data-sm-seg="cell">Cell only</button>
+        <button class="tab" data-sm-seg="module">Module only</button>
+        <span style="border-left: 1px solid var(--rule); margin: 0 12px;"></span>
+        <button class="tab active" data-sm-sort="size_25">By 2025 size</button>
+        <button class="tab" data-sm-sort="size_all">By all-time</button>
+        <button class="tab" data-sm-sort="growth">By growth</button>
+      </div>
+    </div>
+    <div class="sm-grid" id="smGrid" style="margin-top: 14px;"></div>
+    <div class="block-foot" style="margin-top: 14px;">Source: NISE DCR Portal · monthly manufactured MW, Jan 2022–May 2026. Each tile shares a common time axis.</div>
+  </section>
+
+  <!-- ─── §5 Monthly cadence ─── -->
+  <section class="section" id="sec-monthly">
+    <div class="section-head">
+      <div class="section-eyebrow"><span class="section-num">05 ·</span> MONTHLY CADENCE</div>
+      <h2 class="section-title">Production runs ahead of sales — and the gap is widening</h2>
+    </div>
+    <p class="section-deck">The shaded delta between manufactured and sold reveals inventory accumulating inside the DCR pool. Seasonality remains modest.</p>
+
+    <div class="grid g-2" style="margin-top: 18px;">
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title">Monthly manufactured vs sold</div>
+          <div class="block-deck">All-manufacturer totals. Orange band = build-up (mfg minus sold).</div>
+          <div class="block-actions">
+            <button class="tab active" data-mon-seg="cell">Cell</button>
+            <button class="tab" data-mon-seg="module">Module</button>
+          </div>
+        </div>
+        <div class="chart-box h-380"><canvas id="chartMonthlyMfgSold"></canvas></div>
+        <div class="block-foot">Source: NISE DCR Portal · all-manufacturer monthly totals.</div>
+      </div>
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title">Monthly seasonality (avg MW per calendar month)</div>
+          <div class="block-deck">Average production by calendar month across all available years where the month had non-zero output.</div>
+        </div>
+        <div class="chart-box h-380"><canvas id="chartSeasonality"></canvas></div>
+        <div class="block-foot">Source: NISE DCR Portal · simple mean across years.</div>
+      </div>
+    </div>
+
+    <div class="block" style="margin-top: 28px;">
+      <div class="block-head">
+        <div class="block-title">Top 15 manufacturers · monthly volumes &amp; annual totals · 2022–2026</div>
+        <div class="block-deck">Exact monthly MW for each of the top 15 cell or module producers. Annual subtotals stacked at year-ends; grand total stickied to the right. Scroll horizontally to span all 48+ months.</div>
+        <div class="block-actions">
+          <button class="tab active" data-monvol-seg="cell">Cell</button>
+          <button class="tab" data-monvol-seg="module">Module</button>
+          <span style="margin: 0 6px; color: var(--rule);">|</span>
+          <button class="tab active" data-monvol-gran="monthly">Monthly</button>
+          <button class="tab" data-monvol-gran="quarterly">Quarterly</button>
+          <span style="margin: 0 6px; color: var(--rule);">|</span>
+          <button class="csv-btn" onclick="downloadCSV('monthlyVolTable', 'top15_volumes.csv')">Download CSV</button>
+        </div>
+      </div>
+      <div class="data-tbl-wrap" id="monthlyVolWrap"></div>
+      <div class="block-foot">Source: NISE DCR Portal · monthly DCR-eligible manufactured MW. Zero values in pale grey.</div>
+    </div>
+
+    <div class="block" style="margin-top: 28px;">
+      <div class="block-head">
+        <div class="block-title">Top-25 producers · monthly intensity heatmap</div>
+        <div class="block-deck">Darker = higher MW that month. Hover any cell. Switch segment below.</div>
+        <div class="block-actions">
+          <button class="tab active" data-heat-seg="cell">Cell</button>
+          <button class="tab" data-heat-seg="module">Module</button>
+        </div>
+      </div>
+      <div class="heat-wrap" id="heatmapWrap"></div>
+      <div class="block-foot">Source: NISE DCR Portal · monthly manufactured MW. Companies sorted by all-time MW.</div>
+    </div>
+  </section>
+
+  <!-- ─── §6 Geography ─── -->
+  <section class="section" id="sec-geo">
+    <div class="section-head">
+      <div class="section-eyebrow"><span class="section-num">06 ·</span> GEOGRAPHY</div>
+      <h2 class="section-title">Production lives in the south, distribution in the west</h2>
+    </div>
+    <p class="section-deck">Tamil Nadu and Karnataka lead manufacturer-held stock; Maharashtra and Gujarat lead reseller-held inventory. Unclaimed stock is concentrated in production states.</p>
+
+    <div class="grid g-3-2" style="margin-top: 18px;">
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title">India · state-by-state stock intensity</div>
+          <div class="block-deck">Tile cartogram, positioned geographically. Color = stock intensity for selected metric.</div>
+          <div class="block-actions">
+            <button class="tab active" data-geo-metric="grand_total">Total stock</button>
+            <button class="tab" data-geo-metric="total_unclaimed">Unclaimed</button>
+            <button class="tab" data-geo-metric="unclaimed_pct">% Unclaimed</button>
+            <button class="tab" data-geo-metric="per_user_mw">MW per user</button>
+          </div>
+        </div>
+        <div id="tileMap" class="tile-map"></div>
+        <div id="tileLegend" style="margin-top: 8px; font-size: 11px; color: var(--ink-mid);"></div>
+        <div class="block-foot">Source: NISE DCR Portal · live stock as of scrape.</div>
+      </div>
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title">State leaderboard</div>
+          <div class="block-deck">Click a column to sort. Claret bar = unclaimed share of total.</div>
+          <div class="block-actions">
+            <button class="tab active" data-state-sort="grand_total">Total</button>
+            <button class="tab" data-state-sort="unclaimed_pct">% Unc.</button>
+            <button class="tab" data-state-sort="per_user_mw">MW/user</button>
+          </div>
+        </div>
+        <div class="tbl-scroll"><table class="ft-table" id="stateTable"></table></div>
+        <div class="block-foot">Source: NISE DCR Portal.</div>
+      </div>
+    </div>
+
+    <div class="grid g-2" style="margin-top: 28px;">
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title">Manufacturer-held vs reseller-held stock · top 15 states</div>
+          <div class="block-deck">Where production sits at the factory vs in distributor warehouses.</div>
+        </div>
+        <div class="chart-box h-440"><canvas id="chartMfgVsRes"></canvas></div>
+        <div class="block-foot">Source: NISE DCR Portal · live stock by holder type.</div>
+      </div>
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title">Unclaimed inventory by state · top 15</div>
+          <div class="block-deck">Cell + module unclaimed stock. Largest piles signal where reconciliation is most needed.</div>
+        </div>
+        <div class="chart-box h-440"><canvas id="chartUnclaimed"></canvas></div>
+        <div class="block-foot">Source: NISE DCR Portal.</div>
+      </div>
+    </div>
+
+    <div class="block" style="margin-top: 28px;">
+      <div class="block-head">
+        <div class="block-title">State distribution · cell vs module stock mix</div>
+        <div class="block-deck">For each state, exact cell vs module stock MW with the cell-share %. A high cell% (claret) means the state holds proportionally more upstream wafers/cells; low cell% (teal) means it's predominantly a module-distribution market. Sortable by any column.</div>
+        <div class="block-actions">
+          <button class="csv-btn" onclick="downloadCSV('stateMixTable', 'state_cell_module_mix.csv')">Download CSV</button>
+        </div>
+      </div>
+      <div class="data-tbl-wrap" id="stateMixWrap"></div>
+      <div class="block-foot">Source: NISE DCR Portal · live claimed stock only (excludes unclaimed). Cell stock = manufacturer + reseller; same for module.</div>
+    </div>
+  </section>
+
+  <!-- ─── §7 Stock flow ─── -->
+  <section class="section" id="sec-flow">
+    <div class="section-head">
+      <div class="section-eyebrow"><span class="section-num">07 ·</span> STOCK FLOW</div>
+      <h2 class="section-title">Where DCR-eligible MW ends up</h2>
+    </div>
+    <p class="section-deck">Width of each ribbon is proportional to MW. Cell and module inputs flow through holder type (manufacturer / reseller) into claimed vs unclaimed pools.</p>
+    <div class="block" style="margin-top: 18px;">
+      <div id="sankeyWrap" class="chart-box h-500"></div>
+      <div class="block-foot">Source: NISE DCR Portal.</div>
+    </div>
+  </section>
+
+  <!-- ─── §8 Compare ─── -->
+  <section class="section" id="sec-compare">
+    <div class="section-head">
+      <div class="section-eyebrow"><span class="section-num">08 ·</span> SIDE BY SIDE</div>
+      <h2 class="section-title">Compare any four companies</h2>
+    </div>
+    <p class="section-deck">Pick up to four manufacturers to overlay their annual and monthly trajectories.</p>
+    <div class="block" style="margin-top: 14px;">
+      <div class="compare-pills" id="comparePills"></div>
+      <div class="grid g-2" style="margin-top: 12px;">
+        <div>
+          <div class="block-title">Annual MW</div>
+          <div class="chart-box h-320" style="margin-top: 8px;"><canvas id="chartCompareAnnual"></canvas></div>
+        </div>
+        <div>
+          <div class="block-title">Monthly MW (24-month)</div>
+          <div class="chart-box h-320" style="margin-top: 8px;"><canvas id="chartCompareMonthly"></canvas></div>
+        </div>
+      </div>
+      <div class="block-foot">Source: NISE DCR Portal · selected companies, all-segments union.</div>
+    </div>
+  </section>
+
+  <!-- ─── §9 Movers ─── -->
+  <section class="section" id="sec-movers">
+    <div class="section-head">
+      <div class="section-eyebrow"><span class="section-num">09 ·</span> MOVERS</div>
+      <h2 class="section-title">Who climbed, who slipped, who walked in</h2>
+    </div>
+    <p class="section-deck">Year-on-year change 2024 → 2025, top 10 by growth %, top 10 by decline %, and the 10 largest new entrants who weren't in the data in 2024.</p>
+
+    <div class="grid g-3" style="margin-top: 18px;">
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title" style="color: var(--green);">Risers · YoY % growth</div>
+          <div class="block-deck">Existing companies with the largest percentage gain.</div>
+        </div>
+        <div id="risersTable"></div>
+      </div>
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title" style="color: var(--ink);">New entrants 2025</div>
+          <div class="block-deck">Manufacturers with zero MW in 2024 and meaningful MW in 2025.</div>
+        </div>
+        <div id="newEntrantsTable"></div>
+      </div>
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title" style="color: var(--claret);">Fallers · YoY % decline</div>
+          <div class="block-deck">Existing companies with the largest percentage drop.</div>
+        </div>
+        <div id="fallersTable"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── §10 First-production calendar ─── -->
+  <section class="section" id="sec-calendar">
+    <div class="section-head">
+      <div class="section-eyebrow"><span class="section-num">10 ·</span> ARRIVALS</div>
+      <h2 class="section-title">When each manufacturer first showed up</h2>
+    </div>
+    <p class="section-deck">Every company in the DCR data, sorted by their first month of production. Companies that arrived early are at the top; recent entrants at the bottom. Click a row to drill into that company.</p>
+
+    <div class="block" style="margin-top: 18px;">
+      <div class="block-head row-between">
+        <div class="block-actions">
+          <button class="tab active" data-cal-sort="first_asc">First → Latest</button>
+          <button class="tab" data-cal-sort="first_desc">Latest → First</button>
+          <button class="tab" data-cal-sort="size">By 2025 MW</button>
+        </div>
+        <button class="csv-btn" onclick="downloadCSV('arrivalsTable', 'first_production_calendar.csv')">Download CSV</button>
+      </div>
+      <div class="data-tbl-wrap" id="arrivalsWrap"></div>
+      <div class="block-foot">Source: NISE DCR Portal · first non-zero monthly entry per company per segment.</div>
+    </div>
+  </section>
+
+  <!-- ─── §11 The Edit ─── -->
+  <section class="section" id="sec-edit">
+    <div class="section-head">
+      <div class="section-eyebrow"><span class="section-num">11 ·</span> THE EDIT</div>
+      <h2 class="section-title">Eight things the data is telling us</h2>
+    </div>
+    <div id="insightsList" style="margin-top: 10px;"></div>
+  </section>
+
+  <div class="colophon">
+    <div>India Solar DCR · The Annual · Built from scraped data of <a href="https://solardcrportal.nise.res.in/Summary/index" target="_blank">solardcrportal.nise.res.in</a></div>
+    <div style="color: var(--ink-mid);">All MW values DCR-eligible. Charts re-render on filter change.</div>
+  </div>
+
+</div>
+
+<div class="tt" id="tt"></div>
+
+<script>
+// ─── Embedded data ───
+const DATA = __DATA__;
+window.DATA = DATA;
+
+// ─── Chart.js global defaults · FT styling ───
+function setChartDefaults() {
+  const root = document.documentElement;
+  const inkMid = '#66605C';
+  const grid = 'rgba(38,42,51,0.07)';
+  Chart.defaults.color = inkMid;
+  Chart.defaults.borderColor = grid;
+  Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
+  Chart.defaults.font.size = 11;
+  Chart.defaults.plugins.legend = { display: false };  // No legends — we direct-label
+  Chart.defaults.plugins.tooltip = {
+    backgroundColor: '#FFF1E5', borderColor: '#262A33', borderWidth: 1,
+    titleColor: '#262A33', bodyColor: '#262A33',
+    titleFont: { family: "'Source Serif 4', Georgia, serif", weight: 700, size: 13 },
+    bodyFont: { family: "'Inter', sans-serif", size: 12 },
+    padding: 10, cornerRadius: 0, displayColors: true, boxPadding: 4,
+  };
+  if (window.ChartDataLabels) Chart.register(window.ChartDataLabels);
+  Chart.defaults.plugins.datalabels = { display: false };
+}
+setChartDefaults();
+document.getElementById('genTime').textContent = 'Updated ' + new Date(DATA.generated_at).toLocaleDateString('en-IN', {year:'numeric', month:'long', day:'numeric'});
+
+// ─── Palette helpers ───
+const SEG_COLOR = { cell: '#0F5499', module: '#990F3D' };
+// Distinct color palette restrained for FT feel (8 swatches)
+const PALETTE_BIG = ['#990F3D','#0F5499','#00867D','#B68900','#806F47','#0D2A4C','#C5294D','#4F8FCC','#6B8E23','#8B4513','#2F4F4F','#A0522D','#5F9EA0','#CD853F','#708090','#D2691E'];
+function colorFor(name, i) { return PALETTE_BIG[i % PALETTE_BIG.length]; }
+
+// ─── State ───
+const STATE = {
+  segment: 'both', yearFrom: 2022, yearTo: 2026, search: '',
+  selectedCompany: null, selectedCompanies: [],
+  lbYear: 'all', monSeg: 'cell', heatSeg: 'cell',
+  overviewView: 'abs',
+  shareSeg: 'cell',
+  dualYr: 2025,
+  oscSeg: 'cell',
+  smSeg: 'both', smSort: 'size_25',
+  geoMetric: 'grand_total', stateSort: 'grand_total',
+  monVolSeg: 'cell',
+  monVolGran: 'monthly',  // 'monthly' | 'quarterly'
+  calSort: 'first_asc',
+  marketSeg: 'cell',
+};
+
+// ─── Filter wiring ───
+function initFilters() {
+  const years = [2022,2023,2024,2025,2026];
+  const yf = document.getElementById('yearFromSel'), yt = document.getElementById('yearToSel');
+  yf.innerHTML = years.map(y=>`<option value="${y}">${y}</option>`).join('');
+  yt.innerHTML = years.map(y=>`<option value="${y}">${y}</option>`).join('');
+  yt.value = '2026';
+  yf.addEventListener('change', () => { STATE.yearFrom = +yf.value; rerenderAll(); });
+  yt.addEventListener('change', () => { STATE.yearTo = +yt.value; rerenderAll(); });
+
+  document.querySelectorAll('#segToggle button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#segToggle button').forEach(x => { x.classList.remove('active','cell-on','module-on'); });
+      b.classList.add('active');
+      if (b.dataset.seg === 'cell') b.classList.add('cell-on');
+      if (b.dataset.seg === 'module') b.classList.add('module-on');
+      STATE.segment = b.dataset.seg;
+      rerenderAll();
+    });
+  });
+  document.getElementById('searchBox').addEventListener('input', e => {
+    STATE.search = e.target.value;
+    // Debounce slightly to avoid thrashing on every keystroke
+    clearTimeout(window._searchT);
+    window._searchT = setTimeout(() => {
+      rerenderAll();
+      // If search resolves to exactly 1 company, auto-open drill
+      if (searchActive()) {
+        const matches = [];
+        ['cell','module'].forEach(seg => {
+          const segCos = (seg==='cell'?DATA.derived.companiesCell:DATA.derived.companiesModule);
+          segCos.forEach(c => { if (matchesSearch(c.name) && !matches.some(m=>m.name===c.name && m.seg===seg)) matches.push({name: c.name, seg}); });
+        });
+        // Dedupe by name keeping first segment
+        const seen = new Set();
+        const unique = matches.filter(m => seen.has(m.name) ? false : (seen.add(m.name), true));
+        if (unique.length === 1) {
+          STATE.selectedCompany = unique[0].name;
+          renderDrill(unique[0].name, unique[0].seg);
+        }
+      }
+    }, 180);
+  });
+  const tabBind = (sel, key, cb) => document.querySelectorAll(sel).forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll(sel).forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); STATE[key] = isNaN(+b.dataset[Object.keys(b.dataset)[0]]) ? b.dataset[Object.keys(b.dataset)[0]] : +b.dataset[Object.keys(b.dataset)[0]];
+    cb();
+  }));
+  tabBind('[data-market-seg]', 'marketSeg', renderMarketTable);
+  tabBind('[data-lb-yr]', 'lbYear', renderLeaderboard);
+  tabBind('[data-share-seg]', 'shareSeg', renderShareSeg);
+  tabBind('[data-dual-yr]', 'dualYr', renderDual);
+  tabBind('[data-osc-seg]', 'oscSeg', renderOscillation);
+  tabBind('[data-sm-seg]', 'smSeg', renderSmallMultiples);
+  tabBind('[data-sm-sort]', 'smSort', renderSmallMultiples);
+  tabBind('[data-mon-seg]', 'monSeg', renderMonthlyMfgSold);
+  tabBind('[data-monvol-seg]', 'monVolSeg', renderMonthlyVolTable);
+  tabBind('[data-monvol-gran]', 'monVolGran', () => { renderMonthlyVolTable(); renderMarketTable(); if (STATE.selectedCompany) { const seg = ['cell','module'].find(s => companiesForSeg(s).some(c => c.name === STATE.selectedCompany)); if (seg) renderDrill(STATE.selectedCompany, seg); } });
+  tabBind('[data-cal-sort]', 'calSort', renderArrivals);
+  tabBind('[data-heat-seg]', 'heatSeg', renderHeatmap);
+  tabBind('[data-geo-metric]', 'geoMetric', renderTileMap);
+  tabBind('[data-state-sort]', 'stateSort', renderStateTable);
+
+  window.resetFilters = () => {
+    STATE.segment = 'both'; STATE.yearFrom = 2022; STATE.yearTo = 2026; STATE.search = '';
+    yf.value = '2022'; yt.value = '2026';
+    document.getElementById('searchBox').value = '';
+    document.querySelectorAll('#segToggle button').forEach(x => { x.classList.remove('active','cell-on','module-on'); if (x.dataset.seg==='both') x.classList.add('active'); });
+    rerenderAll();
+  };
+}
+
+// ─── Formatting ───
+const fmtMW = n => n == null ? '—' : (Math.abs(n) >= 10000 ? (n/1000).toFixed(1)+'k' : (Math.abs(n) >= 1000 ? n.toFixed(0) : (Math.abs(n) >= 10 ? n.toFixed(0) : n.toFixed(1))));
+const fmtMWfull = n => n == null ? '—' : n.toLocaleString('en-IN', { maximumFractionDigits: 1 });
+const fmtInt = n => n == null ? '—' : Math.round(n).toLocaleString('en-IN');
+const fmtPct = n => n == null ? '—' : (n>0?'+':'')+n.toFixed(1)+'%';
+const fmtPctRaw = n => n == null ? '—' : n.toFixed(1)+'%';
+function activeYears() { const o=[]; for (let y=STATE.yearFrom;y<=STATE.yearTo;y++) o.push(y); return o; }
+function activeSegments() { return STATE.segment==='both' ? ['cell','module'] : [STATE.segment]; }
+function yearlyForSeg(s) { return s==='cell'? DATA.cellYearly : DATA.moduleYearly; }
+function companiesForSeg(s) { return s==='cell'? DATA.derived.companiesCell : DATA.derived.companiesModule; }
+function monthlyForSeg(s) { return s==='cell'? DATA.cellMonthly : DATA.moduleMonthly; }
+function aggMonthlyForSeg(s) { return s==='cell'? DATA.cellMonthlyAgg : DATA.moduleMonthlyAgg; }
+
+// ─── Tooltip ───
+const TT = document.getElementById('tt');
+function showTT(html, evt) {
+  TT.innerHTML = html; TT.style.display = 'block';
+  const x = evt.clientX + 14, y = evt.clientY + 14;
+  TT.style.left = Math.min(x, window.innerWidth - TT.offsetWidth - 10) + 'px';
+  TT.style.top = Math.min(y, window.innerHeight - TT.offsetHeight - 10) + 'px';
+}
+function hideTT() { TT.style.display = 'none'; }
+
+// ─── Chart registry ───
+const CHARTS = {};
+function destroyChart(id) { if (CHARTS[id]) { CHARTS[id].destroy(); delete CHARTS[id]; } }
+
+// Inline SVG sparkline generator (used heavily)
+function svgSpark(values, opts = {}) {
+  const W = opts.w || 80, H = opts.h || 22;
+  const color = opts.color || '#262A33';
+  const fill = opts.fill || 'none';
+  const max = Math.max(...values, 1);
+  const min = Math.min(...values, 0);
+  const range = Math.max(max - min, 1);
+  const pts = values.map((v, i) => `${(i / (values.length - 1 || 1)) * W},${H - ((v - min) / range) * H}`);
+  const path = 'M' + pts.join('L');
+  const areaPath = path + ` L${W},${H} L0,${H} Z`;
+  return `<svg class="spark-svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="display: inline-block; vertical-align: middle;">
+    ${fill !== 'none' ? `<path d="${areaPath}" fill="${fill}" opacity="0.18"/>` : ''}
+    <path d="${path}" stroke="${color}" stroke-width="${opts.sw || 1.5}" fill="none" stroke-linejoin="round"/>
+    ${opts.dot ? `<circle cx="${(values.length - 1) / (values.length - 1) * W}" cy="${H - ((values[values.length-1] - min) / range) * H}" r="2" fill="${color}"/>` : ''}
+  </svg>`;
+}
+
+// Standfirst with bold inline numbers
+function renderStandfirst() {
+  const ytC = DATA.derived.yearlyTotalsCell, ytM = DATA.derived.yearlyTotalsModule;
+  const stock = DATA.stockTotals;
+  const totalUnc = stock.cell_unclaimed_with_manufacturer_mw + stock.cell_unclaimed_with_reseller_mw + stock.module_unclaimed_with_manufacturer_mw + stock.module_unclaimed_with_reseller_mw;
+  const totalStock = stock.cell_with_manufacturer_mw + stock.cell_with_reseller_mw + stock.module_with_manufacturer_mw + stock.module_with_reseller_mw + totalUnc;
+  const proj = DATA.derived.projection2026.cell_mfg.projected_full_year;
+  document.getElementById('standfirst').innerHTML = `
+    India's DCR-eligible solar manufacturing scaled <span class="num">${fmtMW(ytC[2022])} → ${fmtMW(ytC[2025])}&nbsp;MW</span> for cells across four years, while DCR-active module manufacturers expanded <span class="num">1 → ${DATA.derived.activeModule[2025]}</span>. <strong>2026</strong> already runs <span class="num">${fmtMW(DATA.derived.projection2026.cell_mfg.ytd)}&nbsp;MW</span> through May, on track for <span class="num">~${fmtMW(proj)}&nbsp;MW</span> for the full year. Nearly half of <strong>${fmtMW(totalStock)}&nbsp;MW</strong> total live stock — <span class="num">${fmtMW(totalUnc)}&nbsp;MW</span> — sits <strong>unclaimed</strong>.
+  `;
+}
+
+// ─── Main entrypoint ───
+function rerenderAll() {
+  renderStandfirst();
+  renderKPI();
+  renderMarketTable();
+  renderMiniKPIs();
+  renderLeaderboard();
+  renderShareSeg();
+  renderShareDCR();
+  renderDual();
+  renderOscillation();
+  renderSmallMultiples();
+  renderMonthlyMfgSold();
+  renderSeasonality();
+  renderHeatmap();
+  renderTileMap();
+  renderStateTable();
+  renderMfgVsRes();
+  renderUnclaimed();
+  renderSankey();
+  renderCompare();
+  renderTierTable();
+  renderTopAnnualTable();
+  renderDualTable();
+  renderMonthlyVolTable();
+  renderMoversTables();
+  renderStateMixTable();
+  renderArrivals();
+  renderInsights();
+  const echoBits = [`${STATE.segment==='both'?'cell + module':STATE.segment}`, `${STATE.yearFrom}–${STATE.yearTo}`];
+  if (STATE.search) echoBits.push(`"${STATE.search}" · ${searchMatchCount()} match${searchMatchCount()===1?'':'es'}`);
+  document.getElementById('filterEcho').textContent = 'Showing ' + echoBits.join(' · ');
+}
+
+initFilters();
+__CHART_RENDERERS__
+
+// Expose key globals for browser devtools + verification scripts
+window.STATE = STATE;
+window.rerenderAll = rerenderAll;
+window.renderDrill = (typeof renderDrill === 'function') ? renderDrill : null;
+window.searchMatchCount = searchMatchCount;
+window.matchesSearch = matchesSearch;
+
+// Filter bar drop-shadow on scroll
+window.addEventListener('scroll', () => {
+  const fb = document.querySelector('.filter-bar');
+  if (!fb) return;
+  if (window.scrollY > 80) fb.classList.add('scrolled');
+  else fb.classList.remove('scrolled');
+}, { passive: true });
+
+rerenderAll();
+</script>
+</body>
+</html>
