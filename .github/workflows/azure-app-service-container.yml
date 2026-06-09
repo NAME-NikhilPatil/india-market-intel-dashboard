@@ -12,10 +12,6 @@ permissions:
 
 env:
   IMAGE_NAME: india-market-intel
-  WEBSITES_PORT: "8000"
-  SCRAPER_WORKSPACE_DIR: /home/site/dashboard-workspace
-  SCRAPER_RUNTIME_DIR: /home/site/scraper-runtime
-  CHROME_BIN: /usr/bin/chromium
 
 jobs:
   build-and-deploy:
@@ -58,35 +54,6 @@ jobs:
 
           docker push "$IMAGE_URI"
           docker push "$LATEST_IMAGE_URI"
-
-      - name: Configure App Service settings
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          az webapp config appsettings set \
-            --name "${{ secrets.AZURE_APP_NAME }}" \
-            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
-            --settings \
-              WEBSITES_ENABLE_APP_SERVICE_STORAGE=true \
-              WEBSITES_PORT="$WEBSITES_PORT" \
-              SCRAPER_ADMIN_TOKEN="${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
-              SCRAPER_WORKSPACE_DIR="$SCRAPER_WORKSPACE_DIR" \
-              SCRAPER_RUNTIME_DIR="$SCRAPER_RUNTIME_DIR" \
-              CHROME_BIN="$CHROME_BIN" \
-              WEB_CONCURRENCY=1 \
-              GUNICORN_THREADS=4 \
-              GUNICORN_TIMEOUT=900 \
-              VAHAN_DELAY=0.4 \
-              VAHAN_ATTEMPTS=4 \
-              VAHAN_WAIT_SECONDS=120 \
-              VAHAN_PAGE_TIMEOUT=120 \
-              VAHAN_RETRY_SLEEP=8
-
-          az webapp config set \
-            --name "${{ secrets.AZURE_APP_NAME }}" \
-            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
-            --always-on true
 
       - name: Restart App Service
         shell: bash
