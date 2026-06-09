@@ -1,4 +1,4 @@
-name: Build And Deploy Azure App Service Container
+name: Build And Push Azure App Service Container
 
 on:
   push:
@@ -14,7 +14,7 @@ env:
   IMAGE_NAME: india-market-intel
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -55,16 +55,10 @@ jobs:
           docker push "$IMAGE_URI"
           docker push "$LATEST_IMAGE_URI"
 
-      - name: Restart App Service
+      - name: Show deployment info
         shell: bash
         run: |
-          set -euo pipefail
-
-          az webapp restart \
-            --name "${{ secrets.AZURE_APP_NAME }}" \
-            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}"
-
-      - name: Show site URL
-        shell: bash
-        run: |
-          echo "Deployed: https://${{ secrets.AZURE_APP_NAME }}.azurewebsites.net/"
+          echo "Image pushed successfully:"
+          echo "$LATEST_IMAGE_URI"
+          echo "Now restart the App Service manually from Azure Portal:"
+          echo "https://${{ secrets.AZURE_APP_NAME }}.azurewebsites.net/"
