@@ -373,6 +373,7 @@ def dashboard_metadata() -> dict[str, Any]:
         "workspace_root": str(WORKSPACE_ROOT),
         "runtime_dir": str(RUNTIME_DIR),
         "auth_enabled": bool(ADMIN_TOKEN),
+        "scheduler": scheduler_metadata(),
         "dashboards": {
             "vahan": {
                 "path": str(vahan_file),
@@ -391,6 +392,16 @@ def dashboard_metadata() -> dict[str, Any]:
                 else None,
             },
         },
+    }
+
+
+def scheduler_metadata() -> dict[str, Any]:
+    return {
+        "enabled": bool_env("ENABLE_SCRAPER_SCHEDULER", False),
+        "solar_daily_utc": os.environ.get("SOLAR_DAILY_UTC", "").strip() or None,
+        "vahan_daily_utc": os.environ.get("VAHAN_DAILY_UTC", "").strip() or None,
+        "timezone": "UTC",
+        "notes": "Set ENABLE_SCRAPER_SCHEDULER=true plus SOLAR_DAILY_UTC/VAHAN_DAILY_UTC as HH:MM UTC. App Service Always On must be enabled.",
     }
 
 

@@ -37,7 +37,7 @@
     .app-shell {
       min-height: 100vh;
       display: grid;
-      grid-template-rows: auto auto 1fr;
+      grid-template-rows: auto 1fr;
     }
 
     .topbar {
@@ -135,76 +135,6 @@
       outline-offset: 1px;
     }
 
-    .ops-panel {
-      display: grid;
-      grid-template-columns: minmax(220px, 1fr) auto;
-      gap: 12px;
-      align-items: center;
-      padding: 10px 18px;
-      border-bottom: 1px solid var(--line);
-      background: #fff8ef;
-    }
-
-    .ops-status {
-      min-width: 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.35;
-    }
-
-    .ops-actions {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 6px;
-    }
-
-    .ops-btn {
-      appearance: none;
-      min-height: 34px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 0 11px;
-      background: var(--panel);
-      color: var(--ink);
-      cursor: pointer;
-      font: inherit;
-      font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .ops-btn:hover,
-    .ops-btn:focus-visible {
-      border-color: var(--accent);
-      outline: 2px solid rgba(179, 49, 42, 0.2);
-      outline-offset: 1px;
-    }
-
-    .ops-btn:disabled {
-      cursor: not-allowed;
-      opacity: 0.55;
-    }
-
-    .job-log {
-      grid-column: 1 / -1;
-      display: none;
-      max-height: 180px;
-      margin: 0;
-      overflow: auto;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 10px;
-      background: #1f1d1a;
-      color: #f7efe4;
-      font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      white-space: pre-wrap;
-    }
-
-    .job-log.is-visible {
-      display: block;
-    }
-
     .frame-wrap {
       min-height: 0;
       padding: 12px;
@@ -213,7 +143,7 @@
     .dashboard-frame {
       display: block;
       width: 100%;
-      height: calc(100vh - 145px);
+      height: calc(100vh - 87px);
       min-height: 640px;
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -240,25 +170,12 @@
         width: 100%;
       }
 
-      .ops-panel {
-        grid-template-columns: 1fr;
-        padding: 10px;
-      }
-
-      .ops-actions {
-        justify-content: stretch;
-      }
-
-      .ops-btn {
-        flex: 1 1 140px;
-      }
-
       .frame-wrap {
         padding: 8px;
       }
 
       .dashboard-frame {
-        height: calc(100vh - 292px);
+        height: calc(100vh - 174px);
         min-height: 560px;
       }
     }
@@ -279,17 +196,6 @@
 
       <a class="open-link" id="openDirect" href="vahan_dashboard_project/vahan_dashboard_v19.html" target="_blank" rel="noopener">Open full page</a>
     </header>
-
-    <section class="ops-panel" aria-label="Scraper operations">
-      <div class="ops-status" id="opsStatus">Checking scraper API...</div>
-      <div class="ops-actions">
-        <button class="ops-btn" type="button" data-job="scrape-vahan">Refresh VAHAN</button>
-        <button class="ops-btn" type="button" data-job="rebuild-vahan">Rebuild VAHAN</button>
-        <button class="ops-btn" type="button" data-job="scrape-solar">Refresh Solar</button>
-        <button class="ops-btn" type="button" data-job="rebuild-solar">Rebuild Solar</button>
-      </div>
-      <pre class="job-log" id="jobLog"></pre>
-    </section>
 
     <section class="frame-wrap" aria-label="Selected dashboard">
       <iframe
@@ -321,12 +227,6 @@
     const openDirect = document.getElementById("openDirect");
     const description = document.getElementById("dashboardDescription");
     const tabs = Array.from(document.querySelectorAll("[data-dashboard]"));
-    const opsStatus = document.getElementById("opsStatus");
-    const jobLog = document.getElementById("jobLog");
-    const jobButtons = Array.from(document.querySelectorAll("[data-job]"));
-    let authEnabled = false;
-    let activeJobId = null;
-    let pollTimer = null;
 
     function normalizeDashboard(value) {
       return Object.prototype.hasOwnProperty.call(dashboards, value) ? value : "vahan";
@@ -362,135 +262,6 @@
     });
 
     setDashboard(window.location.hash.slice(1), false);
-
-    function setOpsEnabled(enabled) {
-      for (const button of jobButtons) {
-        button.disabled = !enabled;
-      }
-    }
-
-    function adminToken() {
-      return window.localStorage.getItem("scraperAdminToken") || "";
-    }
-
-    function promptForToken() {
-      const token = window.prompt("Enter SCRAPER_ADMIN_TOKEN");
-      if (token) {
-        window.localStorage.setItem("scraperAdminToken", token);
-      }
-      return token || "";
-    }
-
-    async function apiRequest(path, options = {}, retry = true) {
-      const headers = new Headers(options.headers || {});
-      headers.set("Accept", "application/json");
-      if (options.body && !headers.has("Content-Type")) {
-        headers.set("Content-Type", "application/json");
-      }
-      const token = adminToken();
-      if (token) {
-        headers.set("X-Admin-Token", token);
-      }
-      const response = await fetch(path, { ...options, headers });
-      if ((response.status === 401 || response.status === 403) && retry) {
-        promptForToken();
-        return apiRequest(path, options, false);
-      }
-      if (!response.ok) {
-        throw new Error(`${response.status} ${response.statusText}`);
-      }
-      const type = response.headers.get("Content-Type") || "";
-      return type.includes("application/json") ? response.json() : response.text();
-    }
-
-    async function checkHealth() {
-      try {
-        const health = await apiRequest("/api/health");
-        authEnabled = Boolean(health.auth_enabled);
-        const vahanTime = health.dashboards?.vahan?.updated_at || "unknown";
-        const solarTime = health.dashboards?.solar?.updated_at || "unknown";
-        if (authEnabled) {
-          opsStatus.textContent = `Scraper API online. Auth enabled. VAHAN updated ${vahanTime}. Solar updated ${solarTime}.`;
-          setOpsEnabled(true);
-        } else {
-          opsStatus.textContent = `Scraper API online, but SCRAPER_ADMIN_TOKEN is not configured. Add it in Azure App Settings to enable scraper controls. VAHAN updated ${vahanTime}. Solar updated ${solarTime}.`;
-          setOpsEnabled(false);
-        }
-      } catch (error) {
-        opsStatus.textContent = "Static viewer mode. Deploy with Azure App Service backend to enable scraper controls.";
-        setOpsEnabled(false);
-      }
-    }
-
-    async function refreshJobLog(jobId) {
-      try {
-        const text = await apiRequest(`/api/jobs/${jobId}/log`);
-        jobLog.textContent = text || "Waiting for log output...";
-        jobLog.classList.add("is-visible");
-        jobLog.scrollTop = jobLog.scrollHeight;
-      } catch (error) {
-        jobLog.textContent = `Could not read job log: ${error.message}`;
-        jobLog.classList.add("is-visible");
-      }
-    }
-
-    async function pollJob(jobId) {
-      activeJobId = jobId;
-      window.clearTimeout(pollTimer);
-      try {
-        const job = await apiRequest(`/api/jobs/${jobId}`);
-        const current = job.current_step ? ` · ${job.current_step}` : "";
-        opsStatus.textContent = `Job ${job.kind} is ${job.status}${current}`;
-        await refreshJobLog(jobId);
-        if (job.status === "queued" || job.status === "running") {
-          pollTimer = window.setTimeout(() => pollJob(jobId), 3000);
-        } else {
-          activeJobId = null;
-          setOpsEnabled(true);
-          if (job.status === "succeeded") {
-            frame.src = frame.src;
-          }
-        }
-      } catch (error) {
-        opsStatus.textContent = `Job polling failed: ${error.message}`;
-        setOpsEnabled(true);
-      }
-    }
-
-    async function startJob(kind) {
-      const endpoints = {
-        "scrape-vahan": "/api/scrape/vahan/recent",
-        "rebuild-vahan": "/api/rebuild/vahan",
-        "scrape-solar": "/api/scrape/solar",
-        "rebuild-solar": "/api/rebuild/solar"
-      };
-      const endpoint = endpoints[kind];
-      if (!endpoint) return;
-      setOpsEnabled(false);
-      jobLog.textContent = "";
-      jobLog.classList.remove("is-visible");
-      try {
-        const job = await apiRequest(endpoint, {
-          method: "POST",
-          body: JSON.stringify({})
-        });
-        opsStatus.textContent = `Queued ${job.kind} (${job.id})`;
-        pollJob(job.id);
-      } catch (error) {
-        opsStatus.textContent = `Could not start job: ${error.message}`;
-        setOpsEnabled(true);
-      }
-    }
-
-    for (const button of jobButtons) {
-      button.addEventListener("click", () => {
-        if (activeJobId) return;
-        startJob(button.dataset.job);
-      });
-    }
-
-    setOpsEnabled(false);
-    checkHealth();
   </script>
 </body>
 </html>

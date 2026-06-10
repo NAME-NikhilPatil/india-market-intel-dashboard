@@ -110,17 +110,19 @@ VAHAN_ATTEMPTS=4
 VAHAN_WAIT_SECONDS=120
 VAHAN_PAGE_TIMEOUT=120
 VAHAN_RETRY_SLEEP=8
-```
-
-Optional in-app daily scheduler:
-
-```text
 ENABLE_SCRAPER_SCHEDULER=true
 SOLAR_DAILY_UTC=21:30
 VAHAN_DAILY_UTC=22:30
 ```
 
-Those UTC examples roughly map to early morning India time. Keep the App Service scaled to one instance if you use the in-app scheduler, otherwise multiple instances can trigger duplicate jobs.
+Daily scheduler timing:
+
+```text
+SOLAR_DAILY_UTC=21:30 -> 03:00 IST
+VAHAN_DAILY_UTC=22:30 -> 04:00 IST
+```
+
+Keep the App Service scaled to one instance if you use the in-app scheduler, otherwise multiple instances can trigger duplicate jobs.
 
 ## Deploy With Azure CLI
 

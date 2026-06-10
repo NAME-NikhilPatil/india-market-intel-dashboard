@@ -122,7 +122,19 @@ VAHAN_ATTEMPTS = 4
 VAHAN_WAIT_SECONDS = 120
 VAHAN_PAGE_TIMEOUT = 120
 VAHAN_RETRY_SLEEP = 8
+ENABLE_SCRAPER_SCHEDULER = true
+SOLAR_DAILY_UTC = 21:30
+VAHAN_DAILY_UTC = 22:30
 ```
+
+These scheduler times are UTC:
+
+```text
+SOLAR_DAILY_UTC=21:30 -> 03:00 IST
+VAHAN_DAILY_UTC=22:30 -> 04:00 IST
+```
+
+If `ENABLE_SCRAPER_SCHEDULER=true` is missing, the app will only refresh when you manually click a refresh button.
 
 Click `Apply` or `Save`.
 
