@@ -1,0 +1,43 @@
+name: Daily Scraper Run
+
+on:
+  schedule:
+    # Runs every day at 11:00 AM IST
+    # 11:00 AM IST = 05:30 UTC
+    - cron: "30 5 * * *"
+
+  workflow_dispatch:
+
+concurrency:
+  group: daily-scraper
+  cancel-in-progress: false
+
+jobs:
+  run-daily-scraper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Trigger Solar DCR scrape
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl -fSs -X POST "${{ secrets.APP_BASE_URL }}/api/scrape/solar" \
+            -H "Authorization: Bearer ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
+            -H "X-Admin-Token: ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
+            -H "X-Scraper-Admin-Token: ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data "{\"token\":\"${{ secrets.SCRAPER_ADMIN_TOKEN }}\"}"
+
+      - name: Trigger VAHAN recent scrape
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl -fSs -X POST "${{ secrets.APP_BASE_URL }}/api/scrape/vahan/recent" \
+            -H "Authorization: Bearer ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
+            -H "X-Admin-Token: ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
+            -H "X-Scraper-Admin-Token: ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data "{\"token\":\"${{ secrets.SCRAPER_ADMIN_TOKEN }}\"}"
