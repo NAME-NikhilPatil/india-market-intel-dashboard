@@ -12,6 +12,10 @@ Do not treat the source ZIP as a built Docker image. A ZIP deployment to the
 built-in Python/Oryx stack can serve the prebuilt dashboards and run NISE, but
 it cannot run the VAHAN browser scraper because the Dockerfile is not executed.
 
+`RESET_RUNTIME_WORKSPACE=true` performs a lightweight promotion of the
+packaged dashboard snapshots and code. It intentionally retains accumulated
+raw data under `/home` so Azure startup does not time out copying full history.
+
 If you prefer clicking through Azure Portal instead of using Azure CLI, use:
 
 - `AZURE_PORTAL_DEPLOYMENT.md`

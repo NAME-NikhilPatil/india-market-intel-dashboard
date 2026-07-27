@@ -91,9 +91,17 @@ def ensure_runtime_workspace() -> None:
         WORKSPACE_ROOT / "solar_dcr_scrape" / "solar_dcr_dashboard.html",
         WORKSPACE_ROOT / "vahan_dashboard_project" / "vahan_dashboard_v19.html",
     ]
-    if marker.exists() and not reset and all(path.exists() for path in required_seed_files):
-        sync_runtime_code()
-        return
+    if marker.exists():
+        if reset:
+            # A full VAHAN workspace copy can exceed Azure's container startup
+            # health window. Refresh only the deploy-time public snapshot and
+            # executable code; retain accumulated raw/runtime data in /home.
+            sync_deployed_snapshot()
+            marker.write_text(utc_now() + "\n", encoding="utf-8")
+            return
+        if all(path.exists() for path in required_seed_files):
+            sync_runtime_code()
+            return
 
     for item in COPY_ITEMS:
         src = SOURCE_ROOT / item
@@ -130,6 +138,19 @@ def copy_file(src: Path, dst: Path) -> None:
         return
     dst.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(src, dst)
+
+
+def sync_deployed_snapshot() -> None:
+    """Quickly promote the packaged dashboards without copying raw history."""
+    sync_runtime_code()
+    for relative in [
+        "solar_dcr_scrape/dashboard_data.json",
+        "solar_dcr_scrape/solar_dcr_dashboard.html",
+        "vahan_dashboard_project/outputs/dashboard_payload.json",
+        "vahan_dashboard_project/outputs/dashboard_state_payload.json",
+        "vahan_dashboard_project/vahan_dashboard_v19.html",
+    ]:
+        copy_file(SOURCE_ROOT / relative, WORKSPACE_ROOT / relative)
 
 
 def sync_runtime_code() -> None:
