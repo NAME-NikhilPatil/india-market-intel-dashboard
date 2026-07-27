@@ -10,6 +10,11 @@ permissions:
   id-token: write
   contents: read
 
+# Never let an older, slower image build overwrite a newer production image.
+concurrency:
+  group: azure-production-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   IMAGE_NAME: india-market-intel
   AZURE_APP_NAME: india-market-dashboard-prod
