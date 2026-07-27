@@ -74,13 +74,32 @@ jobs:
           ACR_USER="$(az acr credential show --name "${{ secrets.AZURE_ACR_NAME }}" --query username -o tsv)"
           ACR_PASS="$(az acr credential show --name "${{ secrets.AZURE_ACR_NAME }}" --query 'passwords[0].value' -o tsv)"
 
-          az webapp config container set \
+          SITE_CONTAINER_NAME="$(az webapp sitecontainers list \
             --name "$AZURE_APP_NAME" \
             --resource-group "$AZURE_RESOURCE_GROUP" \
-            --docker-custom-image-name "$IMAGE_URI" \
-            --docker-registry-server-url "https://$ACR_LOGIN_SERVER" \
-            --docker-registry-server-user "$ACR_USER" \
-            --docker-registry-server-password "$ACR_PASS"
+            --query '[?properties.isMain==`true`].name | [0]' -o tsv 2>/dev/null || true)"
+
+          if [ -n "$SITE_CONTAINER_NAME" ]; then
+            echo "Updating Azure Site Container: $SITE_CONTAINER_NAME"
+            az webapp sitecontainers update \
+              --name "$AZURE_APP_NAME" \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --container-name "$SITE_CONTAINER_NAME" \
+              --image "$IMAGE_URI" \
+              --target-port 8000 \
+              --is-main true \
+              --registry-username "$ACR_USER" \
+              --registry-password "$ACR_PASS"
+          else
+            echo "No Site Container found; using classic custom-container configuration."
+            az webapp config container set \
+              --name "$AZURE_APP_NAME" \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --docker-custom-image-name "$IMAGE_URI" \
+              --docker-registry-server-url "https://$ACR_LOGIN_SERVER" \
+              --docker-registry-server-user "$ACR_USER" \
+              --docker-registry-server-password "$ACR_PASS"
+          fi
 
           az webapp config appsettings set \
             --name "$AZURE_APP_NAME" \
@@ -120,11 +139,11 @@ jobs:
             --query defaultHostName -o tsv)"
           URL="https://$DEFAULT_HOSTNAME/api/health"
           echo "Checking $URL"
-          for attempt in $(seq 1 36); do
-            if curl -fSs --max-time 20 "$URL"; then
+          for attempt in $(seq 1 6); do
+            if curl -fSs --max-time 5 "$URL"; then
               exit 0
             fi
-            echo "Waiting for App Service ($attempt/36)..."
+            echo "Waiting for App Service ($attempt/6)..."
             sleep 10
           done
           echo "App Service did not become healthy" >&2
@@ -133,7 +152,18 @@ jobs:
             --resource-group "$AZURE_RESOURCE_GROUP" \
             --query '{state:state,defaultHostName:defaultHostName,kind:kind,linuxFxVersion:siteConfig.linuxFxVersion}' \
             -o json || true
-          timeout 60s az webapp log tail \
+          echo "Site Container configuration:"
+          az webapp sitecontainers list \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            -o jsonc || true
+          echo "Site Container status:"
+          az webapp sitecontainers status \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            -o jsonc || true
+          echo "Recent container logs:"
+          timeout 30s az webapp log tail \
             --name "$AZURE_APP_NAME" \
             --resource-group "$AZURE_RESOURCE_GROUP" || true
           exit 1
