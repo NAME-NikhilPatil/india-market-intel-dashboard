@@ -17,7 +17,7 @@ concurrency:
 
 env:
   IMAGE_NAME: india-market-intel
-  AZURE_APP_NAME: india-market-dashboard-prod
+  AZURE_APP_NAME: india-market-dashboard-v2
   AZURE_RESOURCE_GROUP: rg-india-market-dashboard-prod
 
 jobs:
@@ -93,6 +93,12 @@ jobs:
               SOLAR_DAILY_UTC=02:30 \
               VAHAN_DAILY_UTC=03:30 \
               VAHAN_HEADFUL=true
+
+          az webapp config set \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --always-on true \
+            --generic-configurations '{"healthCheckPath":"/api/health"}'
 
           az webapp log config \
             --name "$AZURE_APP_NAME" \
