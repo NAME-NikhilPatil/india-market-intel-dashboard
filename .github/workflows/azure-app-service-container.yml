@@ -89,6 +89,11 @@ jobs:
               VAHAN_DAILY_UTC=03:30 \
               VAHAN_HEADFUL=true
 
+          az webapp log config \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --docker-container-logging filesystem
+
           az webapp restart \
             --name "$AZURE_APP_NAME" \
             --resource-group "$AZURE_RESOURCE_GROUP"
@@ -97,7 +102,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          URL="https://$AZURE_APP_NAME.azurewebsites.net/api/health"
+          DEFAULT_HOSTNAME="$(az webapp show \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --query defaultHostName -o tsv)"
+          URL="https://$DEFAULT_HOSTNAME/api/health"
+          echo "Checking $URL"
           for attempt in $(seq 1 36); do
             if curl -fSs --max-time 20 "$URL"; then
               exit 0
@@ -106,4 +116,12 @@ jobs:
             sleep 10
           done
           echo "App Service did not become healthy" >&2
+          az webapp show \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --query '{state:state,defaultHostName:defaultHostName,kind:kind,linuxFxVersion:siteConfig.linuxFxVersion}' \
+            -o json || true
+          timeout 60s az webapp log tail \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" || true
           exit 1
