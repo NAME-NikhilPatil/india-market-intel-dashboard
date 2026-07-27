@@ -12,6 +12,8 @@ permissions:
 
 env:
   IMAGE_NAME: india-market-intel
+  AZURE_APP_NAME: india-market-dashboard-prod
+  AZURE_RESOURCE_GROUP: rg-india-market-dashboard-prod
 
 jobs:
   build-and-push:
@@ -59,9 +61,49 @@ jobs:
           docker push "$IMAGE_URI"
           docker push "$LATEST_IMAGE_URI"
 
-      - name: Show deployment info
+      - name: Configure App Service container
         shell: bash
         run: |
-          echo "Image pushed successfully:"
-          echo "$LATEST_IMAGE_URI"
-          echo "Restart the App Service from Azure Portal to pull this image."
+          set -euo pipefail
+
+          ACR_USER="$(az acr credential show --name "${{ secrets.AZURE_ACR_NAME }}" --query username -o tsv)"
+          ACR_PASS="$(az acr credential show --name "${{ secrets.AZURE_ACR_NAME }}" --query 'passwords[0].value' -o tsv)"
+
+          az webapp config container set \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --docker-custom-image-name "$IMAGE_URI" \
+            --docker-registry-server-url "https://$ACR_LOGIN_SERVER" \
+            --docker-registry-server-user "$ACR_USER" \
+            --docker-registry-server-password "$ACR_PASS"
+
+          az webapp config appsettings set \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --settings \
+              RESET_RUNTIME_WORKSPACE=false \
+              WEBSITES_ENABLE_APP_SERVICE_STORAGE=true \
+              WEBSITES_PORT=8000 \
+              ENABLE_SCRAPER_SCHEDULER=true \
+              SOLAR_DAILY_UTC=02:30 \
+              VAHAN_DAILY_UTC=03:30 \
+              VAHAN_HEADFUL=true
+
+          az webapp restart \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP"
+
+      - name: Verify deployment health
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://$AZURE_APP_NAME.azurewebsites.net/api/health"
+          for attempt in $(seq 1 36); do
+            if curl -fSs --max-time 20 "$URL"; then
+              exit 0
+            fi
+            echo "Waiting for App Service ($attempt/36)..."
+            sleep 10
+          done
+          echo "App Service did not become healthy" >&2
+          exit 1
