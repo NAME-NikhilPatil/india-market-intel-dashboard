@@ -1,5 +1,6 @@
 .runtime/
 dist/
+azure-upload/
 __MACOSX/
 __pycache__/
 *.pyc

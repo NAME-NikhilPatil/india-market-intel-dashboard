@@ -120,7 +120,7 @@ def fallback_canonical(raw: str) -> str:
 def load_canonical():
     """Load consolidated CSV split by dataset."""
     by_dataset = defaultdict(list)
-    with CONSOLIDATED.open() as f:
+    with CONSOLIDATED.open(encoding="utf-8") as f:
         for r in csv.DictReader(f):
             by_dataset[r["dataset"]].append(r)
     print(f"  consolidated row count: {sum(len(v) for v in by_dataset.values()):,}")
@@ -140,7 +140,7 @@ def reg(r, key="registrations"):
 
 
 def load_maker_map():
-    with MAKER_MAP_PATH.open() as f:
+    with MAKER_MAP_PATH.open(encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -2338,10 +2338,14 @@ def main():
     print("Writing JSON outputs...")
     inline_path = OUT_DIR / "dashboard_payload.json"
     state_path = OUT_DIR / "dashboard_state_payload.json"
-    with inline_path.open("w") as f:
+    inline_tmp = inline_path.with_suffix(inline_path.suffix + ".tmp")
+    state_tmp = state_path.with_suffix(state_path.suffix + ".tmp")
+    with inline_tmp.open("w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, separators=(",", ":"))
-    with state_path.open("w") as f:
+    with state_tmp.open("w", encoding="utf-8") as f:
         json.dump(sp, f, ensure_ascii=False, separators=(",", ":"))
+    inline_tmp.replace(inline_path)
+    state_tmp.replace(state_path)
     print(f"  wrote {inline_path} ({inline_path.stat().st_size:,} bytes)")
     print(f"  wrote {state_path} ({state_path.stat().st_size:,} bytes)")
 

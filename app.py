@@ -15,7 +15,12 @@ from typing import Any
 from flask import Flask, Response, abort, jsonify, request, send_file, send_from_directory
 
 
-SOURCE_ROOT = Path(os.environ.get("SCRAPER_SEED_DIR", Path(__file__).resolve().parent)).resolve()
+APP_ROOT = Path(__file__).resolve().parent
+SOURCE_ROOT = Path(os.environ.get("SCRAPER_SEED_DIR", APP_ROOT)).resolve()
+if not (SOURCE_ROOT / "index.html").exists():
+    # Azure's Oryx runtime extracts ZIP deployments under /tmp. Fall back to
+    # the actual module directory when a container-only /app setting is stale.
+    SOURCE_ROOT = APP_ROOT
 WORKSPACE_ROOT = Path(os.environ.get("SCRAPER_WORKSPACE_DIR", SOURCE_ROOT)).resolve()
 RUNTIME_DIR = Path(os.environ.get("SCRAPER_RUNTIME_DIR", WORKSPACE_ROOT / ".runtime")).resolve()
 JOBS_DIR = RUNTIME_DIR / "jobs"
@@ -48,8 +53,15 @@ PYTHON_BIN = os.environ.get("SCRAPER_PYTHON", sys.executable)
 MAX_LOG_BYTES = int(os.environ.get("SCRAPER_MAX_LOG_BYTES", "200000"))
 
 app = Flask(__name__)
+app.logger.setLevel(os.environ.get("LOG_LEVEL", "INFO").upper())
 _jobs_lock = threading.Lock()
 _runner_lock = threading.Lock()
+_scheduler_state_lock = threading.Lock()
+_scheduler_state: dict[str, Any] = {
+    "started_at": None,
+    "last_check_at": None,
+    "last_queued": {},
+}
 
 
 def utc_now() -> str:
@@ -74,7 +86,12 @@ def ensure_runtime_workspace() -> None:
 
     marker = WORKSPACE_ROOT / ".workspace_seeded"
     reset = bool_env("RESET_RUNTIME_WORKSPACE", False)
-    if marker.exists() and not reset:
+    required_seed_files = [
+        WORKSPACE_ROOT / "index.html",
+        WORKSPACE_ROOT / "solar_dcr_scrape" / "solar_dcr_dashboard.html",
+        WORKSPACE_ROOT / "vahan_dashboard_project" / "vahan_dashboard_v19.html",
+    ]
+    if marker.exists() and not reset and all(path.exists() for path in required_seed_files):
         sync_runtime_code()
         return
 
@@ -158,6 +175,25 @@ def save_jobs(payload: dict[str, Any]) -> None:
     tmp.replace(JOBS_PATH)
 
 
+def recover_interrupted_jobs() -> None:
+    """A new single-worker process cannot still own old queued/running jobs."""
+    with _jobs_lock:
+        payload = load_jobs()
+        changed = False
+        for job in payload.get("jobs", []):
+            if job.get("status") not in {"queued", "running"}:
+                continue
+            job.update(
+                status="failed",
+                ended_at=utc_now(),
+                error="Application restarted before the scraper job completed.",
+            )
+            changed = True
+        if changed:
+            save_jobs(payload)
+            app.logger.warning("recovered_interrupted_scraper_jobs")
+
+
 def upsert_job(job: dict[str, Any]) -> None:
     with _jobs_lock:
         payload = load_jobs()
@@ -230,11 +266,13 @@ def run_job(job: dict[str, Any], steps: list[dict[str, Any]]) -> None:
             error="Another scraper job is already running.",
         )
         upsert_job(job)
+        app.logger.error("job_rejected id=%s kind=%s reason=another_job_running", job["id"], job["kind"])
         return
 
     try:
         job.update(status="running", started_at=utc_now())
         upsert_job(job)
+        app.logger.info("job_started id=%s kind=%s", job["id"], job["kind"])
 
         log_path = Path(job["log_path"])
         log_path.parent.mkdir(parents=True, exist_ok=True)
@@ -256,6 +294,13 @@ def run_job(job: dict[str, Any], steps: list[dict[str, Any]]) -> None:
                         error=f"Step failed: {step['name']}",
                     )
                     upsert_job(job)
+                    app.logger.error(
+                        "job_failed id=%s kind=%s returncode=%s step=%s",
+                        job["id"],
+                        job["kind"],
+                        code,
+                        step["name"],
+                    )
                     return
 
         job.update(
@@ -265,9 +310,11 @@ def run_job(job: dict[str, Any], steps: list[dict[str, Any]]) -> None:
             current_step=None,
         )
         upsert_job(job)
+        app.logger.info("job_succeeded id=%s kind=%s", job["id"], job["kind"])
     except Exception as exc:  # pragma: no cover - defensive job boundary
         job.update(status="failed", ended_at=utc_now(), error=str(exc))
         upsert_job(job)
+        app.logger.exception("job_failed id=%s kind=%s", job["id"], job["kind"])
     finally:
         _runner_lock.release()
 
@@ -338,6 +385,8 @@ def vahan_recent_steps(body: dict[str, Any], scrape: bool) -> list[dict[str, Any
             command += ["--datasets", *[str(d) for d in datasets]]
         if not bool(body.get("parallel")) and not bool_env("VAHAN_PARALLEL", False):
             command.append("--sequential")
+        if bool(body.get("headful")) or bool_env("VAHAN_HEADFUL", False):
+            command.append("--headful")
         for env_name, arg_name in [
             ("VAHAN_DELAY", "--delay"),
             ("VAHAN_ATTEMPTS", "--attempts"),
@@ -373,6 +422,7 @@ def dashboard_metadata() -> dict[str, Any]:
         "workspace_root": str(WORKSPACE_ROOT),
         "runtime_dir": str(RUNTIME_DIR),
         "auth_enabled": bool(ADMIN_TOKEN),
+        "app_service_storage_enabled": bool_env("WEBSITES_ENABLE_APP_SERVICE_STORAGE", False),
         "scheduler": scheduler_metadata(),
         "dashboards": {
             "vahan": {
@@ -396,12 +446,33 @@ def dashboard_metadata() -> dict[str, Any]:
 
 
 def scheduler_metadata() -> dict[str, Any]:
+    with _scheduler_state_lock:
+        runtime_state = {
+            "started_at": _scheduler_state["started_at"],
+            "last_check_at": _scheduler_state["last_check_at"],
+            "last_queued": dict(_scheduler_state["last_queued"]),
+        }
+    with _jobs_lock:
+        scheduled_jobs = [
+            job for job in load_jobs().get("jobs", []) if job.get("requested_by") == "scheduler"
+        ]
+    latest_jobs: dict[str, dict[str, Any]] = {}
+    for job in scheduled_jobs:
+        kind = str(job.get("kind") or "")
+        if not kind or kind in latest_jobs:
+            continue
+        latest_jobs[kind] = {
+            key: job.get(key)
+            for key in ("id", "status", "queued_at", "started_at", "ended_at", "error")
+        }
     return {
         "enabled": bool_env("ENABLE_SCRAPER_SCHEDULER", False),
         "solar_daily_utc": os.environ.get("SOLAR_DAILY_UTC", "").strip() or None,
         "vahan_daily_utc": os.environ.get("VAHAN_DAILY_UTC", "").strip() or None,
         "timezone": "UTC",
         "notes": "Set ENABLE_SCRAPER_SCHEDULER=true plus SOLAR_DAILY_UTC/VAHAN_DAILY_UTC as HH:MM UTC. App Service Always On must be enabled.",
+        "latest_jobs": latest_jobs,
+        **runtime_state,
     }
 
 
@@ -443,6 +514,17 @@ def custom_script_steps(body: dict[str, Any]) -> list[dict[str, Any]]:
 @app.get("/")
 def index() -> Response:
     return send_file(WORKSPACE_ROOT / "index.html")
+
+
+@app.after_request
+def prevent_stale_dashboard_cache(response: Response) -> Response:
+    """Dashboards are generated in place, so browsers must revalidate them."""
+    if request.path == "/" or request.path == "/api/health" or request.path.lstrip("/") in PUBLIC_FILES:
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        response.headers.pop("ETag", None)
+    return response
 
 
 @app.get("/api/health")
@@ -535,29 +617,116 @@ def public_files(filename: str) -> Response:
 
 def maybe_start_scheduler() -> None:
     if not bool_env("ENABLE_SCRAPER_SCHEDULER", False):
+        app.logger.warning("scraper_scheduler_disabled set ENABLE_SCRAPER_SCHEDULER=true to enable it")
+        return
+
+    schedules = [
+        ("scheduled_solar", "SOLAR_DAILY_UTC", lambda: solar_steps({}, scrape=True)),
+        ("scheduled_vahan_recent", "VAHAN_DAILY_UTC", lambda: vahan_recent_steps({}, scrape=True)),
+    ]
+    configured: list[tuple[str, str, Any]] = []
+    for name, env_name, factory in schedules:
+        target = os.environ.get(env_name, "").strip()
+        try:
+            datetime.strptime(target, "%H:%M")
+        except ValueError:
+            app.logger.error("scraper_scheduler_invalid_time setting=%s value=%r expected=HH:MM", env_name, target)
+            continue
+        configured.append((name, target, factory))
+
+    if not configured:
+        app.logger.error("scraper_scheduler_not_started no valid schedules are configured")
         return
 
     def loop() -> None:
-        last_run: set[str] = set()
+        max_attempts = max(1, int(os.environ.get("SCRAPER_SCHEDULER_MAX_ATTEMPTS", "2")))
+        retry_seconds = max(60, int(os.environ.get("SCRAPER_SCHEDULER_RETRY_SECONDS", "1800")))
+        with _scheduler_state_lock:
+            _scheduler_state["started_at"] = utc_now()
+        app.logger.info(
+            "scraper_scheduler_started schedules=%s",
+            ",".join(f"{name}@{target}UTC" for name, target, _ in configured),
+        )
         while True:
             now = datetime.now(timezone.utc)
-            minute_key = now.strftime("%Y-%m-%dT%H:%M")
-            for name, env_name, factory in [
-                ("scheduled_solar", "SOLAR_DAILY_UTC", lambda: solar_steps({}, scrape=True)),
-                ("scheduled_vahan_recent", "VAHAN_DAILY_UTC", lambda: vahan_recent_steps({}, scrape=True)),
-            ]:
-                target = os.environ.get(env_name, "").strip()
-                if not target:
+            today = now.strftime("%Y-%m-%d")
+            with _scheduler_state_lock:
+                _scheduler_state["last_check_at"] = utc_now()
+            for name, target, factory in configured:
+                target_time = datetime.strptime(target, "%H:%M").time()
+                due_at = datetime.combine(now.date(), target_time, tzinfo=timezone.utc)
+                if now < due_at:
                     continue
-                if now.strftime("%H:%M") == target and f"{name}:{minute_key}" not in last_run:
-                    last_run.add(f"{name}:{minute_key}")
-                    start_job(name, factory(), "scheduler")
+
+                with _jobs_lock:
+                    jobs = load_jobs().get("jobs", [])
+                    today_jobs = [
+                        job
+                        for job in jobs
+                        if job.get("kind") == name
+                        and job.get("requested_by") == "scheduler"
+                        and str(job.get("queued_at") or "").startswith(today)
+                    ]
+                    already_satisfied = any(
+                        job.get("status") in {"queued", "running", "succeeded"}
+                        for job in today_jobs
+                    )
+                    another_job_active = any(
+                        job.get("status") in {"queued", "running"}
+                        and str(job.get("queued_at") or "").startswith(today)
+                        for job in jobs
+                    )
+                if already_satisfied:
+                    continue
+
+                if len(today_jobs) >= max_attempts:
+                    app.logger.error(
+                        "scraper_scheduler_attempts_exhausted kind=%s attempts=%s",
+                        name,
+                        len(today_jobs),
+                    )
+                    continue
+
+                if today_jobs:
+                    last_ended = str(today_jobs[0].get("ended_at") or "")
+                    if last_ended:
+                        try:
+                            ended_at = datetime.fromisoformat(last_ended)
+                        except ValueError:
+                            ended_at = now
+                        if (now - ended_at).total_seconds() < retry_seconds:
+                            continue
+
+                # Queue only one due job at a time. This lets a long Solar job
+                # finish before VAHAN starts instead of rejecting the second job.
+                if another_job_active or _runner_lock.locked():
+                    continue
+
+                job = start_job(name, factory(), "scheduler")
+                with _scheduler_state_lock:
+                    _scheduler_state["last_queued"][name] = {
+                        "job_id": job["id"],
+                        "queued_at": job["queued_at"],
+                    }
+                app.logger.info(
+                    "scraper_scheduler_queued id=%s kind=%s due_at=%s",
+                    job["id"],
+                    name,
+                    due_at.isoformat(timespec="minutes"),
+                )
+                break
+
             time.sleep(30)
 
     threading.Thread(target=loop, daemon=True).start()
 
 
 ensure_runtime_workspace()
+recover_interrupted_jobs()
+if WORKSPACE_ROOT.as_posix().startswith("/home/") and not bool_env("WEBSITES_ENABLE_APP_SERVICE_STORAGE", False):
+    app.logger.warning(
+        "app_service_storage_disabled set WEBSITES_ENABLE_APP_SERVICE_STORAGE=true so scraped data survives restarts"
+    )
 maybe_start_scheduler()
 
 

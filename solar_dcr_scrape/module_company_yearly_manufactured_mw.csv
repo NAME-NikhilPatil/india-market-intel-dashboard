@@ -1,180 +1,187 @@
 year,rank,agency_id,company_name,module_manufactured_mw,series,is_almm,scraped_at
-2022,01,d9ea2e72-6278-4549-a4d0-eeb14debcb0b,Emmvee  Photovoltaic Power Limited,10.55,DCR,True,2026-05-16T00:32:03
-2023,01,4c494d96-d12f-4bd8-b9fd-6006841083a4,Waaree Energies Limited,125.53,DCR,True,2026-05-16T00:32:03
-2023,02,6465a0b9-60b7-4edf-97f1-3cb3840b9a73,Mundra Solar Energy Limited,83.49,DCR,True,2026-05-16T00:32:03
-2023,03,ae181577-a115-475f-a06c-730423feba86,Premier Energies Photovoltaic Private Limited,54.52,DCR,True,2026-05-16T00:32:03
-2023,04,e624e730-20a1-4a69-a03f-cc31ce053323,Mundra Solar PV Limited,12.43,DCR,True,2026-05-16T00:32:03
-2023,05,d9ea2e72-6278-4549-a4d0-eeb14debcb0b,Emmvee  Photovoltaic Power Limited,10.56,DCR,True,2026-05-16T00:32:03
-2023,06,24cb65eb-f553-4fe4-853e-dfee1df94d49,Renewsys India Private Limited,10.09,DCR,True,2026-05-16T00:32:03
-2023,07,d62f669b-18c0-4bf2-99f8-c5a883c9fae2,Vikram Solar Limited,6.94,DCR,True,2026-05-16T00:32:03
-2024,01,9506d465-8696-4dd1-9546-9641849c6135,FS India Solar Ventures Private Limited,1844.72,DCR,True,2026-05-16T00:32:03
-2024,02,6465a0b9-60b7-4edf-97f1-3cb3840b9a73,Mundra Solar Energy Limited,1175.02,DCR,True,2026-05-16T00:32:03
-2024,03,ae181577-a115-475f-a06c-730423feba86,Premier Energies Photovoltaic Private Limited,786.83,DCR,True,2026-05-16T00:32:03
-2024,04,e624e730-20a1-4a69-a03f-cc31ce053323,Mundra Solar PV Limited,483.83,DCR,True,2026-05-16T00:32:03
-2024,05,4c494d96-d12f-4bd8-b9fd-6006841083a4,Waaree Energies Limited,344.73,DCR,True,2026-05-16T00:32:03
-2024,06,efd3cf8b-55f6-4365-a2f4-1af1c4c18cce,TP Solar Limited,191.71,DCR,True,2026-05-16T00:32:03
-2024,07,91b24c33-c4b4-492e-91fe-abb42080a27d,Tata Power Renewable Energy Limited,161.2,DCR,True,2026-05-16T00:32:03
-2024,08,1a16edc1-b641-4f5d-8039-9d244f4b70bb,Rayzon Solar Limited,143.63,DCR,True,2026-05-16T00:32:03
-2024,09,fbdaf772-c6e6-4c5d-81ce-e57be7b79d5c,Emmvee Energy Private Limited,139.48,DCR,True,2026-05-16T00:32:03
-2024,10,a3a30153-8923-4936-a88b-0b22460e71a8,Premier Energies International Private Limited,130.64,DCR,True,2026-05-16T00:32:03
-2024,11,e410ab49-6f6a-4249-a0ad-d3dd9a0562f1,Insolation Green Energy Private Limited,101.98,DCR,True,2026-05-16T00:32:03
-2024,12,709b492d-c6d6-4a33-b7d2-b2e2383c06f4,Icon Solar-En Power Technologies Private Limited,101.2,DCR,True,2026-05-16T00:32:03
-2024,13,75ae04be-db90-4f15-aca8-257f59d835be,Renew Photovoltaics Private Limited,100.65,DCR,True,2026-05-16T00:32:03
-2024,14,d62f669b-18c0-4bf2-99f8-c5a883c9fae2,Vikram Solar Limited,65.6,DCR,True,2026-05-16T00:32:03
-2024,15,3aa7989e-8902-4771-ace5-9aa740780114,Redren Energy Private Limited,62.32,DCR,True,2026-05-16T00:32:03
-2024,16,f0dd3cfd-17c0-4a84-86f2-716cde2b9fd2,Novasys Greenergy Limited,57.52,DCR,True,2026-05-16T00:32:03
-2024,17,8a29c14f-41fe-40db-b1d3-1769fb4dc2d9,Fujiyama Power Systems Limited,54.3,DCR,True,2026-05-16T00:32:03
-2024,18,06204b65-1870-4672-bdf8-b45f040ec28f,Goldi Solar Private Limited,43.87,DCR,True,2026-05-16T00:32:03
-2024,19,a76a7851-0231-4f61-b3ab-6fe1f9c3d224,Australian Premium Solar (India) Limited,34.18,DCR,True,2026-05-16T00:32:03
-2024,20,faccb06f-9e17-4f7e-91ab-e98571aee188,Luminous Power Technologies Private Limited,32.97,DCR,True,2026-05-16T00:32:03
-2024,21,628e71f8-6e61-4f67-81c2-00e95f5c6029,Oswal Solar Energy Private Limited,28.74,DCR,True,2026-05-16T00:32:03
-2024,22,bbdd33fb-857c-47a1-ac2a-8013d1fd5500,Alpex Solar Limited,25.23,DCR,True,2026-05-16T00:32:03
-2024,23,8c9b6c4c-b972-4f28-95dd-b151fc9dcc33,Gautam Solar Private Limited,23.22,DCR,True,2026-05-16T00:32:03
-2024,24,c441b935-98f1-4331-a333-d9ebd019379d,Saatvik Green Energy Private Limited,20.24,DCR,True,2026-05-16T00:32:03
-2024,25,4dedf4f0-6144-45ec-a9b8-281a62bf6b0a,Sunbond Energy Private Limited,19.25,DCR,True,2026-05-16T00:32:03
-2024,26,24cb65eb-f553-4fe4-853e-dfee1df94d49,Renewsys India Private Limited,19.12,DCR,True,2026-05-16T00:32:03
-2024,27,6a3653ca-c79d-4e27-b4a8-6fe22ab67098,ADM Solar Power And Infrastructure Private Limited,18.91,DCR,True,2026-05-16T00:32:03
-2024,28,d851575c-3a4d-440c-b9dc-916ebe924f97,Pahal Solar Private Limited,17.05,DCR,True,2026-05-16T00:32:03
-2024,29,46d61215-d903-45b5-8dc3-844d87fb4580,Navitas Green Solutions Private Limited,17.03,DCR,True,2026-05-16T00:32:03
-2024,30,f134e759-44a5-4780-b7b4-eae78ddd100d,Jakson Engineers Limited,15.68,DCR,True,2026-05-16T00:32:03
-2024,31,5da983a8-e0c7-49f2-a759-25b790da8524,Saatvik Solar Industries Private Limited,11.24,DCR,True,2026-05-16T00:32:03
-2024,32,12d41715-0174-44c2-a1e6-8fe631633971,Green Brilliance Renewable Energy LLP,10.3,DCR,True,2026-05-16T00:32:03
-2024,33,af9f2bd9-8230-46a0-9416-e1276980ed59,Abhishek Solar Industries Private Limited,9.75,DCR,True,2026-05-16T00:32:03
-2024,34,163a07f8-d26c-4f38-9592-e22101e53b2d,Sova Solar Limited,8.65,DCR,True,2026-05-16T00:32:03
-2024,35,6e77a800-b968-492d-89dd-b0fdfafce601,Citizen Solar Private Limited,7.69,DCR,True,2026-05-16T00:32:03
-2024,36,e868f73a-27ea-462d-8d29-61e7233df817,Raajratna Ventures Limited,7.64,DCR,True,2026-05-16T00:32:03
-2024,37,1f547f5e-9a42-4e0c-a149-5c4202e8e874,Unique Sun Power Private Limited,7.52,DCR,True,2026-05-16T00:32:03
-2024,38,835ff21e-bdbb-4f74-a4d5-c4235982bebc,Integrated Batteries India Private Limited (Ib Solar),6.88,DCR,True,2026-05-16T00:32:03
-2024,39,d9ea2e72-6278-4549-a4d0-eeb14debcb0b,Emmvee  Photovoltaic Power Limited,6.66,DCR,True,2026-05-16T00:32:03
-2024,40,6435b7ea-24a0-4681-8449-c1911241d0d4,ECE India Energies Private Limited,6.22,DCR,True,2026-05-16T00:32:03
-2024,41,e1177317-770c-4c83-aa82-ae38e826193c,HR Solar Solution Private Limited,5.16,DCR,True,2026-05-16T00:32:03
-2024,42,a13a8914-03a2-4e29-8fc9-c7c856510b64,Grew Energy Private Limited,5.12,DCR,True,2026-05-16T00:32:03
-2025,01,efd3cf8b-55f6-4365-a2f4-1af1c4c18cce,TP Solar Limited,2997.0,DCR,True,2026-05-16T00:32:03
-2025,02,9506d465-8696-4dd1-9546-9641849c6135,FS India Solar Ventures Private Limited,2766.4,DCR,True,2026-05-16T00:32:03
-2025,03,6465a0b9-60b7-4edf-97f1-3cb3840b9a73,Mundra Solar Energy Limited,1533.05,DCR,True,2026-05-16T00:32:03
-2025,04,4c494d96-d12f-4bd8-b9fd-6006841083a4,Waaree Energies Limited,1109.12,DCR,True,2026-05-16T00:32:03
-2025,05,e624e730-20a1-4a69-a03f-cc31ce053323,Mundra Solar PV Limited,1035.23,DCR,True,2026-05-16T00:32:03
-2025,06,75ae04be-db90-4f15-aca8-257f59d835be,Renew Photovoltaics Private Limited,1006.22,DCR,True,2026-05-16T00:32:03
-2025,07,fbdaf772-c6e6-4c5d-81ce-e57be7b79d5c,Emmvee Energy Private Limited,823.84,DCR,True,2026-05-16T00:32:03
-2025,08,ae181577-a115-475f-a06c-730423feba86,Premier Energies Photovoltaic Private Limited,799.81,DCR,True,2026-05-16T00:32:03
-2025,09,709b492d-c6d6-4a33-b7d2-b2e2383c06f4,Icon Solar-En Power Technologies Private Limited,396.68,DCR,True,2026-05-16T00:32:03
-2025,10,bbdd33fb-857c-47a1-ac2a-8013d1fd5500,Alpex Solar Limited,327.32,DCR,True,2026-05-16T00:32:03
-2025,11,628e71f8-6e61-4f67-81c2-00e95f5c6029,Oswal Solar Energy Private Limited,292.39,DCR,True,2026-05-16T00:32:03
-2025,12,8a29c14f-41fe-40db-b1d3-1769fb4dc2d9,Fujiyama Power Systems Limited,247.13,DCR,True,2026-05-16T00:32:03
-2025,13,faccb06f-9e17-4f7e-91ab-e98571aee188,Luminous Power Technologies Private Limited,246.43,DCR,True,2026-05-16T00:32:03
-2025,14,6a3653ca-c79d-4e27-b4a8-6fe22ab67098,ADM Solar Power And Infrastructure Private Limited,173.81,DCR,True,2026-05-16T00:32:03
-2025,15,91b24c33-c4b4-492e-91fe-abb42080a27d,Tata Power Renewable Energy Limited,171.5,DCR,True,2026-05-16T00:32:03
-2025,16,6a6b0f2d-05e8-4536-86a1-6df5f24b732f,Goldi Sun Private Limited,169.6,DCR,True,2026-05-16T00:32:03
-2025,17,febe12df-4860-41e4-ba61-6a9615bd17a7,Websol Energy System Limited,153.97,DCR,True,2026-05-16T00:32:03
-2025,18,1a16edc1-b641-4f5d-8039-9d244f4b70bb,Rayzon Solar Limited,135.09,DCR,True,2026-05-16T00:32:03
-2025,19,a76a7851-0231-4f61-b3ab-6fe1f9c3d224,Australian Premium Solar (India) Limited,123.49,DCR,True,2026-05-16T00:32:03
-2025,20,e410ab49-6f6a-4249-a0ad-d3dd9a0562f1,Insolation Green Energy Private Limited,119.39,DCR,True,2026-05-16T00:32:03
-2025,21,8c9b6c4c-b972-4f28-95dd-b151fc9dcc33,Gautam Solar Private Limited,117.76,DCR,True,2026-05-16T00:32:03
-2025,22,6e77a800-b968-492d-89dd-b0fdfafce601,Citizen Solar Private Limited,76.93,DCR,True,2026-05-16T00:32:03
-2025,23,f0dd3cfd-17c0-4a84-86f2-716cde2b9fd2,Novasys Greenergy Limited,71.42,DCR,True,2026-05-16T00:32:03
-2025,24,3aa7989e-8902-4771-ace5-9aa740780114,Redren Energy Private Limited,70.2,DCR,True,2026-05-16T00:32:03
-2025,25,46d61215-d903-45b5-8dc3-844d87fb4580,Navitas Green Solutions Private Limited,67.69,DCR,True,2026-05-16T00:32:03
-2025,26,835ff21e-bdbb-4f74-a4d5-c4235982bebc,Integrated Batteries India Private Limited (Ib Solar),62.17,DCR,True,2026-05-16T00:32:03
-2025,27,c3df2d4f-9be0-4898-a18d-c0a22da05c4c,Laxmi Solar Power System Private Limited,56.86,DCR,True,2026-05-16T00:32:03
-2025,28,d851575c-3a4d-440c-b9dc-916ebe924f97,Pahal Solar Private Limited,55.53,DCR,True,2026-05-16T00:32:03
-2025,29,d9ea2e72-6278-4549-a4d0-eeb14debcb0b,Emmvee  Photovoltaic Power Limited,54.39,DCR,True,2026-05-16T00:32:03
-2025,30,d62f669b-18c0-4bf2-99f8-c5a883c9fae2,Vikram Solar Limited,44.67,DCR,True,2026-05-16T00:32:03
-2025,31,4dedf4f0-6144-45ec-a9b8-281a62bf6b0a,Sunbond Energy Private Limited,38.15,DCR,True,2026-05-16T00:32:03
-2025,32,e868f73a-27ea-462d-8d29-61e7233df817,Raajratna Ventures Limited,36.38,DCR,True,2026-05-16T00:32:03
-2025,33,a196493a-cc79-4b85-b9db-65755b7daee5,Rhine Solar Limited,36.18,DCR,True,2026-05-16T00:32:03
-2025,34,af9f2bd9-8230-46a0-9416-e1276980ed59,Abhishek Solar Industries Private Limited,35.43,DCR,True,2026-05-16T00:32:03
-2025,35,6435b7ea-24a0-4681-8449-c1911241d0d4,ECE India Energies Private Limited,32.77,DCR,True,2026-05-16T00:32:03
-2025,36,06204b65-1870-4672-bdf8-b45f040ec28f,Goldi Solar Private Limited,32.4,DCR,True,2026-05-16T00:32:03
-2025,37,c441b935-98f1-4331-a333-d9ebd019379d,Saatvik Green Energy Private Limited,31.65,DCR,True,2026-05-16T00:32:03
-2025,38,746878e3-ed8a-4aec-99a4-6081cfe367a2,Loom Solar Private Limited,30.83,DCR,True,2026-05-16T00:32:03
-2025,39,649f3170-8f14-430d-bd07-8b503f11df3e,Ankur Traders & Engineers Private Limited,30.02,DCR,True,2026-05-16T00:32:03
-2025,40,c33c04d2-fbc1-4737-ab6a-388b0aee1181,KLK Ventures Private Limited,29.26,DCR,True,2026-05-16T00:32:03
-2025,41,4a82ce6b-7d8b-4beb-a8ff-d8b76592cfff,Sri Savitr Solar Private Limited,28.94,DCR,True,2026-05-16T00:32:03
-2025,42,12d41715-0174-44c2-a1e6-8fe631633971,Green Brilliance Renewable Energy LLP,28.9,DCR,True,2026-05-16T00:32:03
-2025,43,5503f7ef-892f-4980-a83e-236376da86d1,Premier Energies Global Environment Private Limited,27.62,DCR,True,2026-05-16T00:32:03
-2025,44,d857d755-e1da-434d-93c5-dbd2c1d4cb5c,Sasa Energy LLP,24.77,DCR,True,2026-05-16T00:32:03
-2025,45,286745b9-a8ef-4d70-858f-ebcde58e0277,Junna Solar Systems Limited,24.17,DCR,True,2026-05-16T00:32:03
-2025,46,5c91caee-5868-4b09-86ef-36f66e71954c,Solarmint Energies Private Limited,22.74,DCR,True,2026-05-16T00:32:03
-2025,47,e1177317-770c-4c83-aa82-ae38e826193c,HR Solar Solution Private Limited,21.46,DCR,True,2026-05-16T00:32:03
-2025,48,1f547f5e-9a42-4e0c-a149-5c4202e8e874,Unique Sun Power Private Limited,19.29,DCR,True,2026-05-16T00:32:03
-2025,49,4509a8a4-43d9-4675-a1b7-06f3d223d3a1,Kosol Energie Private Limited,19.26,DCR,True,2026-05-16T00:32:03
-2025,50,bb7f7614-d729-4f49-8646-47af07b197a0,Easy Photo Voltech Private Limited,16.99,DCR,True,2026-05-16T00:32:03
-2025,51,163a07f8-d26c-4f38-9592-e22101e53b2d,Sova Solar Limited,14.29,DCR,True,2026-05-16T00:32:03
-2025,52,b0a962ef-a7cc-4c33-9049-c4c92787c633,Surya International Enterprise Private Limited,13.04,DCR,True,2026-05-16T00:32:03
-2025,53,e5d78098-1b34-438f-8354-72d79010c322,Akshaya Solar Power (India) Private Limited,12.9,DCR,True,2026-05-16T00:32:03
-2025,54,67aa3e29-5746-45a8-accc-c93fe74c416a,Rayon Illumination Solar Solution Private Limited,11.28,DCR,True,2026-05-16T00:32:03
-2025,55,65122fb0-d323-4bdc-989a-9c3425321b08,Agrawal Renewable Energy Private Limited,10.13,DCR,True,2026-05-16T00:32:03
-2025,56,929d4cd6-853c-41ec-8a61-1628dd18e94b,Ganesh Green Bharat Limited,9.89,DCR,True,2026-05-16T00:32:03
-2025,57,aa38af68-24bc-4593-b466-0fff06b99cb5,Pravanya Solar India Private Limited,8.95,DCR,True,2026-05-16T00:32:03
-2025,58,5da983a8-e0c7-49f2-a759-25b790da8524,Saatvik Solar Industries Private Limited,8.58,DCR,True,2026-05-16T00:32:03
-2025,59,64d2ed18-0259-455c-aedd-f95513a731cc,Uratom Solar (India) Private Limited,8.25,DCR,True,2026-05-16T00:32:03
-2025,60,d65915ef-245f-4e7a-a739-af06d6e04cc9,Inter Solar Systems Private Limited,8.12,DCR,True,2026-05-16T00:32:03
-2025,61,81091aa7-dea6-4d1f-b39d-eed600b15ff0,Aatmanirbar Solar Private Limited,7.86,DCR,True,2026-05-16T00:32:03
-2025,62,f134e759-44a5-4780-b7b4-eae78ddd100d,Jakson Engineers Limited,6.87,DCR,True,2026-05-16T00:32:03
-2025,63,9b90aef1-514d-437e-ac9f-7e10193d7b9b,Pixon Green Energy Private Limited,6.53,DCR,True,2026-05-16T00:32:03
-2025,64,82bb69f0-b6df-47af-a1d4-5674672e316d,Bluebird Solar Private Limited,6.31,DCR,True,2026-05-16T00:32:03
-2025,65,f46a9aa6-a70d-4c0d-8234-04d3bc3583ec,Knack Energy Private Limited,6.07,DCR,True,2026-05-16T00:32:03
-2025,66,98ede0da-0edd-406b-9dc2-1242673db3e6,Contendre Greenergy Private Limited,5.45,DCR,True,2026-05-16T00:32:03
-2025,67,c2143fac-1627-41c4-af9c-b03dea96c7a5,COSMIC PV POWER LIMITED,5.12,DCR,True,2026-05-16T00:32:03
-2026,01,9506d465-8696-4dd1-9546-9641849c6135,FS India Solar Ventures Private Limited,916.09,DCR,True,2026-05-16T00:32:03
-2026,02,4c494d96-d12f-4bd8-b9fd-6006841083a4,Waaree Energies Limited,891.95,DCR,True,2026-05-16T00:32:03
-2026,03,efd3cf8b-55f6-4365-a2f4-1af1c4c18cce,TP Solar Limited,726.19,DCR,True,2026-05-16T00:32:03
-2026,04,6465a0b9-60b7-4edf-97f1-3cb3840b9a73,Mundra Solar Energy Limited,568.02,DCR,True,2026-05-16T00:32:03
-2026,05,6a6b0f2d-05e8-4536-86a1-6df5f24b732f,Goldi Sun Private Limited,548.76,DCR,True,2026-05-16T00:32:03
-2026,06,ae181577-a115-475f-a06c-730423feba86,Premier Energies Photovoltaic Private Limited,385.59,DCR,True,2026-05-16T00:32:03
-2026,07,bbdd33fb-857c-47a1-ac2a-8013d1fd5500,Alpex Solar Limited,342.73,DCR,True,2026-05-16T00:32:03
-2026,08,fbdaf772-c6e6-4c5d-81ce-e57be7b79d5c,Emmvee Energy Private Limited,241.92,DCR,True,2026-05-16T00:32:03
-2026,09,8a29c14f-41fe-40db-b1d3-1769fb4dc2d9,Fujiyama Power Systems Limited,235.63,DCR,True,2026-05-16T00:32:03
-2026,10,5503f7ef-892f-4980-a83e-236376da86d1,Premier Energies Global Environment Private Limited,197.44,DCR,True,2026-05-16T00:32:03
-2026,11,709b492d-c6d6-4a33-b7d2-b2e2383c06f4,Icon Solar-En Power Technologies Private Limited,183.49,DCR,True,2026-05-16T00:32:03
-2026,12,febe12df-4860-41e4-ba61-6a9615bd17a7,Websol Energy System Limited,142.87,DCR,True,2026-05-16T00:32:03
-2026,13,faccb06f-9e17-4f7e-91ab-e98571aee188,Luminous Power Technologies Private Limited,139.38,DCR,True,2026-05-16T00:32:03
-2026,14,75ae04be-db90-4f15-aca8-257f59d835be,Renew Photovoltaics Private Limited,131.7,DCR,True,2026-05-16T00:32:03
-2026,15,4ed881dc-4954-4842-b07f-85c42f164279,Sangam Solar One Private Limited,127.99,DCR,True,2026-05-16T00:32:03
-2026,16,628e71f8-6e61-4f67-81c2-00e95f5c6029,Oswal Solar Energy Private Limited,121.96,DCR,True,2026-05-16T00:32:03
-2026,17,6a3653ca-c79d-4e27-b4a8-6fe22ab67098,ADM Solar Power And Infrastructure Private Limited,91.8,DCR,True,2026-05-16T00:32:03
-2026,18,e624e730-20a1-4a69-a03f-cc31ce053323,Mundra Solar PV Limited,87.09,DCR,True,2026-05-16T00:32:03
-2026,19,1a16edc1-b641-4f5d-8039-9d244f4b70bb,Rayzon Solar Limited,84.2,DCR,True,2026-05-16T00:32:03
-2026,20,91b24c33-c4b4-492e-91fe-abb42080a27d,Tata Power Renewable Energy Limited,66.81,DCR,True,2026-05-16T00:32:03
-2026,21,e410ab49-6f6a-4249-a0ad-d3dd9a0562f1,Insolation Green Energy Private Limited,64.5,DCR,True,2026-05-16T00:32:03
-2026,22,835ff21e-bdbb-4f74-a4d5-c4235982bebc,Integrated Batteries India Private Limited (Ib Solar),56.33,DCR,True,2026-05-16T00:32:03
-2026,23,6e77a800-b968-492d-89dd-b0fdfafce601,Citizen Solar Private Limited,46.77,DCR,True,2026-05-16T00:32:03
-2026,24,f0dd3cfd-17c0-4a84-86f2-716cde2b9fd2,Novasys Greenergy Limited,46.36,DCR,True,2026-05-16T00:32:03
-2026,25,c3d00797-de47-48f8-9e4d-3e904a63f7e9,Eastman Green Technologies Private Limited,43.91,DCR,True,2026-05-16T00:32:03
-2026,26,46d61215-d903-45b5-8dc3-844d87fb4580,Navitas Green Solutions Private Limited,43.27,DCR,True,2026-05-16T00:32:03
-2026,27,a76a7851-0231-4f61-b3ab-6fe1f9c3d224,Australian Premium Solar (India) Limited,41.54,DCR,True,2026-05-16T00:32:03
-2026,28,d62f669b-18c0-4bf2-99f8-c5a883c9fae2,Vikram Solar Limited,38.55,DCR,True,2026-05-16T00:32:03
-2026,29,3aa7989e-8902-4771-ace5-9aa740780114,Redren Energy Private Limited,31.85,DCR,True,2026-05-16T00:32:03
-2026,30,8c9b6c4c-b972-4f28-95dd-b151fc9dcc33,Gautam Solar Private Limited,30.58,DCR,True,2026-05-16T00:32:03
-2026,31,d851575c-3a4d-440c-b9dc-916ebe924f97,Pahal Solar Private Limited,25.82,DCR,True,2026-05-16T00:32:03
-2026,32,746878e3-ed8a-4aec-99a4-6081cfe367a2,Loom Solar Private Limited,24.2,DCR,True,2026-05-16T00:32:03
-2026,33,286745b9-a8ef-4d70-858f-ebcde58e0277,Junna Solar Systems Limited,20.81,DCR,True,2026-05-16T00:32:03
-2026,34,e868f73a-27ea-462d-8d29-61e7233df817,Raajratna Ventures Limited,20.17,DCR,True,2026-05-16T00:32:03
-2026,35,c3df2d4f-9be0-4898-a18d-c0a22da05c4c,Laxmi Solar Power System Private Limited,19.79,DCR,True,2026-05-16T00:32:03
-2026,36,e1177317-770c-4c83-aa82-ae38e826193c,HR Solar Solution Private Limited,19.64,DCR,True,2026-05-16T00:32:03
-2026,37,c33c04d2-fbc1-4737-ab6a-388b0aee1181,KLK Ventures Private Limited,19.29,DCR,True,2026-05-16T00:32:03
-2026,38,4dedf4f0-6144-45ec-a9b8-281a62bf6b0a,Sunbond Energy Private Limited,19.08,DCR,True,2026-05-16T00:32:03
-2026,39,e5d78098-1b34-438f-8354-72d79010c322,Akshaya Solar Power (India) Private Limited,18.75,DCR,True,2026-05-16T00:32:03
-2026,40,4a82ce6b-7d8b-4beb-a8ff-d8b76592cfff,Sri Savitr Solar Private Limited,18.23,DCR,True,2026-05-16T00:32:03
-2026,41,af9f2bd9-8230-46a0-9416-e1276980ed59,Abhishek Solar Industries Private Limited,17.67,DCR,True,2026-05-16T00:32:03
-2026,42,1f547f5e-9a42-4e0c-a149-5c4202e8e874,Unique Sun Power Private Limited,15.11,DCR,True,2026-05-16T00:32:03
-2026,43,929d4cd6-853c-41ec-8a61-1628dd18e94b,Ganesh Green Bharat Limited,15.03,DCR,True,2026-05-16T00:32:03
-2026,44,075f6c03-1348-41c4-864f-726a26b99544,Navitas Solar Private Limited,14.62,DCR,True,2026-05-16T00:32:03
-2026,45,12d41715-0174-44c2-a1e6-8fe631633971,Green Brilliance Renewable Energy LLP,12.21,DCR,True,2026-05-16T00:32:03
-2026,46,9b90aef1-514d-437e-ac9f-7e10193d7b9b,Pixon Green Energy Private Limited,11.19,DCR,True,2026-05-16T00:32:03
-2026,47,b0a962ef-a7cc-4c33-9049-c4c92787c633,Surya International Enterprise Private Limited,9.75,DCR,True,2026-05-16T00:32:03
-2026,48,163a07f8-d26c-4f38-9592-e22101e53b2d,Sova Solar Limited,9.36,DCR,True,2026-05-16T00:32:03
-2026,49,5c91caee-5868-4b09-86ef-36f66e71954c,Solarmint Energies Private Limited,9.24,DCR,True,2026-05-16T00:32:03
-2026,50,649f3170-8f14-430d-bd07-8b503f11df3e,Ankur Traders & Engineers Private Limited,9.23,DCR,True,2026-05-16T00:32:03
-2026,51,67aa3e29-5746-45a8-accc-c93fe74c416a,Rayon Illumination Solar Solution Private Limited,8.51,DCR,True,2026-05-16T00:32:03
-2026,52,4509a8a4-43d9-4675-a1b7-06f3d223d3a1,Kosol Energie Private Limited,8.47,DCR,True,2026-05-16T00:32:03
-2026,53,64d2ed18-0259-455c-aedd-f95513a731cc,Uratom Solar (India) Private Limited,7.92,DCR,True,2026-05-16T00:32:03
-2026,54,a196493a-cc79-4b85-b9db-65755b7daee5,Rhine Solar Limited,6.9,DCR,True,2026-05-16T00:32:03
-2026,55,d857d755-e1da-434d-93c5-dbd2c1d4cb5c,Sasa Energy LLP,6.54,DCR,True,2026-05-16T00:32:03
-2026,56,c441b935-98f1-4331-a333-d9ebd019379d,Saatvik Green Energy Private Limited,6.51,DCR,True,2026-05-16T00:32:03
-2026,57,f46a9aa6-a70d-4c0d-8234-04d3bc3583ec,Knack Energy Private Limited,6.25,DCR,True,2026-05-16T00:32:03
-2026,58,65122fb0-d323-4bdc-989a-9c3425321b08,Agrawal Renewable Energy Private Limited,6.21,DCR,True,2026-05-16T00:32:03
-2026,59,bb7f7614-d729-4f49-8646-47af07b197a0,Easy Photo Voltech Private Limited,5.94,DCR,True,2026-05-16T00:32:03
-2026,60,6435b7ea-24a0-4681-8449-c1911241d0d4,ECE India Energies Private Limited,5.71,DCR,True,2026-05-16T00:32:03
-2026,61,aa38af68-24bc-4593-b466-0fff06b99cb5,Pravanya Solar India Private Limited,5.69,DCR,True,2026-05-16T00:32:03
-2026,62,5da983a8-e0c7-49f2-a759-25b790da8524,Saatvik Solar Industries Private Limited,5.64,DCR,True,2026-05-16T00:32:03
+2022,01,d9ea2e72-6278-4549-a4d0-eeb14debcb0b,Emmvee  Photovoltaic Power Limited,10.55,DCR,True,2026-07-28T01:15:34
+2023,01,4c494d96-d12f-4bd8-b9fd-6006841083a4,Waaree Energies Limited,125.53,DCR,True,2026-07-28T01:15:34
+2023,02,6465a0b9-60b7-4edf-97f1-3cb3840b9a73,Mundra Solar Energy Limited,83.63,DCR,True,2026-07-28T01:15:34
+2023,03,ae181577-a115-475f-a06c-730423feba86,Premier Energies Photovoltaic Private Limited,54.52,DCR,True,2026-07-28T01:15:34
+2023,04,e624e730-20a1-4a69-a03f-cc31ce053323,Mundra Solar PV Limited,12.43,DCR,True,2026-07-28T01:15:34
+2023,05,d9ea2e72-6278-4549-a4d0-eeb14debcb0b,Emmvee  Photovoltaic Power Limited,10.56,DCR,True,2026-07-28T01:15:34
+2023,06,24cb65eb-f553-4fe4-853e-dfee1df94d49,Renewsys India Private Limited,10.09,DCR,True,2026-07-28T01:15:34
+2023,07,d62f669b-18c0-4bf2-99f8-c5a883c9fae2,Vikram Solar Limited,6.94,DCR,True,2026-07-28T01:15:34
+2024,01,9506d465-8696-4dd1-9546-9641849c6135,FS India Solar Ventures Private Limited,1878.54,DCR,True,2026-07-28T01:15:34
+2024,02,6465a0b9-60b7-4edf-97f1-3cb3840b9a73,Mundra Solar Energy Limited,1175.85,DCR,True,2026-07-28T01:15:34
+2024,03,ae181577-a115-475f-a06c-730423feba86,Premier Energies Photovoltaic Private Limited,786.91,DCR,True,2026-07-28T01:15:34
+2024,04,e624e730-20a1-4a69-a03f-cc31ce053323,Mundra Solar PV Limited,483.85,DCR,True,2026-07-28T01:15:34
+2024,05,4c494d96-d12f-4bd8-b9fd-6006841083a4,Waaree Energies Limited,344.73,DCR,True,2026-07-28T01:15:34
+2024,06,efd3cf8b-55f6-4365-a2f4-1af1c4c18cce,TP Solar Limited,191.71,DCR,True,2026-07-28T01:15:34
+2024,07,91b24c33-c4b4-492e-91fe-abb42080a27d,Tata Power Renewable Energy Limited,161.2,DCR,True,2026-07-28T01:15:34
+2024,08,1a16edc1-b641-4f5d-8039-9d244f4b70bb,Rayzon Solar Limited,143.64,DCR,True,2026-07-28T01:15:34
+2024,09,fbdaf772-c6e6-4c5d-81ce-e57be7b79d5c,Emmvee Energy Private Limited,139.48,DCR,True,2026-07-28T01:15:34
+2024,10,a3a30153-8923-4936-a88b-0b22460e71a8,Premier Energies International Private Limited,130.64,DCR,True,2026-07-28T01:15:34
+2024,11,709b492d-c6d6-4a33-b7d2-b2e2383c06f4,Icon Solar-En Power Technologies Private Limited,113.12,DCR,True,2026-07-28T01:15:34
+2024,12,e410ab49-6f6a-4249-a0ad-d3dd9a0562f1,Insolation Green Energy Private Limited,101.98,DCR,True,2026-07-28T01:15:34
+2024,13,75ae04be-db90-4f15-aca8-257f59d835be,Renew Photovoltaics Private Limited,100.65,DCR,True,2026-07-28T01:15:34
+2024,14,d62f669b-18c0-4bf2-99f8-c5a883c9fae2,Vikram Solar Limited,65.6,DCR,True,2026-07-28T01:15:34
+2024,15,3aa7989e-8902-4771-ace5-9aa740780114,Redren Energy Private Limited,62.32,DCR,True,2026-07-28T01:15:34
+2024,16,f0dd3cfd-17c0-4a84-86f2-716cde2b9fd2,Novasys Greenergy Limited,58.12,DCR,True,2026-07-28T01:15:34
+2024,17,8a29c14f-41fe-40db-b1d3-1769fb4dc2d9,Fujiyama Power Systems Limited,54.3,DCR,True,2026-07-28T01:15:34
+2024,18,06204b65-1870-4672-bdf8-b45f040ec28f,Goldi Solar Private Limited,45.23,DCR,True,2026-07-28T01:15:34
+2024,19,a76a7851-0231-4f61-b3ab-6fe1f9c3d224,Australian Premium Solar (India) Limited,34.47,DCR,True,2026-07-28T01:15:34
+2024,20,faccb06f-9e17-4f7e-91ab-e98571aee188,Luminous Power Technologies Private Limited,32.97,DCR,True,2026-07-28T01:15:34
+2024,21,628e71f8-6e61-4f67-81c2-00e95f5c6029,Oswal Solar Energy Private Limited,28.74,DCR,True,2026-07-28T01:15:34
+2024,22,bbdd33fb-857c-47a1-ac2a-8013d1fd5500,Alpex Solar Limited,25.23,DCR,True,2026-07-28T01:15:34
+2024,23,8c9b6c4c-b972-4f28-95dd-b151fc9dcc33,Gautam Solar Private Limited,23.27,DCR,True,2026-07-28T01:15:34
+2024,24,c441b935-98f1-4331-a333-d9ebd019379d,Saatvik Green Energy Private Limited,20.24,DCR,True,2026-07-28T01:15:34
+2024,25,4dedf4f0-6144-45ec-a9b8-281a62bf6b0a,Sunbond Energy Private Limited,19.25,DCR,True,2026-07-28T01:15:34
+2024,26,24cb65eb-f553-4fe4-853e-dfee1df94d49,Renewsys India Private Limited,19.12,DCR,True,2026-07-28T01:15:34
+2024,27,6a3653ca-c79d-4e27-b4a8-6fe22ab67098,ADM Solar Power And Infrastructure Private Limited,18.91,DCR,True,2026-07-28T01:15:34
+2024,28,d851575c-3a4d-440c-b9dc-916ebe924f97,Pahal Solar Private Limited,17.05,DCR,True,2026-07-28T01:15:34
+2024,29,46d61215-d903-45b5-8dc3-844d87fb4580,Navitas Green Solutions Private Limited,17.02,DCR,True,2026-07-28T01:15:34
+2024,30,f134e759-44a5-4780-b7b4-eae78ddd100d,Jakson Engineers Limited,15.68,DCR,True,2026-07-28T01:15:34
+2024,31,5da983a8-e0c7-49f2-a759-25b790da8524,Saatvik Solar Industries Private Limited,11.24,DCR,True,2026-07-28T01:15:34
+2024,32,12d41715-0174-44c2-a1e6-8fe631633971,Green Brilliance Renewable Energy LLP,10.3,DCR,True,2026-07-28T01:15:34
+2024,33,af9f2bd9-8230-46a0-9416-e1276980ed59,Abhishek Solar Industries Private Limited,9.75,DCR,True,2026-07-28T01:15:34
+2024,34,163a07f8-d26c-4f38-9592-e22101e53b2d,Sova Solar Limited,8.65,DCR,True,2026-07-28T01:15:34
+2024,35,6e77a800-b968-492d-89dd-b0fdfafce601,Citizen Solar Private Limited,7.69,DCR,True,2026-07-28T01:15:34
+2024,36,e868f73a-27ea-462d-8d29-61e7233df817,Raajratna Ventures Limited,7.64,DCR,True,2026-07-28T01:15:34
+2024,37,1f547f5e-9a42-4e0c-a149-5c4202e8e874,Unique Sun Power Private Limited,7.52,DCR,True,2026-07-28T01:15:34
+2024,38,835ff21e-bdbb-4f74-a4d5-c4235982bebc,Integrated Batteries India Private Limited (Ib Solar),6.88,DCR,True,2026-07-28T01:15:34
+2024,39,d9ea2e72-6278-4549-a4d0-eeb14debcb0b,Emmvee  Photovoltaic Power Limited,6.66,DCR,True,2026-07-28T01:15:34
+2024,40,6435b7ea-24a0-4681-8449-c1911241d0d4,ECE India Energies Private Limited,6.22,DCR,True,2026-07-28T01:15:34
+2024,41,e1177317-770c-4c83-aa82-ae38e826193c,HR Solar Solution Private Limited,5.16,DCR,True,2026-07-28T01:15:34
+2024,42,a13a8914-03a2-4e29-8fc9-c7c856510b64,Grew Energy Private Limited,5.12,DCR,True,2026-07-28T01:15:34
+2025,01,efd3cf8b-55f6-4365-a2f4-1af1c4c18cce,TP Solar Limited,2997.0,DCR,True,2026-07-28T01:15:34
+2025,02,9506d465-8696-4dd1-9546-9641849c6135,FS India Solar Ventures Private Limited,2773.61,DCR,True,2026-07-28T01:15:34
+2025,03,6465a0b9-60b7-4edf-97f1-3cb3840b9a73,Mundra Solar Energy Limited,1541.34,DCR,True,2026-07-28T01:15:34
+2025,04,4c494d96-d12f-4bd8-b9fd-6006841083a4,Waaree Energies Limited,1109.27,DCR,True,2026-07-28T01:15:34
+2025,05,75ae04be-db90-4f15-aca8-257f59d835be,Renew Photovoltaics Private Limited,1097.43,DCR,True,2026-07-28T01:15:34
+2025,06,e624e730-20a1-4a69-a03f-cc31ce053323,Mundra Solar PV Limited,1035.39,DCR,True,2026-07-28T01:15:34
+2025,07,fbdaf772-c6e6-4c5d-81ce-e57be7b79d5c,Emmvee Energy Private Limited,823.84,DCR,True,2026-07-28T01:15:34
+2025,08,ae181577-a115-475f-a06c-730423feba86,Premier Energies Photovoltaic Private Limited,800.38,DCR,True,2026-07-28T01:15:34
+2025,09,709b492d-c6d6-4a33-b7d2-b2e2383c06f4,Icon Solar-En Power Technologies Private Limited,399.52,DCR,True,2026-07-28T01:15:34
+2025,10,bbdd33fb-857c-47a1-ac2a-8013d1fd5500,Alpex Solar Limited,327.32,DCR,True,2026-07-28T01:15:34
+2025,11,628e71f8-6e61-4f67-81c2-00e95f5c6029,Oswal Solar Energy Private Limited,292.39,DCR,True,2026-07-28T01:15:34
+2025,12,8a29c14f-41fe-40db-b1d3-1769fb4dc2d9,Fujiyama Power Systems Limited,247.03,DCR,True,2026-07-28T01:15:34
+2025,13,faccb06f-9e17-4f7e-91ab-e98571aee188,Luminous Power Technologies Private Limited,246.43,DCR,True,2026-07-28T01:15:34
+2025,14,6a3653ca-c79d-4e27-b4a8-6fe22ab67098,ADM Solar Power And Infrastructure Private Limited,173.81,DCR,True,2026-07-28T01:15:34
+2025,15,91b24c33-c4b4-492e-91fe-abb42080a27d,Tata Power Renewable Energy Limited,171.5,DCR,True,2026-07-28T01:15:34
+2025,16,6a6b0f2d-05e8-4536-86a1-6df5f24b732f,Goldi Sun Private Limited,169.61,DCR,True,2026-07-28T01:15:34
+2025,17,febe12df-4860-41e4-ba61-6a9615bd17a7,Websol Energy System Limited,153.97,DCR,True,2026-07-28T01:15:34
+2025,18,1a16edc1-b641-4f5d-8039-9d244f4b70bb,Rayzon Solar Limited,135.11,DCR,True,2026-07-28T01:15:34
+2025,19,a76a7851-0231-4f61-b3ab-6fe1f9c3d224,Australian Premium Solar (India) Limited,124.16,DCR,True,2026-07-28T01:15:34
+2025,20,e410ab49-6f6a-4249-a0ad-d3dd9a0562f1,Insolation Green Energy Private Limited,119.39,DCR,True,2026-07-28T01:15:34
+2025,21,8c9b6c4c-b972-4f28-95dd-b151fc9dcc33,Gautam Solar Private Limited,117.83,DCR,True,2026-07-28T01:15:34
+2025,22,6e77a800-b968-492d-89dd-b0fdfafce601,Citizen Solar Private Limited,76.93,DCR,True,2026-07-28T01:15:34
+2025,23,f0dd3cfd-17c0-4a84-86f2-716cde2b9fd2,Novasys Greenergy Limited,73.81,DCR,True,2026-07-28T01:15:34
+2025,24,3aa7989e-8902-4771-ace5-9aa740780114,Redren Energy Private Limited,70.21,DCR,True,2026-07-28T01:15:34
+2025,25,46d61215-d903-45b5-8dc3-844d87fb4580,Navitas Green Solutions Private Limited,67.69,DCR,True,2026-07-28T01:15:34
+2025,26,835ff21e-bdbb-4f74-a4d5-c4235982bebc,Integrated Batteries India Private Limited (Ib Solar),62.17,DCR,True,2026-07-28T01:15:34
+2025,27,c3df2d4f-9be0-4898-a18d-c0a22da05c4c,Laxmi Solar Power System Private Limited,56.86,DCR,True,2026-07-28T01:15:34
+2025,28,d851575c-3a4d-440c-b9dc-916ebe924f97,Pahal Solar Private Limited,55.53,DCR,True,2026-07-28T01:15:34
+2025,29,d9ea2e72-6278-4549-a4d0-eeb14debcb0b,Emmvee  Photovoltaic Power Limited,54.39,DCR,True,2026-07-28T01:15:34
+2025,30,06204b65-1870-4672-bdf8-b45f040ec28f,Goldi Solar Private Limited,45.35,DCR,True,2026-07-28T01:15:34
+2025,31,d62f669b-18c0-4bf2-99f8-c5a883c9fae2,Vikram Solar Limited,44.67,DCR,True,2026-07-28T01:15:34
+2025,32,4dedf4f0-6144-45ec-a9b8-281a62bf6b0a,Sunbond Energy Private Limited,38.15,DCR,True,2026-07-28T01:15:34
+2025,33,e868f73a-27ea-462d-8d29-61e7233df817,Raajratna Ventures Limited,36.38,DCR,True,2026-07-28T01:15:34
+2025,34,a196493a-cc79-4b85-b9db-65755b7daee5,Rhine Solar Limited,36.18,DCR,True,2026-07-28T01:15:34
+2025,35,af9f2bd9-8230-46a0-9416-e1276980ed59,Abhishek Solar Industries Private Limited,35.43,DCR,True,2026-07-28T01:15:34
+2025,36,6435b7ea-24a0-4681-8449-c1911241d0d4,ECE India Energies Private Limited,32.77,DCR,True,2026-07-28T01:15:34
+2025,37,c441b935-98f1-4331-a333-d9ebd019379d,Saatvik Green Energy Private Limited,31.65,DCR,True,2026-07-28T01:15:34
+2025,38,746878e3-ed8a-4aec-99a4-6081cfe367a2,Loom Solar Private Limited,30.83,DCR,True,2026-07-28T01:15:34
+2025,39,649f3170-8f14-430d-bd07-8b503f11df3e,Ankur Traders & Engineers Private Limited,30.03,DCR,True,2026-07-28T01:15:34
+2025,40,c33c04d2-fbc1-4737-ab6a-388b0aee1181,KLK Ventures Private Limited,29.26,DCR,True,2026-07-28T01:15:34
+2025,41,4a82ce6b-7d8b-4beb-a8ff-d8b76592cfff,Sri Savitr Solar Private Limited,28.94,DCR,True,2026-07-28T01:15:34
+2025,42,12d41715-0174-44c2-a1e6-8fe631633971,Green Brilliance Renewable Energy LLP,28.91,DCR,True,2026-07-28T01:15:34
+2025,43,5503f7ef-892f-4980-a83e-236376da86d1,Premier Energies Global Environment Private Limited,27.62,DCR,True,2026-07-28T01:15:34
+2025,44,d857d755-e1da-434d-93c5-dbd2c1d4cb5c,Sasa Energy LLP,25.07,DCR,True,2026-07-28T01:15:34
+2025,45,286745b9-a8ef-4d70-858f-ebcde58e0277,Junna Solar Systems Limited,23.98,DCR,True,2026-07-28T01:15:34
+2025,46,5c91caee-5868-4b09-86ef-36f66e71954c,Solarmint Energies Private Limited,22.73,DCR,True,2026-07-28T01:15:34
+2025,47,e1177317-770c-4c83-aa82-ae38e826193c,HR Solar Solution Private Limited,21.46,DCR,True,2026-07-28T01:15:34
+2025,48,4509a8a4-43d9-4675-a1b7-06f3d223d3a1,Kosol Energie Private Limited,20.64,DCR,True,2026-07-28T01:15:34
+2025,49,1f547f5e-9a42-4e0c-a149-5c4202e8e874,Unique Sun Power Private Limited,19.28,DCR,True,2026-07-28T01:15:34
+2025,50,bb7f7614-d729-4f49-8646-47af07b197a0,Easy Photo Voltech Private Limited,16.99,DCR,True,2026-07-28T01:15:34
+2025,51,163a07f8-d26c-4f38-9592-e22101e53b2d,Sova Solar Limited,14.29,DCR,True,2026-07-28T01:15:34
+2025,52,b0a962ef-a7cc-4c33-9049-c4c92787c633,Surya International Enterprise Private Limited,13.04,DCR,True,2026-07-28T01:15:34
+2025,53,e5d78098-1b34-438f-8354-72d79010c322,Akshaya Solar Power (India) Private Limited,12.9,DCR,True,2026-07-28T01:15:34
+2025,54,67aa3e29-5746-45a8-accc-c93fe74c416a,Rayon Illumination Solar Solution Private Limited,11.29,DCR,True,2026-07-28T01:15:34
+2025,55,65122fb0-d323-4bdc-989a-9c3425321b08,Agrawal Renewable Energy Private Limited,10.13,DCR,True,2026-07-28T01:15:34
+2025,56,929d4cd6-853c-41ec-8a61-1628dd18e94b,Ganesh Green Bharat Limited,9.89,DCR,True,2026-07-28T01:15:34
+2025,57,aa38af68-24bc-4593-b466-0fff06b99cb5,Pravanya Solar India Private Limited,8.95,DCR,True,2026-07-28T01:15:34
+2025,58,5da983a8-e0c7-49f2-a759-25b790da8524,Saatvik Solar Industries Private Limited,8.58,DCR,True,2026-07-28T01:15:34
+2025,59,64d2ed18-0259-455c-aedd-f95513a731cc,Uratom Solar (India) Private Limited,8.25,DCR,True,2026-07-28T01:15:34
+2025,60,d65915ef-245f-4e7a-a739-af06d6e04cc9,Inter Solar Systems Private Limited,8.13,DCR,True,2026-07-28T01:15:34
+2025,61,81091aa7-dea6-4d1f-b39d-eed600b15ff0,Aatmanirbar Solar Private Limited,7.86,DCR,True,2026-07-28T01:15:34
+2025,62,f134e759-44a5-4780-b7b4-eae78ddd100d,Jakson Engineers Limited,6.87,DCR,True,2026-07-28T01:15:34
+2025,63,9b90aef1-514d-437e-ac9f-7e10193d7b9b,Pixon Green Energy Private Limited,6.53,DCR,True,2026-07-28T01:15:34
+2025,64,82bb69f0-b6df-47af-a1d4-5674672e316d,Bluebird Solar Private Limited,6.44,DCR,True,2026-07-28T01:15:34
+2025,65,f46a9aa6-a70d-4c0d-8234-04d3bc3583ec,Knack Energy Private Limited,6.07,DCR,True,2026-07-28T01:15:34
+2025,66,c2143fac-1627-41c4-af9c-b03dea96c7a5,COSMIC PV Power Limited,5.68,DCR,True,2026-07-28T01:15:34
+2025,67,98ede0da-0edd-406b-9dc2-1242673db3e6,CONTENDRE GREENERGY LIMITED,5.42,DCR,True,2026-07-28T01:15:34
+2026,01,4c494d96-d12f-4bd8-b9fd-6006841083a4,Waaree Energies Limited,1987.4,DCR,True,2026-07-28T01:15:34
+2026,02,efd3cf8b-55f6-4365-a2f4-1af1c4c18cce,TP Solar Limited,1118.39,DCR,True,2026-07-28T01:15:34
+2026,03,9506d465-8696-4dd1-9546-9641849c6135,FS India Solar Ventures Private Limited,1087.92,DCR,True,2026-07-28T01:15:34
+2026,04,6465a0b9-60b7-4edf-97f1-3cb3840b9a73,Mundra Solar Energy Limited,946.18,DCR,True,2026-07-28T01:15:34
+2026,05,ae181577-a115-475f-a06c-730423feba86,Premier Energies Photovoltaic Private Limited,733.7,DCR,True,2026-07-28T01:15:34
+2026,06,6a6b0f2d-05e8-4536-86a1-6df5f24b732f,Goldi Sun Private Limited,628.99,DCR,True,2026-07-28T01:15:34
+2026,07,fbdaf772-c6e6-4c5d-81ce-e57be7b79d5c,Emmvee Energy Private Limited,467.72,DCR,True,2026-07-28T01:15:34
+2026,08,bbdd33fb-857c-47a1-ac2a-8013d1fd5500,Alpex Solar Limited,458.84,DCR,True,2026-07-28T01:15:34
+2026,09,8a29c14f-41fe-40db-b1d3-1769fb4dc2d9,Fujiyama Power Systems Limited,446.12,DCR,True,2026-07-28T01:15:34
+2026,10,5503f7ef-892f-4980-a83e-236376da86d1,Premier Energies Global Environment Private Limited,415.66,DCR,True,2026-07-28T01:15:34
+2026,11,e624e730-20a1-4a69-a03f-cc31ce053323,Mundra Solar PV Limited,386.39,DCR,True,2026-07-28T01:15:34
+2026,12,75ae04be-db90-4f15-aca8-257f59d835be,Renew Photovoltaics Private Limited,382.17,DCR,True,2026-07-28T01:15:34
+2026,13,faccb06f-9e17-4f7e-91ab-e98571aee188,Luminous Power Technologies Private Limited,314.87,DCR,True,2026-07-28T01:15:34
+2026,14,709b492d-c6d6-4a33-b7d2-b2e2383c06f4,Icon Solar-En Power Technologies Private Limited,277.11,DCR,True,2026-07-28T01:15:34
+2026,15,febe12df-4860-41e4-ba61-6a9615bd17a7,Websol Energy System Limited,230.73,DCR,True,2026-07-28T01:15:34
+2026,16,1a16edc1-b641-4f5d-8039-9d244f4b70bb,Rayzon Solar Limited,212.69,DCR,True,2026-07-28T01:15:34
+2026,17,628e71f8-6e61-4f67-81c2-00e95f5c6029,Oswal Solar Energy Private Limited,212.0,DCR,True,2026-07-28T01:15:34
+2026,18,e410ab49-6f6a-4249-a0ad-d3dd9a0562f1,Insolation Green Energy Private Limited,181.08,DCR,True,2026-07-28T01:15:34
+2026,19,4ed881dc-4954-4842-b07f-85c42f164279,Sangam Solar One Private Limited,156.54,DCR,True,2026-07-28T01:15:34
+2026,20,6a3653ca-c79d-4e27-b4a8-6fe22ab67098,ADM Solar Power And Infrastructure Private Limited,125.02,DCR,True,2026-07-28T01:15:34
+2026,21,d62f669b-18c0-4bf2-99f8-c5a883c9fae2,Vikram Solar Limited,121.12,DCR,True,2026-07-28T01:15:34
+2026,22,91b24c33-c4b4-492e-91fe-abb42080a27d,Tata Power Renewable Energy Limited,118.53,DCR,True,2026-07-28T01:15:34
+2026,23,c3d00797-de47-48f8-9e4d-3e904a63f7e9,Eastman Green Technologies Private Limited,101.02,DCR,True,2026-07-28T01:15:34
+2026,24,a76a7851-0231-4f61-b3ab-6fe1f9c3d224,Australian Premium Solar (India) Limited,98.34,DCR,True,2026-07-28T01:15:34
+2026,25,835ff21e-bdbb-4f74-a4d5-c4235982bebc,Integrated Batteries India Private Limited (Ib Solar),87.86,DCR,True,2026-07-28T01:15:34
+2026,26,8c9b6c4c-b972-4f28-95dd-b151fc9dcc33,Gautam Solar Private Limited,82.69,DCR,True,2026-07-28T01:15:34
+2026,27,3aa7989e-8902-4771-ace5-9aa740780114,Redren Energy Private Limited,73.0,DCR,True,2026-07-28T01:15:34
+2026,28,6e77a800-b968-492d-89dd-b0fdfafce601,Citizen Solar Private Limited,71.67,DCR,True,2026-07-28T01:15:34
+2026,29,746878e3-ed8a-4aec-99a4-6081cfe367a2,Loom Solar Private Limited,71.23,DCR,True,2026-07-28T01:15:34
+2026,30,f0dd3cfd-17c0-4a84-86f2-716cde2b9fd2,Novasys Greenergy Limited,67.74,DCR,True,2026-07-28T01:15:34
+2026,31,46d61215-d903-45b5-8dc3-844d87fb4580,Navitas Green Solutions Private Limited,51.23,DCR,True,2026-07-28T01:15:34
+2026,32,929d4cd6-853c-41ec-8a61-1628dd18e94b,Ganesh Green Bharat Limited,49.52,DCR,True,2026-07-28T01:15:34
+2026,33,e1177317-770c-4c83-aa82-ae38e826193c,HR Solar Solution Private Limited,49.33,DCR,True,2026-07-28T01:15:34
+2026,34,d851575c-3a4d-440c-b9dc-916ebe924f97,Pahal Solar Private Limited,47.77,DCR,True,2026-07-28T01:15:34
+2026,35,4a82ce6b-7d8b-4beb-a8ff-d8b76592cfff,Sri Savitr Solar Private Limited,45.99,DCR,True,2026-07-28T01:15:34
+2026,36,4509a8a4-43d9-4675-a1b7-06f3d223d3a1,Kosol Energie Private Limited,37.42,DCR,True,2026-07-28T01:15:34
+2026,37,1f547f5e-9a42-4e0c-a149-5c4202e8e874,Unique Sun Power Private Limited,37.08,DCR,True,2026-07-28T01:15:34
+2026,38,286745b9-a8ef-4d70-858f-ebcde58e0277,Junna Solar Systems Limited,36.53,DCR,True,2026-07-28T01:15:34
+2026,39,12d41715-0174-44c2-a1e6-8fe631633971,Green Brilliance Renewable Energy LLP,34.8,DCR,True,2026-07-28T01:15:34
+2026,40,c3df2d4f-9be0-4898-a18d-c0a22da05c4c,Laxmi Solar Power System Private Limited,32.32,DCR,True,2026-07-28T01:15:34
+2026,41,4dedf4f0-6144-45ec-a9b8-281a62bf6b0a,Sunbond Energy Private Limited,31.36,DCR,True,2026-07-28T01:15:34
+2026,42,af9f2bd9-8230-46a0-9416-e1276980ed59,Abhishek Solar Industries Private Limited,31.23,DCR,True,2026-07-28T01:15:34
+2026,43,e868f73a-27ea-462d-8d29-61e7233df817,Raajratna Ventures Limited,31.1,DCR,True,2026-07-28T01:15:34
+2026,44,e5d78098-1b34-438f-8354-72d79010c322,Akshaya Solar Power (India) Private Limited,26.43,DCR,True,2026-07-28T01:15:34
+2026,45,24cb65eb-f553-4fe4-853e-dfee1df94d49,Renewsys India Private Limited,26.32,DCR,True,2026-07-28T01:15:34
+2026,46,c33c04d2-fbc1-4737-ab6a-388b0aee1181,KLK Ventures Private Limited,26.17,DCR,True,2026-07-28T01:15:34
+2026,47,e6e2673f-3088-4162-a67e-0441bed0eac7,Reliance Industries Limited,25.36,DCR,False,2026-07-28T01:15:34
+2026,48,d857d755-e1da-434d-93c5-dbd2c1d4cb5c,Sasa Energy LLP,24.92,DCR,True,2026-07-28T01:15:34
+2026,49,f46a9aa6-a70d-4c0d-8234-04d3bc3583ec,Knack Energy Private Limited,24.76,DCR,True,2026-07-28T01:15:34
+2026,50,5da983a8-e0c7-49f2-a759-25b790da8524,Saatvik Solar Industries Private Limited,21.81,DCR,True,2026-07-28T01:15:34
+2026,51,649f3170-8f14-430d-bd07-8b503f11df3e,Ankur Traders & Engineers Private Limited,21.8,DCR,True,2026-07-28T01:15:34
+2026,52,5c91caee-5868-4b09-86ef-36f66e71954c,Solarmint Energies Private Limited,18.97,DCR,True,2026-07-28T01:15:34
+2026,53,c441b935-98f1-4331-a333-d9ebd019379d,Saatvik Green Energy Private Limited,16.45,DCR,True,2026-07-28T01:15:34
+2026,54,075f6c03-1348-41c4-864f-726a26b99544,Navitas Solar Private Limited,15.51,DCR,True,2026-07-28T01:15:34
+2026,55,67aa3e29-5746-45a8-accc-c93fe74c416a,Rayon Illumination Solar Solution Private Limited,15.41,DCR,True,2026-07-28T01:15:34
+2026,56,163a07f8-d26c-4f38-9592-e22101e53b2d,Sova Solar Limited,15.02,DCR,True,2026-07-28T01:15:34
+2026,57,b0a962ef-a7cc-4c33-9049-c4c92787c633,Surya International Enterprise Private Limited,13.92,DCR,True,2026-07-28T01:15:34
+2026,58,a3a30153-8923-4936-a88b-0b22460e71a8,Premier Energies International Private Limited,13.9,DCR,True,2026-07-28T01:15:34
+2026,59,a196493a-cc79-4b85-b9db-65755b7daee5,Rhine Solar Limited,13.57,DCR,True,2026-07-28T01:15:34
+2026,60,6435b7ea-24a0-4681-8449-c1911241d0d4,ECE India Energies Private Limited,13.17,DCR,True,2026-07-28T01:15:34
+2026,61,9b90aef1-514d-437e-ac9f-7e10193d7b9b,Pixon Green Energy Private Limited,12.89,DCR,True,2026-07-28T01:15:34
+2026,62,64d2ed18-0259-455c-aedd-f95513a731cc,Uratom Solar (India) Private Limited,12.53,DCR,True,2026-07-28T01:15:34
+2026,63,bb7f7614-d729-4f49-8646-47af07b197a0,Easy Photo Voltech Private Limited,12.23,DCR,True,2026-07-28T01:15:34
+2026,64,81091aa7-dea6-4d1f-b39d-eed600b15ff0,Aatmanirbar Solar Private Limited,10.74,DCR,True,2026-07-28T01:15:34
+2026,65,aa38af68-24bc-4593-b466-0fff06b99cb5,Pravanya Solar India Private Limited,10.56,DCR,True,2026-07-28T01:15:34
+2026,66,68f66338-0587-4c5a-bf99-ed85a1b8bf5a,Asote Solutions Private Limited,9.0,DCR,True,2026-07-28T01:15:34
+2026,67,06204b65-1870-4672-bdf8-b45f040ec28f,Goldi Solar Private Limited,8.0,DCR,True,2026-07-28T01:15:34
+2026,68,c2143fac-1627-41c4-af9c-b03dea96c7a5,COSMIC PV Power Limited,7.87,DCR,True,2026-07-28T01:15:34
+2026,69,65122fb0-d323-4bdc-989a-9c3425321b08,Agrawal Renewable Energy Private Limited,6.56,DCR,True,2026-07-28T01:15:34

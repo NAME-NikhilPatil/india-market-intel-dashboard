@@ -227,6 +227,8 @@
     const openDirect = document.getElementById("openDirect");
     const description = document.getElementById("dashboardDescription");
     const tabs = Array.from(document.querySelectorAll("[data-dashboard]"));
+    const dashboardVersions = {};
+    let activeDashboard = "vahan";
 
     function normalizeDashboard(value) {
       return Object.prototype.hasOwnProperty.call(dashboards, value) ? value : "vahan";
@@ -235,10 +237,12 @@
     function setDashboard(next, shouldPushHash = true) {
       const key = normalizeDashboard(next);
       const item = dashboards[key];
+      activeDashboard = key;
 
-      frame.src = item.src;
+      const version = dashboardVersions[key];
+      frame.src = version ? `${item.src}?v=${encodeURIComponent(version)}` : item.src;
       frame.title = item.title;
-      openDirect.href = item.src;
+      openDirect.href = version ? `${item.src}?v=${encodeURIComponent(version)}` : item.src;
       description.textContent = item.description;
 
       for (const tab of tabs) {
@@ -261,7 +265,32 @@
       setDashboard(window.location.hash.slice(1), false);
     });
 
+    async function refreshDashboardWhenChanged() {
+      try {
+        const response = await fetch("/api/health", { cache: "no-store" });
+        if (!response.ok) return;
+        const health = await response.json();
+        const metadata = health.dashboards || {};
+
+        for (const key of Object.keys(dashboards)) {
+          const nextVersion = metadata[key] && metadata[key].updated_at;
+          if (!nextVersion) continue;
+          const previousVersion = dashboardVersions[key];
+          dashboardVersions[key] = nextVersion;
+          if (previousVersion && previousVersion !== nextVersion && activeDashboard === key) {
+            const url = `${dashboards[key].src}?v=${encodeURIComponent(nextVersion)}`;
+            frame.src = url;
+            openDirect.href = url;
+          }
+        }
+      } catch (error) {
+        console.warn("Dashboard update check failed", error);
+      }
+    }
+
     setDashboard(window.location.hash.slice(1), false);
+    refreshDashboardWhenChanged();
+    window.setInterval(refreshDashboardWhenChanged, 60000);
   </script>
 </body>
 </html>

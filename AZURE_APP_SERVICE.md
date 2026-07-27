@@ -5,8 +5,12 @@ This folder can now run as a single Azure App Service custom container:
 - Flask serves the one-page dashboard switcher.
 - The existing dashboard HTML files are served from the same app.
 - Scraper/rebuild jobs are available through protected API endpoints.
-- The Docker image includes Chromium and ChromeDriver for VAHAN Selenium scraping.
+- The Docker image includes Chromium, ChromeDriver, and Xvfb for VAHAN headed Selenium scraping.
 - Runtime scrape outputs are written to Azure's persistent `/home` storage area.
+
+Do not treat the source ZIP as a built Docker image. A ZIP deployment to the
+built-in Python/Oryx stack can serve the prebuilt dashboards and run NISE, but
+it cannot run the VAHAN browser scraper because the Dockerfile is not executed.
 
 If you prefer clicking through Azure Portal instead of using Azure CLI, use:
 
@@ -110,16 +114,17 @@ VAHAN_ATTEMPTS=4
 VAHAN_WAIT_SECONDS=120
 VAHAN_PAGE_TIMEOUT=120
 VAHAN_RETRY_SLEEP=8
+VAHAN_HEADFUL=true
 ENABLE_SCRAPER_SCHEDULER=true
-SOLAR_DAILY_UTC=21:30
-VAHAN_DAILY_UTC=22:30
+SOLAR_DAILY_UTC=02:30
+VAHAN_DAILY_UTC=03:30
 ```
 
 Daily scheduler timing:
 
 ```text
-SOLAR_DAILY_UTC=21:30 -> 03:00 IST
-VAHAN_DAILY_UTC=22:30 -> 04:00 IST
+SOLAR_DAILY_UTC=02:30 -> 08:00 IST
+VAHAN_DAILY_UTC=03:30 -> 09:00 IST
 ```
 
 Keep the App Service scaled to one instance if you use the in-app scheduler, otherwise multiple instances can trigger duplicate jobs.
@@ -190,7 +195,8 @@ az webapp config appsettings set `
     VAHAN_ATTEMPTS=4 `
     VAHAN_WAIT_SECONDS=120 `
     VAHAN_PAGE_TIMEOUT=120 `
-    VAHAN_RETRY_SLEEP=8
+    VAHAN_RETRY_SLEEP=8 `
+    VAHAN_HEADFUL=true
 
 az webapp config set `
   --name $app `

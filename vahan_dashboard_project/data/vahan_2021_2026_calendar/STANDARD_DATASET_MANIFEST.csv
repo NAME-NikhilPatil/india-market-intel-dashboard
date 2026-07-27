@@ -1,8 +1,8 @@
 file,status,standard_use,qa_notes
 standard_consolidated/vahan_standard_consolidated_long.csv,STANDARD_EXPORT,Single consolidated dashboard/export CSV with dataset column.,Built from all current STANDARD source CSVs by scripts/build_vahan_standard_consolidated.py.
 all_state_maker_month_long.csv,STANDARD,National maker monthly/YTD totals for 2026 Jan-May.,Fresh May 30; matches VAHAN Maker x Month Wise all-state table.
-state_maker_category_month_long.csv,STANDARD,State x maker x vehicle-category analysis.,All raw titles are correct; remaining state-total variance is at most 2 registrations.
+state_maker_category_month_long.csv,STANDARD_WITH_QA_FLAGS,State x maker x vehicle-category analysis.,All raw titles are correct; state-total mismatches listed in audit need targeted repair.
 state_category_fuel_month_long.csv,STANDARD,State x vehicle-category x fuel and EV penetration.,All raw titles are correct.
-state_maker_fuel_month_long.csv,STANDARD,State x maker x fuel analysis.,All raw titles are correct; max state-month variance vs maker-category is 2 registrations.
+state_maker_fuel_month_long.csv,STANDARD,State x maker x fuel analysis.,All raw titles are correct; max state-month variance vs maker-category is 309606 registrations.
 all_state_maker_category_month_long.csv,ARCHIVED_LEGACY,Do not use as standard dashboard source.,Archived/legacy all-state cross-tab; replaced by state-level standard sources and consolidated CSV.
 all_state_maker_fuel_month_long.csv,ARCHIVED_LEGACY,Do not use as standard dashboard source.,Archived/legacy all-state cross-tab; replaced by state-level standard sources and consolidated CSV.

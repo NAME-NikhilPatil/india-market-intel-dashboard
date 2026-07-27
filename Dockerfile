@@ -5,12 +5,20 @@ ENV PYTHONUNBUFFERED=1 \
     SCRAPER_SEED_DIR=/app \
     SCRAPER_WORKSPACE_DIR=/home/site/dashboard-workspace \
     SCRAPER_RUNTIME_DIR=/home/site/scraper-runtime \
-    CHROME_BIN=/usr/bin/chromium
+    CHROME_BIN=/usr/bin/chromium \
+    WEB_CONCURRENCY=1 \
+    GUNICORN_THREADS=4 \
+    GUNICORN_TIMEOUT=900 \
+    ENABLE_SCRAPER_SCHEDULER=true \
+    SOLAR_DAILY_UTC=02:30 \
+    VAHAN_DAILY_UTC=03:30
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
       chromium \
       chromium-driver \
+      xvfb \
+      xauth \
       ca-certificates \
       fonts-liberation \
       libnss3 \

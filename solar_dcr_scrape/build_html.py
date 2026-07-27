@@ -10,7 +10,9 @@ data = open(os.path.join(BASE, 'dashboard_data.json')).read()
 out = template.replace('__DATA__', data).replace('__CHART_RENDERERS__', renderers)
 
 target = os.path.join(BASE, 'solar_dcr_dashboard.html')
-with open(target, 'w') as f:
+tmp_target = target + '.tmp'
+with open(tmp_target, 'w') as f:
     f.write(out)
+os.replace(tmp_target, target)
 size = os.path.getsize(target)
 print(f"Wrote {target} ({size:,} bytes / {size/1024/1024:.2f} MB)")

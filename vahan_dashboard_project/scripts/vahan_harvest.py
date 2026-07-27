@@ -99,6 +99,18 @@ def build_driver(headful: bool) -> webdriver.Chrome:
     return webdriver.Chrome(options=options)
 
 
+def assert_portal_access(driver: webdriver.Chrome) -> None:
+    """Fail quickly when VAHAN returns its access-denied page."""
+    title = (driver.title or "").strip().lower()
+    source = (driver.page_source or "").lower()
+    if title == "access forbidden" or "you don’t have permission to access this page" in source \
+            or "you don't have permission to access this page" in source:
+        raise RuntimeError(
+            "VAHAN portal returned Access Forbidden. Use a headed browser session "
+            "(VAHAN_HEADFUL=true); do not publish this run as a successful refresh."
+        )
+
+
 class Harvester:
     def __init__(self, job: Job):
         self.job = job
@@ -234,6 +246,7 @@ class Harvester:
         for attempt in range(3):
             try:
                 self.driver.get(URL)
+                assert_portal_access(self.driver)
                 self.wait.until(EC.presence_of_element_located((By.ID, "yaxisVar_input")))
                 self.wait_idle()
                 report = REPORTS[self.job.report]

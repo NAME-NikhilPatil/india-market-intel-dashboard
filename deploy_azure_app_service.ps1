@@ -80,9 +80,10 @@ az webapp config appsettings set `
     VAHAN_WAIT_SECONDS=120 `
     VAHAN_PAGE_TIMEOUT=120 `
     VAHAN_RETRY_SLEEP=8 `
+    VAHAN_HEADFUL=true `
     ENABLE_SCRAPER_SCHEDULER=true `
-    SOLAR_DAILY_UTC=21:30 `
-    VAHAN_DAILY_UTC=22:30 | Out-Null
+    SOLAR_DAILY_UTC=02:30 `
+    VAHAN_DAILY_UTC=03:30 | Out-Null
 
 az webapp config set `
   --name $AppName `

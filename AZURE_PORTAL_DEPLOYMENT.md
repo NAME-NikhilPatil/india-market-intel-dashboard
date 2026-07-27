@@ -2,6 +2,11 @@
 
 Use this when you want to deploy from the Azure UI instead of Azure CLI.
 
+> Important: do not upload this source ZIP to an App Service configured with
+> the built-in Python/Oryx stack when you expect VAHAN automation. Oryx does
+> not build the `Dockerfile`, so Chromium and Xvfb are absent. Build the Docker
+> image and configure App Service to run that custom container as shown below.
+
 The target architecture is:
 
 ```text
@@ -17,7 +22,7 @@ The app runs as one custom container:
 - Flask backend from `app.py`
 - Solar scraper
 - VAHAN Selenium scraper
-- Chromium + ChromeDriver from `Dockerfile`
+- Chromium + ChromeDriver + Xvfb from `Dockerfile` (VAHAN blocks headless sessions)
 
 ## 0. Push This Folder To GitHub
 
@@ -122,16 +127,17 @@ VAHAN_ATTEMPTS = 4
 VAHAN_WAIT_SECONDS = 120
 VAHAN_PAGE_TIMEOUT = 120
 VAHAN_RETRY_SLEEP = 8
+VAHAN_HEADFUL = true
 ENABLE_SCRAPER_SCHEDULER = true
-SOLAR_DAILY_UTC = 21:30
-VAHAN_DAILY_UTC = 22:30
+SOLAR_DAILY_UTC = 02:30
+VAHAN_DAILY_UTC = 03:30
 ```
 
 These scheduler times are UTC:
 
 ```text
-SOLAR_DAILY_UTC=21:30 -> 03:00 IST
-VAHAN_DAILY_UTC=22:30 -> 04:00 IST
+SOLAR_DAILY_UTC=02:30 -> 08:00 IST
+VAHAN_DAILY_UTC=03:30 -> 09:00 IST
 ```
 
 If `ENABLE_SCRAPER_SCHEDULER=true` is missing, the app will only refresh when you manually click a refresh button.
