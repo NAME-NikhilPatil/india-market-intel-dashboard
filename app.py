@@ -32,12 +32,6 @@ PUBLIC_FILES = {
     "vahan_dashboard_project/vahan_dashboard_v19.html",
 }
 
-COPY_ITEMS = [
-    "index.html",
-    "solar_dcr_scrape",
-    "vahan_dashboard_project",
-]
-
 SOLAR_CODE_FILES = [
     "scrape_solar_dcr.py",
     "build_data.py",
@@ -113,36 +107,15 @@ def ensure_runtime_workspace() -> None:
             sync_runtime_code()
             return
 
-    for item in COPY_ITEMS:
-        src = SOURCE_ROOT / item
-        dst = WORKSPACE_ROOT / item
-        if not src.exists():
-            continue
-        if dst.exists():
-            if dst.is_dir():
-                shutil.rmtree(dst)
-            else:
-                dst.unlink()
-        if src.is_dir():
-            shutil.copytree(
-                src,
-                dst,
-                ignore=shutil.ignore_patterns(
-                    "__pycache__",
-                    "*.pyc",
-                    ".DS_Store",
-                    "logs",
-                    "dist",
-                    ".runtime",
-                ),
-            )
-        else:
-            shutil.copy2(src, dst)
-
+    # A packaged VAHAN history is more than 800 MB and contains thousands of
+    # small files. Copying it to Azure's persistent /home mount here prevents
+    # Gunicorn from opening port 8000 before the container startup deadline.
+    # Publish the ready-to-serve snapshot immediately; historical scraper data
+    # is seeded lazily by the first VAHAN job.
+    sync_deployed_snapshot()
     marker.write_text(utc_now() + "\n", encoding="utf-8")
     if image_version:
         version_marker.write_text(image_version + "\n", encoding="utf-8")
-    sync_runtime_code()
 
 
 def copy_file(src: Path, dst: Path) -> None:
@@ -190,6 +163,57 @@ def sync_runtime_code() -> None:
             vahan_scripts_dst,
             ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store"),
         )
+
+
+def ensure_vahan_runtime_data(log_handle=None) -> None:
+    """Seed VAHAN history on demand, after the web server is already healthy."""
+    if WORKSPACE_ROOT == SOURCE_ROOT:
+        return
+
+    relative = Path("vahan_dashboard_project") / "data" / "vahan_2021_2026_calendar"
+    source = SOURCE_ROOT / relative
+    destination = WORKSPACE_ROOT / relative
+    seed_marker = destination / ".deployed_history_seeded"
+    required = [
+        destination / "vahan_states.json",
+        destination / "state_category_fuel_month_raw",
+        destination / "state_maker_category_month_raw",
+        destination / "state_maker_fuel_month_raw",
+        destination / "state_category_fuel_month_long.csv",
+        destination / "state_maker_category_month_long.csv",
+        destination / "state_maker_fuel_month_long.csv",
+        destination / "standard_consolidated" / "vahan_standard_consolidated_long.csv",
+    ]
+
+    def write_log(message: str) -> None:
+        app.logger.info(message)
+        if log_handle is not None:
+            log_handle.write(message + "\n")
+            log_handle.flush()
+
+    if seed_marker.exists():
+        return
+    if all(path.exists() for path in required):
+        destination.mkdir(parents=True, exist_ok=True)
+        seed_marker.write_text(utc_now() + "\n", encoding="utf-8")
+        write_log("VAHAN runtime history already exists; marked it ready.")
+        return
+    if not source.exists():
+        raise FileNotFoundError(f"Packaged VAHAN seed data is missing: {source}")
+
+    write_log(f"Seeding VAHAN runtime history from {source} to {destination} ...")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(
+        source,
+        destination,
+        dirs_exist_ok=True,
+        ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store", "logs"),
+    )
+    missing = [str(path) for path in required if not path.exists()]
+    if missing:
+        raise RuntimeError("VAHAN runtime seed is incomplete: " + ", ".join(missing))
+    seed_marker.write_text(utc_now() + "\n", encoding="utf-8")
+    write_log("VAHAN runtime history seed completed.")
 
 
 def load_jobs() -> dict[str, Any]:
@@ -311,6 +335,11 @@ def run_job(job: dict[str, Any], steps: list[dict[str, Any]]) -> None:
         log_path.parent.mkdir(parents=True, exist_ok=True)
         with log_path.open("w", encoding="utf-8") as log:
             log.write(f"job_id={job['id']}\nkind={job['kind']}\nstarted_at={job['started_at']}\n")
+            if "vahan" in str(job.get("kind", "")):
+                job["current_step"] = "Prepare VAHAN runtime data"
+                job["current_step_index"] = 0
+                upsert_job(job)
+                ensure_vahan_runtime_data(log)
             for index, step in enumerate(steps, start=1):
                 command = step["command"]
                 cwd = Path(step["cwd"])
