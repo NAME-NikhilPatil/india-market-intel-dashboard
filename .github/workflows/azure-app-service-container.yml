@@ -59,37 +59,9 @@ jobs:
           docker push "$IMAGE_URI"
           docker push "$LATEST_IMAGE_URI"
 
-      - name: Configure and restart App Service
+      - name: Show deployment info
         shell: bash
         run: |
-          set -euo pipefail
-
-          az webapp config appsettings set \
-            --name "${{ secrets.AZURE_APP_NAME }}" \
-            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
-            --settings \
-              RESET_RUNTIME_WORKSPACE=false \
-              WEBSITES_ENABLE_APP_SERVICE_STORAGE=true \
-              ENABLE_SCRAPER_SCHEDULER=true \
-              SOLAR_DAILY_UTC=02:30 \
-              VAHAN_DAILY_UTC=03:30 \
-              VAHAN_HEADFUL=true
-
-          az webapp restart \
-            --name "${{ secrets.AZURE_APP_NAME }}" \
-            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}"
-
-      - name: Verify deployment health
-        shell: bash
-        run: |
-          set -euo pipefail
-          URL="https://${{ secrets.AZURE_APP_NAME }}.azurewebsites.net/api/health"
-          for attempt in $(seq 1 30); do
-            if curl -fSs --max-time 20 "$URL"; then
-              exit 0
-            fi
-            echo "Waiting for App Service ($attempt/30)..."
-            sleep 10
-          done
-          echo "App Service did not become healthy" >&2
-          exit 1
+          echo "Image pushed successfully:"
+          echo "$LATEST_IMAGE_URI"
+          echo "Restart the App Service from Azure Portal to pull this image."
