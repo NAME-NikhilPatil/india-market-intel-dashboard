@@ -1,5 +1,7 @@
 FROM python:3.12-slim
 
+ARG APP_IMAGE_VERSION=unknown
+
 ENV PYTHONUNBUFFERED=1 \
     PORT=8000 \
     SCRAPER_SEED_DIR=/app \
@@ -11,7 +13,8 @@ ENV PYTHONUNBUFFERED=1 \
     GUNICORN_TIMEOUT=900 \
     ENABLE_SCRAPER_SCHEDULER=true \
     SOLAR_DAILY_UTC=02:30 \
-    VAHAN_DAILY_UTC=03:30
+    VAHAN_DAILY_UTC=03:30 \
+    APP_IMAGE_VERSION=${APP_IMAGE_VERSION}
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \

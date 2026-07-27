@@ -16,6 +16,10 @@ it cannot run the VAHAN browser scraper because the Dockerfile is not executed.
 packaged dashboard snapshots and code. It intentionally retains accumulated
 raw data under `/home` so Azure startup does not time out copying full history.
 
+Container builds set `APP_IMAGE_VERSION` to the Git commit SHA. On the first
+start of each new image, the packaged dashboards are promoted once; later
+restarts of the same image preserve newer runtime-scraped dashboards.
+
 If you prefer clicking through Azure Portal instead of using Azure CLI, use:
 
 - `AZURE_PORTAL_DEPLOYMENT.md`

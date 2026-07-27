@@ -85,6 +85,8 @@ def ensure_runtime_workspace() -> None:
         return
 
     marker = WORKSPACE_ROOT / ".workspace_seeded"
+    version_marker = WORKSPACE_ROOT / ".deployed_snapshot_version"
+    image_version = os.environ.get("APP_IMAGE_VERSION", "").strip()
     reset = bool_env("RESET_RUNTIME_WORKSPACE", False)
     required_seed_files = [
         WORKSPACE_ROOT / "index.html",
@@ -98,6 +100,14 @@ def ensure_runtime_workspace() -> None:
             # executable code; retain accumulated raw/runtime data in /home.
             sync_deployed_snapshot()
             marker.write_text(utc_now() + "\n", encoding="utf-8")
+            if image_version:
+                version_marker.write_text(image_version + "\n", encoding="utf-8")
+            return
+        deployed_version = version_marker.read_text(encoding="utf-8").strip() if version_marker.exists() else ""
+        if image_version and image_version != "unknown" and deployed_version != image_version:
+            sync_deployed_snapshot()
+            marker.write_text(utc_now() + "\n", encoding="utf-8")
+            version_marker.write_text(image_version + "\n", encoding="utf-8")
             return
         if all(path.exists() for path in required_seed_files):
             sync_runtime_code()
@@ -130,6 +140,8 @@ def ensure_runtime_workspace() -> None:
             shutil.copy2(src, dst)
 
     marker.write_text(utc_now() + "\n", encoding="utf-8")
+    if image_version:
+        version_marker.write_text(image_version + "\n", encoding="utf-8")
     sync_runtime_code()
 
 
