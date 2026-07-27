@@ -59,23 +59,10 @@ jobs:
           docker push "$IMAGE_URI"
           docker push "$LATEST_IMAGE_URI"
 
-      - name: Deploy immutable image to App Service
+      - name: Configure and restart App Service
         shell: bash
         run: |
           set -euo pipefail
-
-          ACR_USER="$(az acr credential show --name "${{ secrets.AZURE_ACR_NAME }}" --query username -o tsv)"
-          ACR_PASS="$(az acr credential show --name "${{ secrets.AZURE_ACR_NAME }}" --query 'passwords[0].value' -o tsv)"
-
-          az webapp sitecontainers update \
-            --name "${{ secrets.AZURE_APP_NAME }}" \
-            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
-            --container-name main \
-            --image "$IMAGE_URI" \
-            --target-port 8000 \
-            --is-main true \
-            --registry-username "$ACR_USER" \
-            --registry-password "$ACR_PASS"
 
           az webapp config appsettings set \
             --name "${{ secrets.AZURE_APP_NAME }}" \
