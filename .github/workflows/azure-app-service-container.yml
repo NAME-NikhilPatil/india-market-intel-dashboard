@@ -87,6 +87,7 @@ jobs:
               --container-name "$SITE_CONTAINER_NAME" \
               --image "$IMAGE_URI" \
               --target-port 8000 \
+              --startup-cmd "/bin/sh /app/startup.sh" \
               --is-main true \
               --registry-username "$ACR_USER" \
               --registry-password "$ACR_PASS"
