@@ -27,11 +27,17 @@ if [ "${PORT}" != "80" ]; then
 fi
 GUNICORN_ARGS="${GUNICORN_BINDS} --workers ${WEB_CONCURRENCY:-1} --threads ${GUNICORN_THREADS:-4} --timeout ${GUNICORN_TIMEOUT:-900} --access-logfile - --error-logfile -"
 
-if command -v xvfb-run >/dev/null 2>&1 && [ -x "${CHROME_BIN}" ]; then
-  exec xvfb-run -a gunicorn app:app ${GUNICORN_ARGS}
+echo "Starting dashboard image ${APP_IMAGE_VERSION:-unknown}; ports=${PORT},80; workspace=${SCRAPER_WORKSPACE_DIR}" >&2
+
+if command -v Xvfb >/dev/null 2>&1 && [ -x "${CHROME_BIN}" ]; then
+  export DISPLAY="${DISPLAY:-:99}"
+  Xvfb "${DISPLAY}" -screen 0 1920x1080x24 -nolisten tcp >/tmp/xvfb.log 2>&1 &
+  echo "Started Xvfb on ${DISPLAY} for headed VAHAN scraping." >&2
+else
+  echo "WARNING: Chromium/Xvfb unavailable; VAHAN scheduling is disabled." >&2
+  export VAHAN_DAILY_UTC=""
+  export VAHAN_HEADFUL="false"
 fi
 
-echo "WARNING: Chromium/Xvfb unavailable; VAHAN scheduling is disabled. Deploy the Docker image to enable it." >&2
-export VAHAN_DAILY_UTC=""
-export VAHAN_HEADFUL="false"
+echo "Starting Gunicorn: ${GUNICORN_ARGS}" >&2
 exec gunicorn app:app ${GUNICORN_ARGS}
