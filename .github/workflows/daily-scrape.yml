@@ -9,6 +9,14 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AZURE_APP_NAME: india-market-dashboard-v2
+  AZURE_RESOURCE_GROUP: rg-india-market-dashboard-prod
+
 concurrency:
   group: daily-scraper
   cancel-in-progress: false
@@ -20,12 +28,30 @@ jobs:
     timeout-minutes: 60
 
     steps:
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Resolve App Service URL
+        shell: bash
+        run: |
+          set -euo pipefail
+          DEFAULT_HOSTNAME="$(az webapp show \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --query defaultHostName -o tsv)"
+          test -n "$DEFAULT_HOSTNAME"
+          echo "APP_BASE_URL=https://$DEFAULT_HOSTNAME" >> "$GITHUB_ENV"
+
       - name: Trigger Solar DCR scrape
         shell: bash
         run: |
           set -euo pipefail
 
-          curl -fSs -X POST "${{ secrets.APP_BASE_URL }}/api/scrape/solar" \
+          curl -fSs -X POST "$APP_BASE_URL/api/scrape/solar" \
             -H "Authorization: Bearer ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
             -H "X-Admin-Token: ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
             -H "X-Scraper-Admin-Token: ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
@@ -38,12 +64,30 @@ jobs:
     timeout-minutes: 120
 
     steps:
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Resolve App Service URL
+        shell: bash
+        run: |
+          set -euo pipefail
+          DEFAULT_HOSTNAME="$(az webapp show \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --query defaultHostName -o tsv)"
+          test -n "$DEFAULT_HOSTNAME"
+          echo "APP_BASE_URL=https://$DEFAULT_HOSTNAME" >> "$GITHUB_ENV"
+
       - name: Trigger VAHAN recent scrape
         shell: bash
         run: |
           set -euo pipefail
 
-          curl -fSs -X POST "${{ secrets.APP_BASE_URL }}/api/scrape/vahan/recent" \
+          curl -fSs -X POST "$APP_BASE_URL/api/scrape/vahan/recent" \
             -H "Authorization: Bearer ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
             -H "X-Admin-Token: ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
             -H "X-Scraper-Admin-Token: ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
