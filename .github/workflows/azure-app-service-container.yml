@@ -110,6 +110,7 @@ jobs:
               WEBSITES_ENABLE_APP_SERVICE_STORAGE=true \
               WEBSITES_PORT=8000 \
               WEBSITES_CONTAINER_START_TIME_LIMIT=1800 \
+              SCRAPER_ADMIN_TOKEN="${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
               ENABLE_SCRAPER_SCHEDULER=true \
               SOLAR_DAILY_UTC=02:30 \
               VAHAN_DAILY_UTC=03:30 \
