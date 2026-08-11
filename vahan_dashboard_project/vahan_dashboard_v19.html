@@ -3105,6 +3105,7 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
         <div class="panel-head">
           <h3 class="panel-title" id="hmSeasonalityTitle">Year × month registrations</h3>
           <span class="panel-sub" id="hmSeasonalitySub">Darker = higher month</span>
+          <button class="csv-btn" style="margin-left:auto;" data-csv="hm-seasonality">Download Excel</button>
         </div>
         <div id="hmSeasonality"></div>
       </div>
@@ -3112,6 +3113,7 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
         <div class="panel-head">
           <h3 class="panel-title" id="hmEvPenTitle">Monthly EV penetration</h3>
           <span class="panel-sub" id="hmEvPenSub">EV registrations ÷ total · all-category</span>
+          <button class="csv-btn" style="margin-left:auto;" data-csv="hm-evpen">Download Excel</button>
         </div>
         <div id="hmEvPen"></div>
       </div>
@@ -3119,7 +3121,7 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
         <div class="panel-head">
           <h3 class="panel-title" id="hmFuelShareTitle">Fuel mix as a heatmap</h3>
           <span class="panel-sub" id="hmFuelShareSub">Each cell: that fuel's monthly share of total</span>
-          <span class="panel-sub" style="margin-left:auto;">
+          <span class="panel-sub">
             Fuel: <span class="seg-toggle" data-toggle="hmFuel">
               <button data-val="EV" class="active">EV</button>
               <button data-val="Petrol">Petrol</button>
@@ -3128,6 +3130,7 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
               <button data-val="Others">Others</button>
             </span>
           </span>
+          <button class="csv-btn" style="margin-left:auto;" data-csv="hm-fuelshare">Download Excel</button>
         </div>
         <div id="hmFuelShare"></div>
       </div>
@@ -4955,7 +4958,10 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
   // -----------------------------------------------------------------------
   // values: { ym -> number | null }  (ym format: 'YYYY-MM')
   // opts:   { fmt: (v) => string, tipFmt: (v, ym) => html string,
-  //           rampFn?, max?, valueFor?: ym -> number for color (default = value) }
+  //           rampFn?, max?, valueFor?: ym -> number for color (default = value),
+  //           exportKey?: string — if set, caches a Year×Month row table in
+  //           HM_EXPORT_DATA[exportKey] for the panel's "Download Excel" button }
+  const HM_EXPORT_DATA = {};
   function buildYearMonthHeatmap(host, valuesByYm, opts = {}) {
     clearChildren(host);
     const months = MO_SHORT;
@@ -4972,6 +4978,18 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
       .map(([_, v]) => v);
     const max = opts.max != null ? opts.max
       : (Math.max(...allVals.map(v => Math.abs(v)), 0) || 1);
+
+    if (opts.exportKey) {
+      HM_EXPORT_DATA[opts.exportKey] = years.map(yr => {
+        const row = { Year: yr };
+        months.forEach((m, i) => {
+          const ym = `${yr}-${String(i + 1).padStart(2, '0')}`;
+          const v = valuesByYm[ym];
+          row[m] = v == null ? '' : fmt(v);
+        });
+        return row;
+      });
+    }
 
     const grid = document.createElement('div');
     grid.className = 'heatmap-grid';
@@ -5044,6 +5062,7 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
       buildYearMonthHeatmap(host, values, {
         fmt: fmtNC,
         tipFmt: (v, ym) => `<strong>${fmtMonth(ym)}</strong><br>${fm}: <span class="tt-num">${fmtN(v)}</span>`,
+        exportKey: 'seasonality',
       });
       return;
     }
@@ -5068,7 +5087,7 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
     } else {
       monthly.forEach(r => { values[r.month] = r[STATE.fuel] || 0; });
     }
-    buildYearMonthHeatmap(host, values, { fmt: fmtNC });
+    buildYearMonthHeatmap(host, values, { fmt: fmtNC, exportKey: 'seasonality' });
   }
 
   function renderEvPenHeatmap() {
@@ -5096,6 +5115,7 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
       buildYearMonthHeatmap(host, values, {
         fmt: fmtP,
         tipFmt: (v, ym) => `<strong>${fmtMonth(ym)}</strong><br>${fm} EV share: <span class="tt-num">${fmtP2(v)}</span>`,
+        exportKey: 'evpen',
       });
       return;
     }
@@ -5116,6 +5136,7 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
     buildYearMonthHeatmap(host, values, {
       fmt: fmtP,
       tipFmt: (v, ym) => `<strong>${fmtMonth(ym)}</strong>${ym === PAYLOAD.seasonality.partial_month ? ' <em>(partial)</em>' : ''}<br>${catLabel} EV penetration: <span class="tt-num">${fmtP2(v)}</span>`,
+      exportKey: 'evpen',
     });
   }
 
@@ -5144,6 +5165,7 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
       buildYearMonthHeatmap(host, values, {
         fmt: fmtP,
         tipFmt: (v, ym) => `<strong>${fmtMonth(ym)}</strong><br>${fm} ${fuel}: <span class="tt-num">${fmtP2(v)}</span>`,
+        exportKey: 'fuelshare',
       });
       return;
     }
@@ -5166,6 +5188,7 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
     buildYearMonthHeatmap(host, values, {
       fmt: fmtP,
       tipFmt: (v, ym) => `<strong>${fmtMonth(ym)}</strong>${ym === PAYLOAD.seasonality.partial_month ? ' <em>(partial)</em>' : ''}<br>${fuel} share (${catLabel}): <span class="tt-num">${fmtP2(v)}</span>`,
+      exportKey: 'fuelshare',
     });
   }
 
@@ -10345,7 +10368,19 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
     const btn = e.target.closest('[data-csv]');
     if (!btn) return;
     const type = btn.dataset.csv;
-    if (type === 'state-leaderboard') downloadCsvTable('state_leaderboard', STATE_PAYLOAD.state_full_leaderboard);
+    if (type === 'hm-seasonality' || type === 'hm-evpen' || type === 'hm-fuelshare') {
+      const cfg = {
+        'hm-seasonality': { key: 'seasonality', titleId: 'hmSeasonalityTitle' },
+        'hm-evpen': { key: 'evpen', titleId: 'hmEvPenTitle' },
+        'hm-fuelshare': { key: 'fuelshare', titleId: 'hmFuelShareTitle' },
+      }[type];
+      const rows = HM_EXPORT_DATA[cfg.key];
+      const titleEl = document.getElementById(cfg.titleId);
+      const name = (titleEl ? titleEl.textContent : cfg.key).trim()
+        .toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+      downloadCsvTable(name || cfg.key, rows);
+    }
+    else if (type === 'state-leaderboard') downloadCsvTable('state_leaderboard', STATE_PAYLOAD.state_full_leaderboard);
     else if (type === 'year-state') {
       const yt = STATE_PAYLOAD.state_year_table;
       const rows = Object.entries(yt.data).map(([state, d]) => ({
