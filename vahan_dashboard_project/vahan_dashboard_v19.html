@@ -7621,9 +7621,9 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
       const catRows = (PAYLOAD.ev_milestones_monthly?.by_cat || {})[STATE.cat];
       if (catRows && catRows.length) {
         const perYearRows = catRows.map(r => {
-          const per_year = {};
-          (r.per_month || []).forEach(pm => { const y = pm.month.slice(0,4); per_year[y] = (per_year[y] || 0) + pm.ev; });
-          return { maker: r.maker, per_year, first_hit: {}, latest_ev: r.latest_cum_ev };
+          const by_year = {};
+          (r.per_month || []).forEach(pm => { const y = pm.month.slice(0,4); by_year[y] = (by_year[y] || 0) + pm.ev; });
+          return { maker: r.maker, by_year, first_hit_year: {}, latest_cum_ev: r.latest_cum_ev };
         });
         M = { thresholds: M.thresholds, years: M.years, rows: perYearRows };
       } else { host.appendChild(overridePill('No EV makers tracked for ' + STATE.cat + '.')); return; }
@@ -7674,7 +7674,7 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
       else { lbl.style.opacity = focusOpacity(row.maker); }
       grid.appendChild(lbl);
       years.forEach(yr => {
-        const v = row.per_year[String(yr)] || 0;
+        const v = row.by_year[String(yr)] || 0;
         const cell = document.createElement('div');
         cell.className = 'sw-cell';
         if (yr === partial) cell.classList.add('partial');
@@ -7692,7 +7692,7 @@ table.cmp-tbl td.maker-name:hover { color: var(--link); text-decoration: underli
       });
       const num = document.createElement('div');
       num.className = 'sw-num';
-      num.textContent = fmtNC(row.latest_ev);
+      num.textContent = fmtNC(row.latest_cum_ev);
       grid.appendChild(num);
     });
     host.appendChild(grid);

@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 env:
-  AZURE_APP_NAME: india-market-dashboard-v2
+  AZURE_APP_NAME: india-market-dashboard-v2-vin
   AZURE_RESOURCE_GROUP: rg-india-market-dashboard-prod
 
 concurrency:
