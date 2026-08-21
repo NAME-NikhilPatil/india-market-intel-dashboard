@@ -183,11 +183,18 @@ class Harvester:
             raise RuntimeError(f"Could not resolve refresh button for {preferred_id}")
         return button_id
 
+    def table_text(self) -> str:
+        """Read the replaceable PrimeFaces table without retaining a WebElement."""
+        return str(
+            self.driver.execute_script(
+                "return document.getElementById('groupingTable')?.innerText || '';"
+            )
+            or ""
+        )
+
     def click_refresh(self, button_id: str) -> None:
         button_id = self.resolve_refresh_button(button_id)
-        before = ""
-        if self.driver.find_elements(By.ID, "groupingTable"):
-            before = self.driver.find_element(By.ID, "groupingTable").text
+        before = self.table_text()
         for attempt in range(3):
             try:
                 self.driver.execute_script("document.getElementById(arguments[0]).click()", button_id)
@@ -200,7 +207,7 @@ class Harvester:
                 time.sleep(3 + attempt * 2)
         if button_id == "j_idt80" and before:
             try:
-                self.wait.until(lambda d: d.find_element(By.ID, "groupingTable").text != before)
+                self.wait.until(lambda _d: self.table_text() != before)
             except TimeoutException:
                 pass
         time.sleep(self.job.delay)
