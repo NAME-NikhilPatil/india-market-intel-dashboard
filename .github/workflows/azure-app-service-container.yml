@@ -50,21 +50,17 @@ jobs:
           echo "IMAGE_URI=$ACR_LOGIN_SERVER/${IMAGE_NAME}:$IMAGE_TAG" >> "$GITHUB_ENV"
           echo "LATEST_IMAGE_URI=$ACR_LOGIN_SERVER/${IMAGE_NAME}:latest" >> "$GITHUB_ENV"
 
-      - name: Build and push image
+      - name: Build and push image in Azure Container Registry
         shell: bash
         run: |
           set -euo pipefail
 
-          az acr login --name "${{ secrets.AZURE_ACR_NAME }}"
-
-          docker build \
-            --build-arg APP_IMAGE_VERSION="$GITHUB_SHA" \
-            -t "$IMAGE_URI" \
-            -t "$LATEST_IMAGE_URI" \
+          az acr build \
+            --registry "${{ secrets.AZURE_ACR_NAME }}" \
+            --image "${IMAGE_NAME}:${IMAGE_TAG}" \
+            --image "${IMAGE_NAME}:latest" \
+            --build-arg "APP_IMAGE_VERSION=$GITHUB_SHA" \
             .
-
-          docker push "$IMAGE_URI"
-          docker push "$LATEST_IMAGE_URI"
 
       - name: Configure App Service container
         shell: bash

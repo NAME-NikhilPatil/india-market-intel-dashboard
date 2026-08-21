@@ -19,6 +19,15 @@ class DeploymentContractTests(unittest.TestCase):
                 f"{relative_path} must deploy to and refresh the live App Service",
             )
 
+    def test_container_build_runs_inside_azure_container_registry(self) -> None:
+        workflow = (
+            ROOT / ".github" / "workflows" / "azure-app-service-container.yml"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("az acr build", workflow)
+        self.assertNotIn("az acr login", workflow)
+        self.assertNotIn("docker push", workflow)
+
     def test_ev_stairway_uses_the_generated_payload_schema(self) -> None:
         dashboard = (
             ROOT / "vahan_dashboard_project" / "vahan_dashboard_v19.html"
