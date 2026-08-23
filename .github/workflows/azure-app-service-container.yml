@@ -17,6 +17,7 @@ concurrency:
 
 env:
   IMAGE_NAME: india-market-intel
+  AZURE_ACR_NAME: acrindiamarketdashv
   AZURE_APP_NAME: india-market-dashboard-v2-vin
   AZURE_RESOURCE_GROUP: rg-india-market-dashboard-prod
 
@@ -42,7 +43,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          ACR_LOGIN_SERVER="$(az acr show --name "${{ secrets.AZURE_ACR_NAME }}" --query loginServer -o tsv)"
+          ACR_LOGIN_SERVER="$(az acr show --name "$AZURE_ACR_NAME" --query loginServer -o tsv)"
           IMAGE_TAG="${GITHUB_SHA::12}"
 
           echo "ACR_LOGIN_SERVER=$ACR_LOGIN_SERVER" >> "$GITHUB_ENV"
@@ -56,7 +57,7 @@ jobs:
           set -euo pipefail
 
           az acr build \
-            --registry "${{ secrets.AZURE_ACR_NAME }}" \
+            --registry "$AZURE_ACR_NAME" \
             --image "${IMAGE_NAME}:${IMAGE_TAG}" \
             --image "${IMAGE_NAME}:latest" \
             --build-arg "APP_IMAGE_VERSION=$GITHUB_SHA" \
@@ -67,36 +68,21 @@ jobs:
         run: |
           set -euo pipefail
 
-          ACR_USER="$(az acr credential show --name "${{ secrets.AZURE_ACR_NAME }}" --query username -o tsv)"
-          ACR_PASS="$(az acr credential show --name "${{ secrets.AZURE_ACR_NAME }}" --query 'passwords[0].value' -o tsv)"
-
           SITE_CONTAINER_NAME="$(az webapp sitecontainers list \
             --name "$AZURE_APP_NAME" \
             --resource-group "$AZURE_RESOURCE_GROUP" \
             --query '[?properties.isMain==`true`].name | [0]' -o tsv 2>/dev/null || true)"
 
-          if [ -n "$SITE_CONTAINER_NAME" ]; then
-            echo "Updating Azure Site Container: $SITE_CONTAINER_NAME"
-            az webapp sitecontainers update \
-              --name "$AZURE_APP_NAME" \
-              --resource-group "$AZURE_RESOURCE_GROUP" \
-              --container-name "$SITE_CONTAINER_NAME" \
-              --image "$IMAGE_URI" \
-              --target-port 8000 \
-              --startup-cmd "/bin/sh /app/startup.sh" \
-              --is-main true \
-              --registry-username "$ACR_USER" \
-              --registry-password "$ACR_PASS"
-          else
-            echo "No Site Container found; using classic custom-container configuration."
-            az webapp config container set \
-              --name "$AZURE_APP_NAME" \
-              --resource-group "$AZURE_RESOURCE_GROUP" \
-              --docker-custom-image-name "$IMAGE_URI" \
-              --docker-registry-server-url "https://$ACR_LOGIN_SERVER" \
-              --docker-registry-server-user "$ACR_USER" \
-              --docker-registry-server-password "$ACR_PASS"
-          fi
+          test -n "$SITE_CONTAINER_NAME"
+          echo "Updating Azure Site Container: $SITE_CONTAINER_NAME"
+          az webapp sitecontainers update \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --container-name "$SITE_CONTAINER_NAME" \
+            --image "$IMAGE_URI" \
+            --target-port 8000 \
+            --startup-cmd "/bin/sh /app/startup.sh" \
+            --is-main true
 
           az webapp config appsettings set \
             --name "$AZURE_APP_NAME" \
@@ -107,9 +93,10 @@ jobs:
               WEBSITES_PORT=8000 \
               WEBSITES_CONTAINER_START_TIME_LIMIT=1800 \
               SCRAPER_ADMIN_TOKEN="${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
-              ENABLE_SCRAPER_SCHEDULER=true \
+              ENABLE_SCRAPER_SCHEDULER=false \
               SOLAR_DAILY_UTC=02:30 \
               VAHAN_DAILY_UTC=03:30 \
+              VAHAN_JOB_TIMEOUT_SECONDS=10800 \
               VAHAN_HEADFUL=true
 
           az webapp config set \

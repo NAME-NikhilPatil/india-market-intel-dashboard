@@ -14,6 +14,8 @@ from typing import Any
 
 from flask import Flask, Response, abort, jsonify, request, send_file, send_from_directory
 
+from process_runner import run_step
+
 
 APP_ROOT = Path(__file__).resolve().parent
 SOURCE_ROOT = Path(os.environ.get("SCRAPER_SEED_DIR", APP_ROOT)).resolve()
@@ -301,20 +303,6 @@ def command_env() -> dict[str, str]:
     return env
 
 
-def run_step(command: list[str], cwd: Path, log_handle) -> int:
-    log_handle.write("\n$ " + " ".join(command) + f"\n[cwd] {cwd}\n")
-    log_handle.flush()
-    proc = subprocess.Popen(
-        command,
-        cwd=str(cwd),
-        stdout=log_handle,
-        stderr=subprocess.STDOUT,
-        text=True,
-        env=command_env(),
-    )
-    return proc.wait()
-
-
 def run_job(job: dict[str, Any], steps: list[dict[str, Any]]) -> None:
     if not _runner_lock.acquire(blocking=False):
         job.update(
@@ -347,13 +335,18 @@ def run_job(job: dict[str, Any], steps: list[dict[str, Any]]) -> None:
                 job["current_step_index"] = index
                 job["step_count"] = len(steps)
                 upsert_job(job)
-                code = run_step(command, cwd, log)
+                timeout_seconds = step.get("timeout_seconds")
+                code = run_step(command, cwd, log, timeout_seconds, env=command_env())
                 if code:
+                    if code == 124 and timeout_seconds:
+                        error = f"Step timed out after {timeout_seconds} seconds: {step['name']}"
+                    else:
+                        error = f"Step failed: {step['name']}"
                     job.update(
                         status="failed",
                         ended_at=utc_now(),
                         returncode=code,
-                        error=f"Step failed: {step['name']}",
+                        error=error,
                     )
                     upsert_job(job)
                     app.logger.error(
@@ -423,11 +416,28 @@ def solar_steps(body: dict[str, Any], scrape: bool) -> list[dict[str, Any]]:
         ]
         if bool(body.get("company_monthly")) or bool_env("SOLAR_COMPANY_MONTHLY", False):
             scrape_command.append("--company-monthly")
-        steps.append({"name": "Scrape Solar DCR", "command": scrape_command, "cwd": solar_dir})
+        steps.append(
+            {
+                "name": "Scrape Solar DCR",
+                "command": scrape_command,
+                "cwd": solar_dir,
+                "timeout_seconds": int(os.environ.get("SOLAR_SCRAPE_TIMEOUT_SECONDS", "3600")),
+            }
+        )
     steps.extend(
         [
-            {"name": "Build Solar dashboard data", "command": py_script(solar_dir / "build_data.py"), "cwd": solar_dir},
-            {"name": "Build Solar dashboard HTML", "command": py_script(solar_dir / "build_html.py"), "cwd": solar_dir},
+            {
+                "name": "Build Solar dashboard data",
+                "command": py_script(solar_dir / "build_data.py"),
+                "cwd": solar_dir,
+                "timeout_seconds": 900,
+            },
+            {
+                "name": "Build Solar dashboard HTML",
+                "command": py_script(solar_dir / "build_html.py"),
+                "cwd": solar_dir,
+                "timeout_seconds": 900,
+            },
         ]
     )
     return steps
@@ -459,18 +469,27 @@ def vahan_recent_steps(body: dict[str, Any], scrape: bool) -> list[dict[str, Any
             value = os.environ.get(env_name)
             if value:
                 command += [arg_name, value]
-        steps.append({"name": "Refresh VAHAN recent months", "command": command, "cwd": project_dir})
+        steps.append(
+            {
+                "name": "Refresh VAHAN recent months",
+                "command": command,
+                "cwd": project_dir,
+                "timeout_seconds": int(os.environ.get("VAHAN_JOB_TIMEOUT_SECONDS", "10800")),
+            }
+        )
     steps.extend(
         [
             {
                 "name": "Build VAHAN dashboard payload",
                 "command": py_script(scripts_dir / "build_dashboard_payload.py"),
                 "cwd": project_dir,
+                "timeout_seconds": 1800,
             },
             {
                 "name": "Rewire VAHAN v19 dashboard",
                 "command": py_script(scripts_dir / "rewire_v19_dashboard.py"),
                 "cwd": project_dir,
+                "timeout_seconds": 1800,
             },
         ]
     )
@@ -569,6 +588,7 @@ def custom_script_steps(body: dict[str, Any]) -> list[dict[str, Any]]:
             "name": f"Run {project}/{script}",
             "command": py_script(script_path) + args,
             "cwd": cwd,
+            "timeout_seconds": int(os.environ.get("CUSTOM_SCRIPT_TIMEOUT_SECONDS", "3600")),
         }
     ]
 
