@@ -68,21 +68,16 @@ jobs:
         run: |
           set -euo pipefail
 
-          SITE_CONTAINER_NAME="$(az webapp sitecontainers list \
+          # This production app still uses App Service's legacy single-container
+          # model. Keep its managed-identity ACR pull configuration and update
+          # only the image reference; the newer `sitecontainers` list is empty.
+          echo "Updating App Service image: $IMAGE_URI"
+          az webapp config container set \
             --name "$AZURE_APP_NAME" \
             --resource-group "$AZURE_RESOURCE_GROUP" \
-            --query '[?properties.isMain==`true`].name | [0]' -o tsv 2>/dev/null || true)"
-
-          test -n "$SITE_CONTAINER_NAME"
-          echo "Updating Azure Site Container: $SITE_CONTAINER_NAME"
-          az webapp sitecontainers update \
-            --name "$AZURE_APP_NAME" \
-            --resource-group "$AZURE_RESOURCE_GROUP" \
-            --container-name "$SITE_CONTAINER_NAME" \
-            --image "$IMAGE_URI" \
-            --target-port 8000 \
-            --startup-cmd "/bin/sh /app/startup.sh" \
-            --is-main true
+            --container-image-name "$IMAGE_URI" \
+            --container-registry-url "https://$ACR_LOGIN_SERVER" \
+            --enable-app-service-storage true
 
           az webapp config appsettings set \
             --name "$AZURE_APP_NAME" \
@@ -137,15 +132,16 @@ jobs:
             --resource-group "$AZURE_RESOURCE_GROUP" \
             --query '{state:state,defaultHostName:defaultHostName,kind:kind,linuxFxVersion:siteConfig.linuxFxVersion}' \
             -o json || true
-          echo "Site Container configuration:"
-          az webapp sitecontainers list \
+          echo "Legacy container configuration:"
+          az webapp config container show \
             --name "$AZURE_APP_NAME" \
             --resource-group "$AZURE_RESOURCE_GROUP" \
             -o jsonc || true
-          echo "Site Container status:"
-          az webapp sitecontainers status \
+          echo "Managed ACR pull configuration:"
+          az webapp config show \
             --name "$AZURE_APP_NAME" \
             --resource-group "$AZURE_RESOURCE_GROUP" \
+            --query '{acrUseManagedIdentityCreds:acrUseManagedIdentityCreds,acrUserManagedIdentityID:acrUserManagedIdentityID,linuxFxVersion:linuxFxVersion}' \
             -o jsonc || true
           echo "Recent container logs:"
           timeout 30s az webapp log tail \
