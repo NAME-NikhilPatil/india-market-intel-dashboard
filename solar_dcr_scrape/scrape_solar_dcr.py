@@ -13,6 +13,8 @@ from pathlib import Path
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 
 BASE_URL = "https://solardcrportal.nise.res.in"
@@ -35,6 +37,18 @@ MONTH_ORDER = {
 
 def make_session() -> requests.Session:
     session = requests.Session()
+    retry = Retry(
+        total=4,
+        connect=4,
+        read=4,
+        status=4,
+        backoff_factor=1.0,
+        status_forcelist=(429, 500, 502, 503, 504),
+        allowed_methods=frozenset({"GET", "POST"}),
+        respect_retry_after_header=True,
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("https://", adapter)
     session.headers.update(
         {
             "User-Agent": (
@@ -46,6 +60,13 @@ def make_session() -> requests.Session:
         }
     )
     return session
+
+
+def write_csv_atomic(frame: pd.DataFrame, path: Path) -> None:
+    """Replace a CSV only after its complete replacement has been written."""
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    frame.to_csv(tmp, index=False)
+    tmp.replace(path)
 
 
 def fetch_index(session: requests.Session) -> str:
@@ -85,33 +106,50 @@ def scrape_dashboard_totals(index_html: str, scraped_at: str) -> pd.DataFrame:
         "Solar Cell Manufacturer": "solar_cell_manufacturers",
         "Solar Module Manufacturer": "solar_module_manufacturers",
         "Solar Cell & Solar Module Stock": "solar_cell_module_stock",
+        "Solar Cell & Module Stock": "solar_cell_module_stock",
         "DCR Generated": "dcr_generated",
+        "DCR Certificates Generated": "dcr_generated",
     }
 
-    rows = []
-    for label, metric in labels.items():
-        label_node = soup.find(string=lambda value: value and value.strip() == label)
-        if not label_node:
+    found: dict[str, dict] = {}
+    for card in soup.select(".dcr-stat-card"):
+        label_node = card.select_one(".stat-label")
+        value_node = card.select_one(".stat-value")
+        if not label_node or not value_node:
             continue
-        container = label_node.find_parent("div")
-        value_node = container.find("h3") if container else None
-        if not value_node:
-            continue
-        rows.append(
-            {
+        label = label_node.get_text(" ", strip=True)
+        metric = labels.get(label)
+        if metric:
+            found[metric] = {
                 "metric": metric,
                 "label": label,
                 "value": parse_number(value_node.get_text(" ", strip=True)),
                 "scraped_at": scraped_at,
                 "source_url": INDEX_URL,
             }
-        )
 
-    if len(rows) != len(labels):
-        missing = sorted(set(labels.values()) - {row["metric"] for row in rows})
+    # Backward-compatible fallback for the previous h3-based card layout.
+    for label, metric in labels.items():
+        if metric in found:
+            continue
+        label_node = soup.find(string=lambda value: value and value.strip() == label)
+        card = label_node.find_parent(class_="card") if label_node else None
+        value_node = card.find("h3") if card else None
+        if value_node:
+            found[metric] = {
+                "metric": metric,
+                "label": label,
+                "value": parse_number(value_node.get_text(" ", strip=True)),
+                "scraped_at": scraped_at,
+                "source_url": INDEX_URL,
+            }
+
+    expected = set(labels.values())
+    if set(found) != expected:
+        missing = sorted(expected - set(found))
         raise RuntimeError(f"Could not parse dashboard totals: missing {missing}")
 
-    return pd.DataFrame(rows)
+    return pd.DataFrame(found[metric] for metric in sorted(found))
 
 
 def extract_arraystore_data(html: str) -> list[dict]:
@@ -355,12 +393,9 @@ def main() -> None:
     index_html = fetch_index(session)
 
     totals = scrape_dashboard_totals(index_html, scraped_at)
-    totals.to_csv(output_dir / "dashboard_totals.csv", index=False)
 
     print("Scraping stock summary...")
     stock_state, stock_totals = scrape_stock_summary(session, scraped_at)
-    stock_state.to_csv(output_dir / "stock_summary_by_state.csv", index=False)
-    stock_totals.to_csv(output_dir / "stock_summary_totals.csv", index=False)
 
     company_year_frames = []
     monthly_rows_all = []
@@ -415,22 +450,24 @@ def main() -> None:
                 time.sleep(0.4)
 
     cell_company_year = pd.concat(company_year_frames, ignore_index=True)
-    cell_company_year.to_csv(
-        output_dir / "cell_company_yearly_manufactured_mw.csv", index=False
-    )
-
     cell_monthly = pd.DataFrame(monthly_rows_all)
-    cell_monthly.to_csv(output_dir / "cell_monthly_manufactured_sold_mw.csv", index=False)
-
     module_company_year = pd.concat(module_company_year_frames, ignore_index=True)
-    module_company_year.to_csv(
-        output_dir / "module_company_yearly_manufactured_mw.csv", index=False
-    )
-
     module_monthly = pd.DataFrame(module_monthly_rows_all)
-    module_monthly.to_csv(
-        output_dir / "module_monthly_manufactured_sold_mw.csv", index=False
-    )
+
+    outputs = {
+        "dashboard_totals.csv": totals,
+        "stock_summary_by_state.csv": stock_state,
+        "stock_summary_totals.csv": stock_totals,
+        "cell_company_yearly_manufactured_mw.csv": cell_company_year,
+        "cell_monthly_manufactured_sold_mw.csv": cell_monthly,
+        "module_company_yearly_manufactured_mw.csv": module_company_year,
+        "module_monthly_manufactured_sold_mw.csv": module_monthly,
+    }
+    empty = [name for name, frame in outputs.items() if frame.empty]
+    if empty:
+        raise RuntimeError(f"Refusing to replace dashboard data with empty outputs: {empty}")
+    for name, frame in outputs.items():
+        write_csv_atomic(frame, output_dir / name)
 
     print(f"Wrote {len(totals)} rows to {output_dir / 'dashboard_totals.csv'}")
     print(
