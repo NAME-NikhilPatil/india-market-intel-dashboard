@@ -1,0 +1,150 @@
+name: Build And Push Azure App Service Container
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+# Never let an older, slower image build overwrite a newer production image.
+concurrency:
+  group: azure-production-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE_NAME: india-market-intel
+  AZURE_ACR_NAME: acrindiamarketdashv
+  AZURE_APP_NAME: india-market-dashboard-v2-vin
+  AZURE_RESOURCE_GROUP: rg-india-market-dashboard-prod
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Resolve image name
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ACR_LOGIN_SERVER="$(az acr show --name "$AZURE_ACR_NAME" --query loginServer -o tsv)"
+          IMAGE_TAG="${GITHUB_SHA::12}"
+
+          echo "ACR_LOGIN_SERVER=$ACR_LOGIN_SERVER" >> "$GITHUB_ENV"
+          echo "IMAGE_TAG=$IMAGE_TAG" >> "$GITHUB_ENV"
+          echo "IMAGE_URI=$ACR_LOGIN_SERVER/${IMAGE_NAME}:$IMAGE_TAG" >> "$GITHUB_ENV"
+          echo "LATEST_IMAGE_URI=$ACR_LOGIN_SERVER/${IMAGE_NAME}:latest" >> "$GITHUB_ENV"
+
+      - name: Build and push image in Azure Container Registry
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          az acr build \
+            --registry "$AZURE_ACR_NAME" \
+            --image "${IMAGE_NAME}:${IMAGE_TAG}" \
+            --image "${IMAGE_NAME}:latest" \
+            --build-arg "APP_IMAGE_VERSION=$GITHUB_SHA" \
+            .
+
+      - name: Configure App Service container
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # This production app still uses App Service's legacy single-container
+          # model. Keep its managed-identity ACR pull configuration and update
+          # only the image reference; the newer `sitecontainers` list is empty.
+          echo "Updating App Service image: $IMAGE_URI"
+          az webapp config container set \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --container-image-name "$IMAGE_URI" \
+            --container-registry-url "https://$ACR_LOGIN_SERVER" \
+            --enable-app-service-storage true
+
+          az webapp config appsettings set \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --settings \
+              RESET_RUNTIME_WORKSPACE=false \
+              WEBSITES_ENABLE_APP_SERVICE_STORAGE=true \
+              WEBSITES_PORT=8000 \
+              WEBSITES_CONTAINER_START_TIME_LIMIT=1800 \
+              SCRAPER_ADMIN_TOKEN="${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
+              ENABLE_SCRAPER_SCHEDULER=false \
+              SOLAR_DAILY_UTC=02:30 \
+              VAHAN_DAILY_UTC=03:30 \
+              VAHAN_JOB_TIMEOUT_SECONDS=10800 \
+              VAHAN_HEADFUL=true
+
+          az webapp config set \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --always-on true \
+            --generic-configurations '{"healthCheckPath":"/api/health"}'
+
+          az webapp log config \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --docker-container-logging filesystem
+
+          az webapp restart \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP"
+
+      - name: Verify deployment health
+        shell: bash
+        run: |
+          set -euo pipefail
+          DEFAULT_HOSTNAME="$(az webapp show \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --query defaultHostName -o tsv)"
+          URL="https://$DEFAULT_HOSTNAME/api/health"
+          echo "Checking $URL"
+          for attempt in $(seq 1 6); do
+            if curl -fSs --max-time 5 "$URL"; then
+              exit 0
+            fi
+            echo "Waiting for App Service ($attempt/6)..."
+            sleep 10
+          done
+          echo "App Service did not become healthy" >&2
+          az webapp show \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --query '{state:state,defaultHostName:defaultHostName,kind:kind,linuxFxVersion:siteConfig.linuxFxVersion}' \
+            -o json || true
+          echo "Legacy container configuration:"
+          az webapp config container show \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            -o jsonc || true
+          echo "Managed ACR pull configuration:"
+          az webapp config show \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --query '{acrUseManagedIdentityCreds:acrUseManagedIdentityCreds,acrUserManagedIdentityID:acrUserManagedIdentityID,linuxFxVersion:linuxFxVersion}' \
+            -o jsonc || true
+          echo "Recent container logs:"
+          timeout 30s az webapp log tail \
+            --name "$AZURE_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" || true
+          exit 1

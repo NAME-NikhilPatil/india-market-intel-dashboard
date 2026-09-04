@@ -1,0 +1,96 @@
+name: Daily Scraper Run
+
+on:
+  schedule:
+    # Solar: 08:00 IST = 02:30 UTC
+    - cron: "30 2 * * *"
+    # VAHAN: 09:00 IST = 03:30 UTC
+    - cron: "30 3 * * *"
+
+  workflow_dispatch:
+    inputs:
+      scraper:
+        description: Scraper to run
+        required: true
+        default: solar
+        type: choice
+        options:
+          - solar
+          - vahan
+
+permissions:
+  contents: read
+
+env:
+  APP_BASE_URL: https://india-market-dashboard-v2-vin.azurewebsites.net
+
+concurrency:
+  group: daily-scraper
+  cancel-in-progress: false
+
+jobs:
+  run-solar-scraper:
+    if: github.event.schedule == '30 2 * * *' || github.event.inputs.scraper == 'solar'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Trigger Solar DCR scrape and wait for completion
+        shell: bash
+        run: |
+          set -euo pipefail
+          RESPONSE="$(curl -fSs --max-time 30 -X POST "$APP_BASE_URL/api/scrape/solar" \
+            -H "Authorization: Bearer ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{}')"
+          JOB_ID="$(python -c 'import json,sys; print(json.load(sys.stdin)["id"])' <<<"$RESPONSE")"
+          echo "Solar job queued: $JOB_ID"
+
+          for attempt in $(seq 1 120); do
+            JOB="$(curl -fSs --max-time 30 \
+              -H "Authorization: Bearer ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
+              "$APP_BASE_URL/api/jobs/$JOB_ID")"
+            STATUS="$(python -c 'import json,sys; print(json.load(sys.stdin)["status"])' <<<"$JOB")"
+            echo "Solar job $JOB_ID status=$STATUS ($attempt/120)"
+            if [ "$STATUS" = succeeded ]; then exit 0; fi
+            if [ "$STATUS" = failed ]; then
+              python -c 'import json,sys; print(json.load(sys.stdin).get("error") or "Solar scraper failed", file=sys.stderr)' <<<"$JOB"
+              exit 1
+            fi
+            sleep 30
+          done
+          echo "Solar job did not finish within 60 minutes" >&2
+          exit 1
+
+  run-vahan-scraper:
+    if: github.event.schedule == '30 3 * * *' || github.event.inputs.scraper == 'vahan'
+    runs-on: ubuntu-latest
+    timeout-minutes: 200
+
+    steps:
+      - name: Trigger VAHAN recent scrape and wait for completion
+        shell: bash
+        run: |
+          set -euo pipefail
+          RESPONSE="$(curl -fSs --max-time 30 -X POST "$APP_BASE_URL/api/scrape/vahan/recent" \
+            -H "Authorization: Bearer ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{}')"
+          JOB_ID="$(python -c 'import json,sys; print(json.load(sys.stdin)["id"])' <<<"$RESPONSE")"
+          echo "VAHAN job queued: $JOB_ID"
+
+          for attempt in $(seq 1 380); do
+            JOB="$(curl -fSs --max-time 30 \
+              -H "Authorization: Bearer ${{ secrets.SCRAPER_ADMIN_TOKEN }}" \
+              "$APP_BASE_URL/api/jobs/$JOB_ID")"
+            STATUS="$(python -c 'import json,sys; print(json.load(sys.stdin)["status"])' <<<"$JOB")"
+            echo "VAHAN job $JOB_ID status=$STATUS ($attempt/380)"
+            if [ "$STATUS" = succeeded ]; then exit 0; fi
+            if [ "$STATUS" = failed ]; then
+              python -c 'import json,sys; print(json.load(sys.stdin).get("error") or "VAHAN scraper failed", file=sys.stderr)' <<<"$JOB"
+              exit 1
+            fi
+            sleep 30
+          done
+          echo "VAHAN job did not finish within 190 minutes" >&2
+          exit 1
