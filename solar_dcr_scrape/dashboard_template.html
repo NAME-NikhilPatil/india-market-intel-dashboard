@@ -373,24 +373,7 @@ hr.rule { border: none; border-top: 1px solid var(--rule); margin: 16px 0; }
         </div>
       </div>
       <div class="data-tbl-wrap" id="marketTableWrap"></div>
-      <div id="keyEvents" class="key-events"></div>
       <div class="block-foot">Source: NISE DCR Portal · all-manufacturer monthly totals. Granularity follows the Monthly / Quarterly toggle in §5.</div>
-    </div>
-
-    <div class="grid g-4" style="margin-top: 22px;">
-      <div class="block" id="mini1"></div>
-      <div class="block" id="mini2"></div>
-      <div class="block" id="mini3"></div>
-      <div class="block" id="mini4"></div>
-    </div>
-
-    <div class="block" style="margin-top: 28px;">
-      <div class="block-head">
-        <div class="block-title">Company size distribution, by year</div>
-        <div class="block-deck">How many companies produced MW in each tier each year. Combined cell + module: a company appears in both columns if it makes both. Shows the field broadening from a handful of giants to a long tail of mid-sized players.</div>
-      </div>
-      <div class="data-tbl-wrap" id="tierWrap"></div>
-      <div class="block-foot">Source: NISE DCR Portal · distinct companies counted per segment per year.</div>
     </div>
   </section>
 
@@ -419,151 +402,43 @@ hr.rule { border: none; border-top: 1px solid var(--rule); margin: 16px 0; }
     </div>
 
     <div id="drillPanel"></div>
-
-    <div class="block" style="margin-top: 28px;">
-      <div class="block-head">
-        <div class="block-title">Top 15 manufacturers · annual MW &amp; share, year by year</div>
-        <div class="block-deck">Combined cell + module ranking. Each year shows the MW figure with its share-of-DCR % beneath. Footer rows show concentration ratios: CR-3, CR-5, CR-10 — the combined share of the top 3, 5, 10 producers respectively. A falling CR means the market is broadening.</div>
-        <div class="block-actions">
-          <button class="csv-btn" onclick="downloadCSV('topAnnualTable','top15_annual_share.csv')">Download CSV</button>
-        </div>
-      </div>
-      <div class="data-tbl-wrap" id="topAnnualWrap"></div>
-      <div class="block-foot">Source: NISE DCR Portal · CR-N values from yearly company shares of total cell + module MW.</div>
-    </div>
   </section>
 
   <!-- ─── §3 Share of Business ─── -->
   <section class="section" id="sec-share">
     <div class="section-head">
       <div class="section-eyebrow"><span class="section-num">03 ·</span> SHARE OF BUSINESS</div>
-      <h2 class="section-title">Four windows onto who holds what slice</h2>
+      <h2 class="section-title">Who holds what slice</h2>
     </div>
-    <p class="section-deck">Annual share of segment, share of total DCR output, the cell-vs-module mix for vertically integrated players, and how share oscillates month-to-month.</p>
+    <p class="section-deck">The cell-vs-module mix for vertically integrated players.</p>
 
-    <div class="grid g-2" style="margin-top: 18px;">
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title">3a · Share of segment, year by year</div>
-          <div class="block-deck">Top 10 companies plus 'Others'. Stacked to 100% — see how the same company's stripe widens or narrows.</div>
-          <div class="block-actions">
-            <button class="tab active" data-share-seg="cell">Cell</button>
-            <button class="tab" data-share-seg="module">Module</button>
-          </div>
-        </div>
-        <div class="chart-box h-380"><canvas id="chartShareSeg"></canvas></div>
-        <div class="legend-grid" id="shareSegLegend"></div>
-        <div class="block-foot">Source: NISE DCR Portal · share of total segment MW. Legend shows 2025 share.</div>
-      </div>
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title">3b · Share of total DCR output (cell + module)</div>
-          <div class="block-deck">Top 10 by combined MW. Reveals dominance across both segments.</div>
-        </div>
-        <div class="chart-box h-380"><canvas id="chartShareDCR"></canvas></div>
-        <div class="legend-grid" id="shareDCRLegend"></div>
-        <div class="block-foot">Source: NISE DCR Portal · share of total cell + module manufactured MW. Legend shows 2025 share.</div>
-      </div>
-    </div>
-
-    <div class="grid g-3-2" style="margin-top: 28px;">
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title">3c · Vertically integrated players · cell vs module mix</div>
-          <div class="block-deck">Companies that manufacture both cells and modules. Bars show their cell MW (left) and module MW (right) for the selected year.</div>
-          <div class="block-actions">
-            <button class="tab" data-dual-yr="2024">2024</button>
-            <button class="tab active" data-dual-yr="2025">2025</button>
-            <button class="tab" data-dual-yr="2026">2026 YTD</button>
-          </div>
-        </div>
-        <div class="chart-box h-440"><canvas id="chartDual"></canvas></div>
-        <div class="block-foot">Source: NISE DCR Portal · dual-segment manufacturers only.</div>
-      </div>
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title">3d · Monthly share oscillation</div>
-          <div class="block-deck">Top-5 companies in selected segment · monthly share-of-segment % across 24 months.</div>
-          <div class="block-actions">
-            <button class="tab active" data-osc-seg="cell">Cell</button>
-            <button class="tab" data-osc-seg="module">Module</button>
-          </div>
-        </div>
-        <div class="chart-box h-440"><canvas id="chartOscillation"></canvas></div>
-        <div class="block-foot">Source: NISE DCR Portal · monthly company MW ÷ monthly segment total.</div>
-      </div>
-    </div>
-
-    <div class="block" style="margin-top: 28px;">
-      <div class="block-head">
-        <div class="block-title">3e · Vertically integrated players · exact figures, year by year</div>
-        <div class="block-deck">Companies that manufacture both cells and modules. Each year shows Cell MW · Module MW · ratio (C:M). Ratio above 1 means cell-heavy; below 1 means module-heavy.</div>
-        <div class="block-actions">
-          <button class="csv-btn" onclick="downloadCSV('dualTable','dual_segment_ratio.csv')">Download CSV</button>
-        </div>
-      </div>
-      <div class="data-tbl-wrap" id="dualTableWrap"></div>
-      <div class="block-foot">Source: NISE DCR Portal · dual-segment manufacturers, exact MW values.</div>
-    </div>
-  </section>
-
-  <!-- ─── §4 Per-company small multiples ─── -->
-  <section class="section" id="sec-sm">
-    <div class="section-head">
-      <div class="section-eyebrow"><span class="section-num">04 ·</span> THE FIELD</div>
-      <h2 class="section-title">Each of the top 24, by month</h2>
-    </div>
-    <p class="section-deck">A wall of monthly trajectories. Tile header carries the company name, 2025 MW, share-of-segment and year-on-year delta. Sorted by 2025 size descending.</p>
     <div class="block" style="margin-top: 18px;">
-      <div class="block-actions">
-        <button class="tab active" data-sm-seg="both">All</button>
-        <button class="tab" data-sm-seg="cell">Cell only</button>
-        <button class="tab" data-sm-seg="module">Module only</button>
-        <span style="border-left: 1px solid var(--rule); margin: 0 12px;"></span>
-        <button class="tab active" data-sm-sort="size_25">By 2025 size</button>
-        <button class="tab" data-sm-sort="size_all">By all-time</button>
-        <button class="tab" data-sm-sort="growth">By growth</button>
+      <div class="block-head">
+        <div class="block-title">3c · Vertically integrated players · cell vs module mix</div>
+        <div class="block-deck">Companies that manufacture both cells and modules. Bars show their cell MW (left) and module MW (right) for the selected year.</div>
+        <div class="block-actions">
+          <button class="tab" data-dual-yr="2024">2024</button>
+          <button class="tab active" data-dual-yr="2025">2025</button>
+          <button class="tab" data-dual-yr="2026">2026 YTD</button>
+        </div>
       </div>
+      <div class="chart-box h-440"><canvas id="chartDual"></canvas></div>
+      <div class="block-foot">Source: NISE DCR Portal · dual-segment manufacturers only.</div>
     </div>
-    <div class="sm-grid" id="smGrid" style="margin-top: 14px;"></div>
-    <div class="block-foot" style="margin-top: 14px;">Source: NISE DCR Portal · monthly manufactured MW, Jan 2022–May 2026. Each tile shares a common time axis.</div>
   </section>
 
-  <!-- ─── §5 Monthly cadence ─── -->
+  <!-- ─── §4 Monthly cadence ─── -->
   <section class="section" id="sec-monthly">
     <div class="section-head">
-      <div class="section-eyebrow"><span class="section-num">05 ·</span> MONTHLY CADENCE</div>
-      <h2 class="section-title">Production runs ahead of sales — and the gap is widening</h2>
+      <div class="section-eyebrow"><span class="section-num">04 ·</span> MONTHLY CADENCE</div>
+      <h2 class="section-title">Exact monthly volumes, every manufacturer</h2>
     </div>
-    <p class="section-deck">The shaded delta between manufactured and sold reveals inventory accumulating inside the DCR pool. Seasonality remains modest.</p>
+    <p class="section-deck">Every cell and module producer's monthly output, in full.</p>
 
-    <div class="grid g-2" style="margin-top: 18px;">
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title">Monthly manufactured vs sold</div>
-          <div class="block-deck">All-manufacturer totals. Orange band = build-up (mfg minus sold).</div>
-          <div class="block-actions">
-            <button class="tab active" data-mon-seg="cell">Cell</button>
-            <button class="tab" data-mon-seg="module">Module</button>
-          </div>
-        </div>
-        <div class="chart-box h-380"><canvas id="chartMonthlyMfgSold"></canvas></div>
-        <div class="block-foot">Source: NISE DCR Portal · all-manufacturer monthly totals.</div>
-      </div>
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title">Monthly seasonality (avg MW per calendar month)</div>
-          <div class="block-deck">Average production by calendar month across all available years where the month had non-zero output.</div>
-        </div>
-        <div class="chart-box h-380"><canvas id="chartSeasonality"></canvas></div>
-        <div class="block-foot">Source: NISE DCR Portal · simple mean across years.</div>
-      </div>
-    </div>
-
-    <div class="block" style="margin-top: 28px;">
+    <div class="block" style="margin-top: 18px;">
       <div class="block-head">
-        <div class="block-title">Top 15 manufacturers · monthly volumes &amp; annual totals · 2022–2026</div>
-        <div class="block-deck">Exact monthly MW for each of the top 15 cell or module producers. Annual subtotals stacked at year-ends; grand total stickied to the right. Scroll horizontally to span all 48+ months.</div>
+        <div class="block-title">All manufacturers · monthly volumes &amp; annual totals · 2022–2026</div>
+        <div class="block-deck">Exact monthly MW for every cell or module producer, ranked by all-time MW. Annual subtotals stacked at year-ends; grand total stickied to the right. Scroll horizontally to span all 48+ months.</div>
         <div class="block-actions">
           <button class="tab active" data-monvol-seg="cell">Cell</button>
           <button class="tab" data-monvol-seg="module">Module</button>
@@ -571,115 +446,18 @@ hr.rule { border: none; border-top: 1px solid var(--rule); margin: 16px 0; }
           <button class="tab active" data-monvol-gran="monthly">Monthly</button>
           <button class="tab" data-monvol-gran="quarterly">Quarterly</button>
           <span style="margin: 0 6px; color: var(--rule);">|</span>
-          <button class="csv-btn" onclick="downloadCSV('monthlyVolTable', 'top15_volumes.csv')">Download CSV</button>
+          <button class="csv-btn" onclick="downloadCSV('monthlyVolTable', 'all_manufacturers_volumes.csv')">Download CSV</button>
         </div>
       </div>
       <div class="data-tbl-wrap" id="monthlyVolWrap"></div>
       <div class="block-foot">Source: NISE DCR Portal · monthly DCR-eligible manufactured MW. Zero values in pale grey.</div>
     </div>
-
-    <div class="block" style="margin-top: 28px;">
-      <div class="block-head">
-        <div class="block-title">Top-25 producers · monthly intensity heatmap</div>
-        <div class="block-deck">Darker = higher MW that month. Hover any cell. Switch segment below.</div>
-        <div class="block-actions">
-          <button class="tab active" data-heat-seg="cell">Cell</button>
-          <button class="tab" data-heat-seg="module">Module</button>
-        </div>
-      </div>
-      <div class="heat-wrap" id="heatmapWrap"></div>
-      <div class="block-foot">Source: NISE DCR Portal · monthly manufactured MW. Companies sorted by all-time MW.</div>
-    </div>
   </section>
 
-  <!-- ─── §6 Geography ─── -->
-  <section class="section" id="sec-geo">
-    <div class="section-head">
-      <div class="section-eyebrow"><span class="section-num">06 ·</span> GEOGRAPHY</div>
-      <h2 class="section-title">Production lives in the south, distribution in the west</h2>
-    </div>
-    <p class="section-deck">Tamil Nadu and Karnataka lead manufacturer-held stock; Maharashtra and Gujarat lead reseller-held inventory. Unclaimed stock is concentrated in production states.</p>
-
-    <div class="grid g-3-2" style="margin-top: 18px;">
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title">India · state-by-state stock intensity</div>
-          <div class="block-deck">Tile cartogram, positioned geographically. Color = stock intensity for selected metric.</div>
-          <div class="block-actions">
-            <button class="tab active" data-geo-metric="grand_total">Total stock</button>
-            <button class="tab" data-geo-metric="total_unclaimed">Unclaimed</button>
-            <button class="tab" data-geo-metric="unclaimed_pct">% Unclaimed</button>
-            <button class="tab" data-geo-metric="per_user_mw">MW per user</button>
-          </div>
-        </div>
-        <div id="tileMap" class="tile-map"></div>
-        <div id="tileLegend" style="margin-top: 8px; font-size: 11px; color: var(--ink-mid);"></div>
-        <div class="block-foot">Source: NISE DCR Portal · live stock as of scrape.</div>
-      </div>
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title">State leaderboard</div>
-          <div class="block-deck">Click a column to sort. Claret bar = unclaimed share of total.</div>
-          <div class="block-actions">
-            <button class="tab active" data-state-sort="grand_total">Total</button>
-            <button class="tab" data-state-sort="unclaimed_pct">% Unc.</button>
-            <button class="tab" data-state-sort="per_user_mw">MW/user</button>
-          </div>
-        </div>
-        <div class="tbl-scroll"><table class="ft-table" id="stateTable"></table></div>
-        <div class="block-foot">Source: NISE DCR Portal.</div>
-      </div>
-    </div>
-
-    <div class="grid g-2" style="margin-top: 28px;">
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title">Manufacturer-held vs reseller-held stock · top 15 states</div>
-          <div class="block-deck">Where production sits at the factory vs in distributor warehouses.</div>
-        </div>
-        <div class="chart-box h-440"><canvas id="chartMfgVsRes"></canvas></div>
-        <div class="block-foot">Source: NISE DCR Portal · live stock by holder type.</div>
-      </div>
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title">Unclaimed inventory by state · top 15</div>
-          <div class="block-deck">Cell + module unclaimed stock. Largest piles signal where reconciliation is most needed.</div>
-        </div>
-        <div class="chart-box h-440"><canvas id="chartUnclaimed"></canvas></div>
-        <div class="block-foot">Source: NISE DCR Portal.</div>
-      </div>
-    </div>
-
-    <div class="block" style="margin-top: 28px;">
-      <div class="block-head">
-        <div class="block-title">State distribution · cell vs module stock mix</div>
-        <div class="block-deck">For each state, exact cell vs module stock MW with the cell-share %. A high cell% (claret) means the state holds proportionally more upstream wafers/cells; low cell% (teal) means it's predominantly a module-distribution market. Sortable by any column.</div>
-        <div class="block-actions">
-          <button class="csv-btn" onclick="downloadCSV('stateMixTable', 'state_cell_module_mix.csv')">Download CSV</button>
-        </div>
-      </div>
-      <div class="data-tbl-wrap" id="stateMixWrap"></div>
-      <div class="block-foot">Source: NISE DCR Portal · live claimed stock only (excludes unclaimed). Cell stock = manufacturer + reseller; same for module.</div>
-    </div>
-  </section>
-
-  <!-- ─── §7 Stock flow ─── -->
-  <section class="section" id="sec-flow">
-    <div class="section-head">
-      <div class="section-eyebrow"><span class="section-num">07 ·</span> STOCK FLOW</div>
-      <h2 class="section-title">Where DCR-eligible MW ends up</h2>
-    </div>
-    <p class="section-deck">Width of each ribbon is proportional to MW. Cell and module inputs flow through holder type (manufacturer / reseller) into claimed vs unclaimed pools.</p>
-    <div class="block" style="margin-top: 18px;">
-      <div id="sankeyWrap" class="chart-box h-500"></div>
-      <div class="block-foot">Source: NISE DCR Portal.</div>
-    </div>
-  </section>
-
-  <!-- ─── §8 Compare ─── -->
+  <!-- ─── §5 Compare ─── -->
   <section class="section" id="sec-compare">
     <div class="section-head">
-      <div class="section-eyebrow"><span class="section-num">08 ·</span> SIDE BY SIDE</div>
+      <div class="section-eyebrow"><span class="section-num">05 ·</span> SIDE BY SIDE</div>
       <h2 class="section-title">Compare any four companies</h2>
     </div>
     <p class="section-deck">Pick up to four manufacturers to overlay their annual and monthly trajectories.</p>
@@ -697,70 +475,6 @@ hr.rule { border: none; border-top: 1px solid var(--rule); margin: 16px 0; }
       </div>
       <div class="block-foot">Source: NISE DCR Portal · selected companies, all-segments union.</div>
     </div>
-  </section>
-
-  <!-- ─── §9 Movers ─── -->
-  <section class="section" id="sec-movers">
-    <div class="section-head">
-      <div class="section-eyebrow"><span class="section-num">09 ·</span> MOVERS</div>
-      <h2 class="section-title">Who climbed, who slipped, who walked in</h2>
-    </div>
-    <p class="section-deck">Year-on-year change 2024 → 2025, top 10 by growth %, top 10 by decline %, and the 10 largest new entrants who weren't in the data in 2024.</p>
-
-    <div class="grid g-3" style="margin-top: 18px;">
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title" style="color: var(--green);">Risers · YoY % growth</div>
-          <div class="block-deck">Existing companies with the largest percentage gain.</div>
-        </div>
-        <div id="risersTable"></div>
-      </div>
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title" style="color: var(--ink);">New entrants 2025</div>
-          <div class="block-deck">Manufacturers with zero MW in 2024 and meaningful MW in 2025.</div>
-        </div>
-        <div id="newEntrantsTable"></div>
-      </div>
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title" style="color: var(--claret);">Fallers · YoY % decline</div>
-          <div class="block-deck">Existing companies with the largest percentage drop.</div>
-        </div>
-        <div id="fallersTable"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── §10 First-production calendar ─── -->
-  <section class="section" id="sec-calendar">
-    <div class="section-head">
-      <div class="section-eyebrow"><span class="section-num">10 ·</span> ARRIVALS</div>
-      <h2 class="section-title">When each manufacturer first showed up</h2>
-    </div>
-    <p class="section-deck">Every company in the DCR data, sorted by their first month of production. Companies that arrived early are at the top; recent entrants at the bottom. Click a row to drill into that company.</p>
-
-    <div class="block" style="margin-top: 18px;">
-      <div class="block-head row-between">
-        <div class="block-actions">
-          <button class="tab active" data-cal-sort="first_asc">First → Latest</button>
-          <button class="tab" data-cal-sort="first_desc">Latest → First</button>
-          <button class="tab" data-cal-sort="size">By 2025 MW</button>
-        </div>
-        <button class="csv-btn" onclick="downloadCSV('arrivalsTable', 'first_production_calendar.csv')">Download CSV</button>
-      </div>
-      <div class="data-tbl-wrap" id="arrivalsWrap"></div>
-      <div class="block-foot">Source: NISE DCR Portal · first non-zero monthly entry per company per segment.</div>
-    </div>
-  </section>
-
-  <!-- ─── §11 The Edit ─── -->
-  <section class="section" id="sec-edit">
-    <div class="section-head">
-      <div class="section-eyebrow"><span class="section-num">11 ·</span> THE EDIT</div>
-      <h2 class="section-title">Eight things the data is telling us</h2>
-    </div>
-    <div id="insightsList" style="margin-top: 10px;"></div>
   </section>
 
   <div class="colophon">
@@ -873,18 +587,9 @@ function initFilters() {
   }));
   tabBind('[data-market-seg]', 'marketSeg', renderMarketTable);
   tabBind('[data-lb-yr]', 'lbYear', renderLeaderboard);
-  tabBind('[data-share-seg]', 'shareSeg', renderShareSeg);
   tabBind('[data-dual-yr]', 'dualYr', renderDual);
-  tabBind('[data-osc-seg]', 'oscSeg', renderOscillation);
-  tabBind('[data-sm-seg]', 'smSeg', renderSmallMultiples);
-  tabBind('[data-sm-sort]', 'smSort', renderSmallMultiples);
-  tabBind('[data-mon-seg]', 'monSeg', renderMonthlyMfgSold);
   tabBind('[data-monvol-seg]', 'monVolSeg', renderMonthlyVolTable);
   tabBind('[data-monvol-gran]', 'monVolGran', () => { renderMonthlyVolTable(); renderMarketTable(); if (STATE.selectedCompany) { const seg = ['cell','module'].find(s => companiesForSeg(s).some(c => c.name === STATE.selectedCompany)); if (seg) renderDrill(STATE.selectedCompany, seg); } });
-  tabBind('[data-cal-sort]', 'calSort', renderArrivals);
-  tabBind('[data-heat-seg]', 'heatSeg', renderHeatmap);
-  tabBind('[data-geo-metric]', 'geoMetric', renderTileMap);
-  tabBind('[data-state-sort]', 'stateSort', renderStateTable);
 
   window.resetFilters = () => {
     STATE.segment = 'both'; STATE.yearFrom = 2022; STATE.yearTo = 2026; STATE.search = '';
@@ -957,30 +662,10 @@ function rerenderAll() {
   renderStandfirst();
   renderKPI();
   renderMarketTable();
-  renderMiniKPIs();
   renderLeaderboard();
-  renderShareSeg();
-  renderShareDCR();
   renderDual();
-  renderOscillation();
-  renderSmallMultiples();
-  renderMonthlyMfgSold();
-  renderSeasonality();
-  renderHeatmap();
-  renderTileMap();
-  renderStateTable();
-  renderMfgVsRes();
-  renderUnclaimed();
-  renderSankey();
   renderCompare();
-  renderTierTable();
-  renderTopAnnualTable();
-  renderDualTable();
   renderMonthlyVolTable();
-  renderMoversTables();
-  renderStateMixTable();
-  renderArrivals();
-  renderInsights();
   const echoBits = [`${STATE.segment==='both'?'cell + module':STATE.segment}`, `${STATE.yearFrom}–${STATE.yearTo}`];
   if (STATE.search) echoBits.push(`"${STATE.search}" · ${searchMatchCount()} match${searchMatchCount()===1?'':'es'}`);
   document.getElementById('filterEcho').textContent = 'Showing ' + echoBits.join(' · ');
