@@ -1,9 +1,9 @@
 metric,value_mw,scraped_at,source_endpoint
-cell_with_manufacturer_mw,3255.077085879908,2026-07-28T01:15:34,/Summary/AgencyListTbl
-cell_with_reseller_mw,35.14298319895198,2026-07-28T01:15:34,/Summary/AgencyListTbl
-module_with_manufacturer_mw,4144.529054848419,2026-07-28T01:15:34,/Summary/AgencyListTbl
-module_with_reseller_mw,8857.556136538187,2026-07-28T01:15:34,/Summary/AgencyListTbl
-cell_unclaimed_with_manufacturer_mw,265.4030029734713,2026-07-28T01:15:34,/Summary/AgencyListTbl
-cell_unclaimed_with_reseller_mw,34.54282174249238,2026-07-28T01:15:34,/Summary/AgencyListTbl
-module_unclaimed_with_manufacturer_mw,7979.246936575277,2026-07-28T01:15:34,/Summary/AgencyListTbl
-module_unclaimed_with_reseller_mw,3200.0525417903928,2026-07-28T01:15:34,/Summary/AgencyListTbl
+cell_with_manufacturer_mw,3799.3702919845236,2026-05-16T00:42:22,/Summary/AgencyListTbl
+cell_with_reseller_mw,31.591188235630682,2026-05-16T00:42:22,/Summary/AgencyListTbl
+module_with_manufacturer_mw,3316.1509891587775,2026-05-16T00:42:22,/Summary/AgencyListTbl
+module_with_reseller_mw,7928.656248801744,2026-05-16T00:42:22,/Summary/AgencyListTbl
+cell_unclaimed_with_manufacturer_mw,391.57589365169406,2026-05-16T00:42:22,/Summary/AgencyListTbl
+cell_unclaimed_with_reseller_mw,18.032316643642844,2026-05-16T00:42:22,/Summary/AgencyListTbl
+module_unclaimed_with_manufacturer_mw,7935.775996574404,2026-05-16T00:42:22,/Summary/AgencyListTbl
+module_unclaimed_with_reseller_mw,2404.0390526856645,2026-05-16T00:42:22,/Summary/AgencyListTbl

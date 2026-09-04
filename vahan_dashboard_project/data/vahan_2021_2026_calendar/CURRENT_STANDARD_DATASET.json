@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-28T01:58:55+05:30",
+  "generated_at": "2026-05-30T09:34:36+05:30",
   "canonical_consolidated_csv": "standard_consolidated/vahan_standard_consolidated_long.csv",
-  "canonical_consolidated_csv_absolute": "C:\\Users\\sharm\\Downloads\\Archive\\vahan_dashboard_project\\data\\vahan_2021_2026_calendar\\standard_consolidated\\vahan_standard_consolidated_long.csv",
-  "consolidated_row_count": 915781,
+  "canonical_consolidated_csv_absolute": "/Users/rajagrawal/Library/CloudStorage/OneDrive-CHEMNINELLP/Temp9/vahan_dashboard_project/data/vahan_2021_2026_calendar/standard_consolidated/vahan_standard_consolidated_long.csv",
+  "consolidated_row_count": 888256,
   "dataset_row_counts": {
     "national_maker_month": 6592,
-    "state_maker_fuel": 410042,
-    "state_maker_category": 413665,
-    "state_category_fuel": 85482
+    "state_maker_fuel": 398856,
+    "state_maker_category": 400540,
+    "state_category_fuel": 82268
   },
   "standard_source_files": {
     "national_maker_month": {
@@ -16,15 +16,15 @@
     },
     "state_maker_fuel": {
       "file": "state_maker_fuel_month_long.csv",
-      "row_count": 410042
+      "row_count": 398856
     },
     "state_maker_category": {
       "file": "state_maker_category_month_long.csv",
-      "row_count": 413665
+      "row_count": 400540
     },
     "state_category_fuel": {
       "file": "state_category_fuel_month_long.csv",
-      "row_count": 85482
+      "row_count": 82268
     }
   },
   "pipeline_rule": "After any scrape or repair, run scripts/finalize_vahan_standard_data.py. Dashboards and analysis should read canonical_consolidated_csv, not raw JSON or legacy CSVs.",

@@ -40,18 +40,18 @@ def main():
     # Otherwise fall back to the archived v18 template for a clean rebuild.
     if TARGET_HTML.exists():
         print(f"Reading existing v19 (preserves in-place edits): {TARGET_HTML}")
-        html = TARGET_HTML.read_text(encoding="utf-8")
+        html = TARGET_HTML.read_text()
     else:
         print(f"Reading source v18 template from archive: {SOURCE_HTML}")
-        html = SOURCE_HTML.read_text(encoding="utf-8")
+        html = SOURCE_HTML.read_text()
     print(f"  size: {len(html):,} bytes")
 
     print(f"Loading inline payload: {INLINE_PAYLOAD}")
-    inline_json = INLINE_PAYLOAD.read_text(encoding="utf-8")
+    inline_json = INLINE_PAYLOAD.read_text()
     print(f"  size: {len(inline_json):,} bytes")
 
     print(f"Loading state payload: {STATE_PAYLOAD}")
-    state_json = STATE_PAYLOAD.read_text(encoding="utf-8")
+    state_json = STATE_PAYLOAD.read_text()
     print(f"  size: {len(state_json):,} bytes")
 
     # 1. Replace the inline <script id="payload"> body
@@ -84,9 +84,7 @@ def main():
     )
 
     print(f"Writing {TARGET_HTML}")
-    tmp = TARGET_HTML.with_suffix(TARGET_HTML.suffix + ".tmp")
-    tmp.write_text(new_html, encoding="utf-8")
-    tmp.replace(TARGET_HTML)
+    TARGET_HTML.write_text(new_html)
     print(f"  size: {len(new_html):,} bytes")
     print("Done.")
 

@@ -424,10 +424,8 @@ bundle = {
 }
 
 out_path = os.path.join(BASE, "dashboard_data.json")
-tmp_path = out_path + ".tmp"
-with open(tmp_path, "w") as fp:
+with open(out_path, "w") as fp:
     json.dump(bundle, fp, separators=(",", ":"))
-os.replace(tmp_path, out_path)
 print(f"Wrote {out_path} ({os.path.getsize(out_path):,} bytes)")
 print("KPIs:", totals)
 print("Yearly cell totals:", yt_cell)

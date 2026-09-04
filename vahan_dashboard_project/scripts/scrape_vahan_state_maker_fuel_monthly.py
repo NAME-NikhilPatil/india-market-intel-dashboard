@@ -38,7 +38,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from flatten_vahan_maker_fuel import fuel_group, parse_int
 from scrape_vahan_all_state_maker_fuel_monthly import select_month, scrape_current_table
-from vahan_harvest import URL, Harvester, Job, assert_portal_access
+from vahan_harvest import URL, Harvester, Job
 
 
 DATA_DIR = Path("data/vahan_2021_2026_calendar")
@@ -81,7 +81,6 @@ def discover_states(output_dir: Path, delay: float, headful: bool,
         harvester.driver.set_page_load_timeout(page_timeout)
         try:
             harvester.driver.get(URL)
-            assert_portal_access(harvester.driver)
         except TimeoutException:
             harvester.driver.execute_script("window.stop();")
         harvester.wait.until(EC.presence_of_element_located((By.ID, "yaxisVar_input")))
@@ -170,7 +169,6 @@ def setup_state_year(state: dict[str, str], year: str, output_dir: Path,
     harvester.driver.set_page_load_timeout(page_timeout)
     try:
         harvester.driver.get(URL)
-        assert_portal_access(harvester.driver)
     except TimeoutException:
         harvester.driver.execute_script("window.stop();")
     harvester.wait.until(EC.presence_of_element_located((By.ID, "yaxisVar_input")))
@@ -224,9 +222,7 @@ def scrape_state_year(state: dict[str, str], year: str, output_dir: Path,
                 "records": records,
             }
             out.parent.mkdir(parents=True, exist_ok=True)
-            tmp = out.with_suffix(out.suffix + ".tmp")
-            tmp.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-            tmp.replace(out)
+            out.write_text(json.dumps(payload, indent=2), encoding="utf-8")
             print(
                 f"wrote {state['state_code']} {year}-{month_number:02d}: "
                 f"{len(records)} maker rows -> {out}",
@@ -298,8 +294,7 @@ def compile_long_csv(output_dir: Path) -> int:
     rows.sort(key=lambda row: (row["state_code"], row["month"], row["maker"], row["fuel_group"], row["fuel_type"]))
     out = output_dir / CSV_NAME
     out.parent.mkdir(parents=True, exist_ok=True)
-    tmp = out.with_suffix(out.suffix + ".tmp")
-    with tmp.open("w", newline="", encoding="utf-8") as handle:
+    with out.open("w", newline="", encoding="utf-8") as handle:
         fieldnames = [
             "calendar_year",
             "month",
@@ -317,7 +312,6 @@ def compile_long_csv(output_dir: Path) -> int:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
-    tmp.replace(out)
     print(f"Wrote {len(rows)} long rows to {out}; skipped {skipped} invalid raw files", flush=True)
     return len(rows)
 
@@ -471,8 +465,6 @@ def main() -> None:
         f"State-year failures recorded: {failures}.",
         flush=True,
     )
-    if failures:
-        raise SystemExit(1)
 
 
 if __name__ == "__main__":

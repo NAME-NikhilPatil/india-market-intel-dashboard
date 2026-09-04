@@ -1,6 +1,6 @@
 # VAHAN Data Quality Report
 
-Generated: 2026-07-28T01:58:40
+Generated: 2026-05-30T09:34:33
 
 ## Canonical Source Map
 
@@ -57,9 +57,9 @@ Generated: 2026-07-28T01:58:40
 
 | Raw dir | Expected title fragment | files | bad title files | bad-title groups | examples |
 | --- | --- | --- | --- | --- | --- |
-| state_maker_fuel_month_raw | Maker Wise Fuel Data | 2412 | 0 |  |  |
-| state_maker_category_month_raw | Maker Wise Vehicle Category Data | 2412 | 0 |  |  |
-| state_category_fuel_month_raw | Vehicle Category Wise Fuel Data | 2412 | 0 |  |  |
+| state_maker_fuel_month_raw | Maker Wise Fuel Data | 2340 | 0 |  |  |
+| state_maker_category_month_raw | Maker Wise Vehicle Category Data | 2340 | 0 |  |  |
+| state_category_fuel_month_raw | Vehicle Category Wise Fuel Data | 2340 | 0 |  |  |
 
 ## 2026 Market Total Reconciliation
 
@@ -105,101 +105,80 @@ Different maker-month cells in common months: 224.
 
 ## State Maker Fuel vs State Maker Category
 
-State-month cells with any difference: 104; max absolute state-month difference: 309606 registrations.
+State-month cells with any difference: 57; max absolute state-month difference: 2 registrations.
 | month | state | maker_category_total | maker_fuel_total | diff |
 | --- | --- | --- | --- | --- |
-| 2026-06 | UP | 346444 | 36838 | 309606 |
-| 2026-06 | WB | 128872 | 16277 | 112595 |
-| 2026-06 | MH | 252019 | 140706 | 111313 |
-| 2026-06 | MP | 127424 | 21609 | 105815 |
-| 2026-07 | UP | 245927 | 146661 | 99266 |
-| 2026-07 | GJ | 174327 | 77593 | 96734 |
-| 2026-06 | KA | 188029 | 94504 | 93525 |
-| 2026-07 | MP | 98799 | 12662 | 86137 |
-| 2026-06 | PB | 66644 | 7049 | 59595 |
-| 2026-06 | TG | 81396 | 23413 | 57983 |
-| 2026-07 | KA | 147133 | 94640 | 52493 |
-| 2026-07 | BR | 93934 | 49472 | 44462 |
-| 2026-07 | MH | 215084 | 173007 | 42077 |
-| 2026-06 | JH | 58478 | 18585 | 39893 |
-| 2026-07 | TG | 39614 | 71392 | -31778 |
-| 2026-07 | WB | 81747 | 51863 | 29884 |
-| 2026-06 | RJ | 133770 | 105033 | 28737 |
-| 2026-07 | RJ | 112247 | 87814 | 24433 |
-| 2026-06 | CG | 26905 | 48435 | -21530 |
-| 2026-06 | KL | 93981 | 72741 | 21240 |
-| 2026-06 | HR | 87859 | 66928 | 20931 |
-| 2026-06 | AP | 97939 | 77320 | 20619 |
-| 2026-07 | DL | 41956 | 60366 | -18410 |
-| 2026-07 | JH | 43702 | 30307 | 13395 |
-| 2026-06 | GJ | 176804 | 165820 | 10984 |
+| 2024-11 | KA | 182512 | 182510 | 2 |
+| 2024-06 | KA | 151479 | 151477 | 2 |
+| 2024-01 | MP | 134260 | 134258 | 2 |
+| 2021-02 | AN | 543 | 541 | 2 |
+| 2025-12 | GJ | 169520 | 169522 | -2 |
+| 2025-12 | BR | 93656 | 93658 | -2 |
+| 2025-05 | GJ | 134078 | 134080 | -2 |
+| 2024-07 | KA | 138831 | 138833 | -2 |
+| 2024-03 | MN | 1839 | 1841 | -2 |
+| 2022-11 | MN | 7447 | 7449 | -2 |
+| 2022-11 | HP | 15378 | 15380 | -2 |
+| 2022-03 | MN | 4490 | 4492 | -2 |
+| 2021-04 | ML | 2440 | 2442 | -2 |
+| 2026-04 | AR | 3847 | 3846 | 1 |
+| 2025-09 | GJ | 173951 | 173950 | 1 |
+| 2025-08 | GJ | 181917 | 181916 | 1 |
+| 2025-08 | CG | 47250 | 47249 | 1 |
+| 2025-07 | CH | 4337 | 4336 | 1 |
+| 2025-07 | BR | 95711 | 95710 | 1 |
+| 2025-03 | CG | 59778 | 59777 | 1 |
+| 2025-02 | CG | 57965 | 57964 | 1 |
+| 2025-01 | CH | 4230 | 4229 | 1 |
+| 2025-01 | BR | 92613 | 92612 | 1 |
+| 2022-12 | HP | 11934 | 11933 | 1 |
+| 2021-12 | ML | 2290 | 2289 | 1 |
 
-State-maker-month cells with any difference: 3596; max absolute state-maker-month difference: 122183 registrations.
+State-maker-month cells with any difference: 172; max absolute state-maker-month difference: 4 registrations.
 | month | state | maker | category_sum | fuel_sum | diff |
 | --- | --- | --- | --- | --- | --- |
-| 2026-06 | UP | HERO MOTOCORP LTD | 122183 | 0 | 122183 |
-| 2026-06 | UP | TVS MOTOR COMPANY LTD | 50527 | 0 | 50527 |
-| 2026-07 | GJ | HONDA MOTORCYCLE AND SCOOTER INDIA (P) LTD | 49293 | 0 | 49293 |
-| 2026-07 | UP | TVS MOTOR COMPANY LTD | 36293 | 0 | 36293 |
-| 2026-06 | UP | HONDA MOTORCYCLE AND SCOOTER INDIA (P) LTD | 34849 | 0 | 34849 |
-| 2026-06 | KA | TVS MOTOR COMPANY LTD | 30959 | 0 | 30959 |
-| 2026-06 | MH | TVS MOTOR COMPANY LTD | 30852 | 0 | 30852 |
-| 2026-06 | MP | HERO MOTOCORP LTD | 30751 | 0 | 30751 |
-| 2026-06 | WB | HONDA MOTORCYCLE AND SCOOTER INDIA (P) LTD | 27083 | 0 | 27083 |
-| 2026-07 | KA | TVS MOTOR COMPANY LTD | 26155 | 0 | 26155 |
-| 2026-07 | BR | HERO MOTOCORP LTD | 24669 | 0 | 24669 |
-| 2026-06 | MP | HONDA MOTORCYCLE AND SCOOTER INDIA (P) LTD | 22196 | 0 | 22196 |
-| 2026-07 | WB | HONDA MOTORCYCLE AND SCOOTER INDIA (P) LTD | 21885 | 0 | 21885 |
-| 2026-06 | MH | SUZUKI MOTORCYCLE INDIA PVT LTD | 21036 | 0 | 21036 |
-| 2026-06 | UP | MARUTI SUZUKI INDIA LTD | 20773 | 0 | 20773 |
-| 2026-06 | WB | TVS MOTOR COMPANY LTD | 20636 | 0 | 20636 |
-| 2026-07 | MP | HERO MOTOCORP LTD | 20019 | 0 | 20019 |
-| 2026-06 | TG | HONDA MOTORCYCLE AND SCOOTER INDIA (P) LTD | 19206 | 0 | 19206 |
-| 2026-07 | TG | HONDA MOTORCYCLE AND SCOOTER INDIA (P) LTD | 0 | 19184 | -19184 |
-| 2026-07 | MP | HONDA MOTORCYCLE AND SCOOTER INDIA (P) LTD | 18256 | 0 | 18256 |
-| 2026-06 | MH | MARUTI SUZUKI INDIA LTD | 17946 | 0 | 17946 |
-| 2026-07 | WB | TVS MOTOR COMPANY LTD | 0 | 16759 | -16759 |
-| 2026-06 | WB | HERO MOTOCORP LTD | 16444 | 0 | 16444 |
-| 2026-06 | MP | TVS MOTOR COMPANY LTD | 16240 | 0 | 16240 |
-| 2026-07 | BR | HONDA MOTORCYCLE AND SCOOTER INDIA (P) LTD | 16124 | 0 | 16124 |
+| 2026-03 | RJ | HERO MOTOCORP LTD | 55744 | 55748 | -4 |
+| 2026-03 | RJ | TAFE LIMITED | 4472 | 4469 | 3 |
+| 2026-04 | RJ | KHALSAE-VEHICLES PVT LTD | 27 | 25 | 2 |
+| 2026-03 | RJ | MARUTI SUZUKI INDIA LTD | 10994 | 10992 | 2 |
+| 2025-11 | BR | TVS MOTOR COMPANY LTD | 35865 | 35863 | 2 |
+| 2024-11 | KA | LOCAL TRAILER MANUFACTURER | 1025 | 1023 | 2 |
+| 2026-04 | RJ | TATA MOTORS LTD | 2919 | 2921 | -2 |
+| 2026-04 | RJ | TAFE LIMITED | 4906 | 4908 | -2 |
+| 2026-03 | RJ | MAHINDRA & MAHINDRA LIMITED | 6832 | 6834 | -2 |
+| 2026-01 | RJ | BAJAJ AUTO LTD | 8639 | 8641 | -2 |
+| 2025-10 | BR | MAHINDRA & MAHINDRA LIMITED | 4445 | 4447 | -2 |
+| 2024-09 | KA | HYUNDAI MOTOR INDIA LTD | 2624 | 2626 | -2 |
+| 2024-03 | MN | MARUTI SUZUKI INDIA LTD | 223 | 225 | -2 |
+| 2024-02 | MP | MAHINDRA & MAHINDRA LIMITED | 3924 | 3926 | -2 |
+| 2022-11 | MN | MARUTI SUZUKI INDIA LTD | 921 | 923 | -2 |
+| 2026-04 | RJ | TATA MOTORS PASSENGER VEHICLES LTD | 2674 | 2673 | 1 |
+| 2026-04 | RJ | SUPERTECH EV LIMITED | 10 | 9 | 1 |
+| 2026-04 | RJ | SSB INDISTRIES | 91 | 90 | 1 |
+| 2026-04 | RJ | PIAGGIO VEHICLES PVT LTD | 412 | 411 | 1 |
+| 2026-04 | RJ | NISSAN MOTOR INDIA PVT LTD | 156 | 155 | 1 |
+| 2026-04 | RJ | MINI METRO EV L.L.P | 138 | 137 | 1 |
+| 2026-04 | AR | TATA MOTORS LTD | 162 | 161 | 1 |
+| 2026-04 | AR | ASHOK LEYLAND LTD | 71 | 70 | 1 |
+| 2026-03 | RJ | TVS MOTOR COMPANY LTD | 15124 | 15123 | 1 |
+| 2026-03 | RJ | TATA PASSENGER ELECTRIC MOBILITY LTD | 1048 | 1047 | 1 |
 
 ## State Total: Category x Fuel vs Maker x Category
 
-Different state-month cells after excluding category-fuel bad-title files: 28. Left = state maker-category total; right = state category-fuel total.
+Different state-month cells after excluding category-fuel bad-title files: 4. Left = state maker-category total; right = state category-fuel total.
 | month | state | maker_category_total | category_fuel_total | diff |
 | --- | --- | --- | --- | --- |
-| 2026-07 | TG | 39614 | 71394 | -31780 |
-| 2026-06 | CG | 26905 | 55406 | -28501 |
-| 2026-07 | WB | 81747 | 102351 | -20604 |
-| 2026-07 | DL | 41956 | 60366 | -18410 |
-| 2026-06 | TG | 81396 | 92981 | -11585 |
-| 2026-07 | TN | 183180 | 194062 | -10882 |
-| 2026-06 | MH | 252019 | 262269 | -10250 |
-| 2026-06 | DL | 61064 | 69849 | -8785 |
-| 2026-06 | UK | 16849 | 23925 | -7076 |
-| 2026-07 | AS | 31501 | 37263 | -5762 |
-| 2026-07 | OR | 59859 | 64147 | -4288 |
-| 2026-06 | PB | 66644 | 70643 | -3999 |
-| 2026-07 | UK | 19618 | 23419 | -3801 |
-| 2026-06 | AS | 48376 | 51517 | -3141 |
-| 2026-07 | GA | 6832 | 4939 | 1893 |
-| 2026-06 | PY | 6520 | 8015 | -1495 |
-| 2026-06 | GA | 5628 | 6832 | -1204 |
-| 2026-07 | JH | 43702 | 44296 | -594 |
-| 2026-06 | BR | 132341 | 132914 | -573 |
-| 2026-06 | RJ | 133770 | 134002 | -232 |
-| 2026-06 | HR | 87859 | 88007 | -148 |
-| 2026-06 | AP | 97939 | 98056 | -117 |
-| 2026-06 | JK | 22177 | 22203 | -26 |
-| 2026-06 | CH | 5150 | 5159 | -9 |
 | 2024-01 | MP | 134260 | 134258 | 2 |
+| 2024-02 | WB | 89282 | 89283 | -1 |
+| 2024-02 | MP | 126798 | 126799 | -1 |
+| 2022-10 | HP | 10065 | 10066 | -1 |
 
 ## Source vs Our End
 
 - May 2026 is internally consistent across the refreshed standard tables: 2267511 registrations in all three total views.
 - Jan-Apr 2026 differences between national maker-month and state-summed data line up with scrape freshness: national maker-month was refreshed on May 30, while state-level Jan-Apr rows are mostly May 15. Treat that as our refresh/staleness issue, not a VAHAN source problem.
 - Raw-title validation is clean for all three state-level standard datasets.
-- Remaining state-total mismatches need targeted rescrape before blaming VAHAN. Several look like partial state-maker-category captures because the independent category-fuel total is much higher.
+- Remaining state-total mismatches are only 1-2 registrations after targeted repair. Treat them as immaterial timing/source-table variance unless exact unit-level reconciliation is needed.
 
 ## Ather/Ola Check Against Canonical Maker-Month
 

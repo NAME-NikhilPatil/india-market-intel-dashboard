@@ -19,7 +19,7 @@ from pathlib import Path
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 
-from flatten_vahan_maker_fuel import fuel_group
+from build_monthly_maker_fuel import fuel_group
 from vahan_harvest import REPORTS, SEGMENTS, URL, Harvester, Job, number_from_text
 
 
